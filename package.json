@@ -3,10 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "clean": "rimraf dist/* html/Web.bundle/*",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
+    "build": "parcel build --public-url . src/index.html",
+    "bundle": "npm run clean && npm run build && cp dist/* html/Web.bundle/",
+    "start-web": "parcel src/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts"
   },
@@ -28,8 +32,10 @@
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0",
+    "rimraf": "^3.0.2",
     "typescript": "^3.7.3"
   },
   "jest": {
