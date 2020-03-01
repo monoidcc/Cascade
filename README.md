@@ -1,6 +1,6 @@
 # Tententen WIP
 
-> Simple generative picture app for mobile
+> A simple generative picture app for mobile
 
 # Architecture
 
