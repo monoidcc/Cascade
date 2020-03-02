@@ -10,7 +10,7 @@
     "test": "jest",
     "build": "parcel build --public-url . src/index.html",
     "bundle": "npm run clean && npm run build && cp dist/* html/Web.bundle/",
-    "start-web": "parcel src/index.html",
+    "dev": "parcel src/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts"
   },
@@ -30,6 +30,7 @@
     "@typescript-eslint/parser": "^2.12.0",
     "babel-jest": "^24.9.0",
     "eslint": "^6.5.1",
+    "gameloopjs": "^1.0.2",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "parcel-bundler": "^1.12.4",

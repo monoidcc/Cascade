@@ -3839,6 +3839,11 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
+gameloopjs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/gameloopjs/-/gameloopjs-1.0.2.tgz#2c51d883a3d692c296a9afd83dbf1ae9b4acecf2"
+  integrity sha512-6endtp9hFSPzHduHuak7HpDUCluknaLYhiGBNiSAwUL+fUHiFOXJD28WPkw5l7xBKWYSL2COdIZOFkDZ4YazXQ==
+
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
