@@ -49,5 +49,8 @@
       "json",
       "node"
     ]
-  }
+  },
+  "browserslist": [
+    "Chrome 79"
+  ]
 }
