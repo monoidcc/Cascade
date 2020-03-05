@@ -66,3 +66,6 @@ buck-out/
 # parcel
 dist
 .cache
+
+# dist
+/html/Web.bundle
