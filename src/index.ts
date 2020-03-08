@@ -65,8 +65,12 @@ class Motion {
     this.initY = y
   }
 
+  isFinished(): boolean {
+    return this.frame >= this.frameMax
+  }
+
   step() {
-    if (this.frame >= this.frameMax) {
+    if (this.isFinished()) {
       return
     }
     this.frame++
@@ -93,6 +97,10 @@ class WaveRect {
     const { x, y } = this.motion.get()
     this.rect.goto(x, y)
   }
+
+  isFinished(): boolean {
+    return this.motion.isFinished()
+  }
 }
 
 class Wave {
@@ -112,10 +120,19 @@ class Wave {
     return arr
   }
 
-  step(): void {
+  step(): WaveRect[] {
+    const finished: WaveRect[] = []
+    const wip: WaveRect[] = []
     this.rects.forEach(wr => {
       wr.step()
+      if (wr.isFinished()) {
+        finished.push(wr)
+      } else {
+        wip.push(wr)
+      }
     })
+    this.rects = wip
+    return finished
   }
 }
 
@@ -156,7 +173,10 @@ let wave: Wave = new Wave()
 let result: Result = new Result()
 
 function main() {
-  wave.step()
+  const finished = wave.step()
+  if (finished) {
+    result.add(...finished.map(wr => wr.rect))
+  }
   console.log('main')
   ctx.clearRect(0, 0, width, height)
   ctx.fillStyle = '#000'
@@ -193,8 +213,6 @@ function gen(): void {
 }
 
 function newWave() {
-  const rects = wave.eject()
-  result.add(...rects)
   gen()
 }
 
