@@ -1941,6 +1941,11 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
+bezier-easing@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/bezier-easing/-/bezier-easing-2.1.0.tgz#c04dfe8b926d6ecaca1813d69ff179b7c2025d86"
+  integrity sha1-wE3+i5JtbsrKGBPWn/F5t8ICXYY=
+
 big-integer@^1.6.44:
   version "1.6.48"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.48.tgz#8fd88bd1632cba4a1c8c3e3d7159f08bb95b4b9e"
@@ -3839,10 +3844,10 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-gameloopjs@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/gameloopjs/-/gameloopjs-1.0.2.tgz#2c51d883a3d692c296a9afd83dbf1ae9b4acecf2"
-  integrity sha512-6endtp9hFSPzHduHuak7HpDUCluknaLYhiGBNiSAwUL+fUHiFOXJD28WPkw5l7xBKWYSL2COdIZOFkDZ4YazXQ==
+gameloopjs@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/gameloopjs/-/gameloopjs-1.1.1.tgz#eb2a006eec50bcc4e84de08b8042475b78b0bd23"
+  integrity sha512-pFJHNbpLg56AmHTjd5VQExF2WNngw5d4Lx8JfH8uVCYSYYnrwf60F2ef08ahRgc9tXWa4Xuo4JeXHGONjNf0bg==
 
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"

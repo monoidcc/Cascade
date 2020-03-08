@@ -1,25 +1,24 @@
 import gameloop = require('gameloopjs')
+import bezier = require('bezier-easing')
 const qs = <T extends Element>(q: string): T => document.querySelector(q) as any
-const byId = <T extends Element>(id: string): T => document.getElementById(id) as any
+const byId = <T extends Element>(id: string): T =>
+  document.getElementById(id) as any
 
 let width = 0
 let height = 0
 let ctx: CanvasRenderingContext2D
 
 class Rect {
-  width: number
-  height: number
-  color: string
   constructor(
-    private x: number,
-    private y: number,
-    width: number,
-    height: number,
-    color: string,
-  ) {
-    this.width = width
-    this.height = height
-    this.color = color
+    public x: number,
+    public y: number,
+    public width: number,
+    public height: number,
+    public color: string
+  ) {}
+
+  clone(): Rect {
+    return new Rect(this.x, this.y, this.width, this.height, this.color)
   }
 
   left(): number {
@@ -35,6 +34,11 @@ class Rect {
     this.y += speed.y
   }
 
+  goto(x: number, y: number): void {
+    this.x = x
+    this.y = y
+  }
+
   scale(width: number = 0, height: number = 0): void {
     this.width += width
     this.height += height
@@ -42,27 +46,52 @@ class Rect {
 }
 
 class Speed {
-  x: number
-  y: number
-  constructor(x: number, y: number) {
-    this.x = x
-    this.y = y
+  constructor(public x: number, public y: number) {}
+}
+
+class Motion {
+  frame = 0
+  initX = 0
+  initY = 0
+  constructor(
+    public frameMax: number,
+    public easing: any,
+    public x: number,
+    public y: number
+  ) {}
+
+  init(x: number, y: number): void {
+    this.initX = x
+    this.initY = y
+  }
+
+  step() {
+    if (this.frame >= this.frameMax) {
+      return
+    }
+    this.frame++
+  }
+
+  get(): { x: number; y: number } {
+    return {
+      x: this.initX + this.x * this.easing(this.frame / this.frameMax),
+      y: this.initY + this.y * this.easing(this.frame / this.frameMax)
+    }
   }
 }
 
 class WaveRect {
-  rect: Rect
-  private speed: Speed
-  constructor(
-    rect: Rect,
-    speed: Speed
-  ) {
-    this.rect = rect
-    this.speed = speed
+  private initX: number
+  private initY: number
+  constructor(public rect: Rect, public motion: Motion) {
+    this.initX = rect.x
+    this.initY = rect.y
   }
 
   step() {
-    this.rect.move(this.speed)
+    this.motion.step()
+    const { x, y } = this.motion.get()
+    this.rect.goto(x, y)
   }
 }
 
@@ -84,7 +113,9 @@ class Wave {
   }
 
   step(): void {
-    this.rects.forEach(wr => { wr.step() })
+    this.rects.forEach(wr => {
+      wr.step()
+    })
   }
 }
 
@@ -129,25 +160,36 @@ function main() {
   console.log('main')
   ctx.clearRect(0, 0, width, height)
   ctx.fillStyle = '#000'
-  drawWave(ctx, wave)
   drawResult(ctx, result)
+  drawWave(ctx, wave)
 }
 
-const v = 2
-const v0 = new Speed(v, 0)
-const v1 = new Speed(0, v)
-const v2 = new Speed(-v, 0)
-const v3 = new Speed(0, -v)
+const dice = (n: number): number => Math.random() * n
+
+const easing0 = bezier(0.42, 0, 0.58, 1)
 
 function gen(): void {
-  const w = 100
+  const w = dice(300) + 100
   const hw = w / 2
-  const d = Math.random() * Math.min(width, height)
-  const c = 'hsla(220,80%,50%,0.5)'
-  wave.add(new WaveRect(new Rect(0 - hw, d, w, w, c), v0))
-  wave.add(new WaveRect(new Rect(width - d, -hw, w, w, c), v1))
-  wave.add(new WaveRect(new Rect(width + hw, height - d, w, w, c), v2))
-  wave.add(new WaveRect(new Rect(d, height + hw, w, w, c), v3))
+  const d = dice(Math.min(width, height))
+  const c = `hsla(${dice(360)},80%,50%,0.35)`
+  const r0 = new Rect(0 - hw, d, w, w, c)
+  const r1 = new Rect(width - d, -hw, w, w, c)
+  const r2 = new Rect(width + hw, height - d, w, w, c)
+  const r3 = new Rect(d, height + hw, w, w, c)
+  const frames = 60
+  const m0 = new Motion(frames, easing0, w, 0)
+  const m1 = new Motion(frames, easing0, 0, w)
+  const m2 = new Motion(frames, easing0, -w, 0)
+  const m3 = new Motion(frames, easing0, 0, -w)
+  m0.init(r0.x, r0.y)
+  m1.init(r1.x, r1.y)
+  m2.init(r2.x, r2.y)
+  m3.init(r3.x, r3.y)
+  wave.add(new WaveRect(r0, m0))
+  wave.add(new WaveRect(r1, m1))
+  wave.add(new WaveRect(r2, m2))
+  wave.add(new WaveRect(r3, m3))
 }
 
 function newWave() {
