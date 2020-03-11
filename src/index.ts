@@ -37,7 +37,6 @@ function main() {
   if (finished) {
     result.add(...finished.map(wr => wr.rect))
   }
-  console.log('main')
   ctx.clearRect(0, 0, width, height)
   ctx.fillStyle = '#000'
   drawResult(ctx, result)
@@ -46,23 +45,29 @@ function main() {
 
 const easing0 = bezier(0.42, 0, 0.58, 1)
 const colors = [
-  `hsla(${dice(360)},50%,50%,0.35)`,
-  `hsla(${dice(360)},50%,50%,0.35)`,
-  `hsla(${dice(360)},50%,50%,0.35)`,
-  `hsla(${dice(360)},50%,50%,0.35)`
+  Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
+  Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
+  Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
+  Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
 ]
 
+function rotateColor(): void {
+  colors.push(colors.shift()!)
+}
+
 function gen(): void {
+  rotateColor()
   const min = Math.min(width, height)
   const w = dice(min / 3) + min / 6
   const hw = w / 2
   const ratio = Math.random()
   const dw = width * ratio
   const dh = height * ratio
-  const c0 = colors[0]
-  const c1 = colors[1]
-  const c2 = colors[2]
-  const c3 = colors[3]
+  const alpha = dice(1)
+  const c0 = colors[0].alpha(alpha).toString()
+  const c1 = colors[1].alpha(alpha).toString()
+  const c2 = colors[2].alpha(alpha).toString()
+  const c3 = colors[3].alpha(alpha).toString()
   const r0 = new Rect(0 - hw, dh, w, w, c0)
   const r1 = new Rect(width - dw, -hw, w, w, c1)
   const r2 = new Rect(width + hw, height - dh, w, w, c2)
