@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",
