@@ -5,7 +5,6 @@
     "lib": ["es6", "dom"],
     "allowJs": true,
     "jsx": "react-native",
-    "noEmit": true,
     "incremental": true,
     "isolatedModules": false,
     "strict": true,

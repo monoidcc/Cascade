@@ -3,39 +3,16 @@
   <link rel="stylesheet" href="mn.css" />
 </head>
 <style>
-#main {
+.main {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-#main-canvas {
-  background-color: #fff;
-}
-
-.controls {
-  position: fixed;
-  height: 50px;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.controls button {
-  width: 150px;
-  height: 36px;
-  margin: 0 5px;
-  background-color: hsla(0,0%,80%,0.8);
-  border-width: 0;
-}
-
 </style>
 <script src="./script.ts"></script>
-<body class="body">
-  <main id="main">
+<body class="main-command-hub">
+  <main class="main">
     <canvas class="main-canvas" width="1" height="1" />
   </main>
   <div class="controls">

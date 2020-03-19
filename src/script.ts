@@ -4,17 +4,19 @@ import Color = require('color')
 import { Rect, Motion, Wave, WaveRect, Result } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
-import { component, on, emits, notifies } from 'capsid'
+import { component, on, pub, sub, is } from 'capsid'
+import { css } from 'emotion'
 
 @component('main-canvas')
+@sub('a', 'b')
 export class MainCanvas {
   width = 0
   height = 0
-  ctx: Ctx
+  ctx?: Ctx
   wave: Wave
   result: Result
   loop: any
-  el: HTMLCanvasElement
+  el?: HTMLCanvasElement
   easing0 = bezier(0.42, 0, 0.58, 1)
   colors = [
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
@@ -22,21 +24,21 @@ export class MainCanvas {
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
   ]
+
   constructor() {
     this.wave = new Wave()
     this.result = new Result()
     this.loop = gameloop(this.main, 60)
-    this.el = document.createElement('a')
   }
 
   __mount__() {
-    const main = this.el.parentElement
-    this.ctx = this.el.getContext('2d')!
+    const el = this.el!
+    const main = el.parentElement!
+    this.ctx = el.getContext('2d')!
     const canvasSize = Math.min(main.clientWidth, main.clientHeight)
-    this.el.width = this.width = canvasSize
-    this.el.height = this.height = canvasSize
+    el.width = this.width = canvasSize
+    el.height = this.height = canvasSize
     this.loop.run()
-
   }
 
   main = () => {
@@ -44,7 +46,7 @@ export class MainCanvas {
     if (finished) {
       this.result.add(...finished.map(wr => wr.rect))
     }
-    this.ctx.clearRect(0, 0, this.width, this.height)
+    this.ctx!.clearRect(0, 0, this.width, this.height)
     this.drawRects(this.result.rects)
     this.drawRects(this.wave.toArray())
 
@@ -88,8 +90,8 @@ export class MainCanvas {
 
   drawRects(rects: Rect[]) {
     rects.forEach(rect => {
-      this.ctx.fillStyle = rect.color
-      this.ctx.fillRect(rect.left(), rect.top(), rect.width, rect.height)
+      this.ctx!.fillStyle = rect.color
+      this.ctx!.fillRect(rect.left(), rect.top(), rect.width, rect.height)
     })
   }
 
@@ -106,27 +108,32 @@ export class MainCanvas {
 }
 
 @component('controls')
+@is(css`
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    width: 150px;
+    height: 36px;
+    margin: 0 5px;
+    background-color: hsla(220,20%,80%,0.8);
+    border-width: 0;
+  }
+`)
 export class Controls {
   @on.click.at('.a-btn')
-  @emits('a')
+  @pub('a')
   a() {
   }
 
   @on.click.at('.b-btn')
-  @emits('b')
-  b() {
-  }
-}
-
-@component('body')
-export class Body {
-  @on('a')
-  @notifies('a', '.main-canvas')
-  a() {
-  }
-
-  @on('b')
-  @notifies('b', '.main-canvas')
+  @pub('b')
   b() {
   }
 }
