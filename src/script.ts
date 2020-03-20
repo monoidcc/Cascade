@@ -127,6 +127,13 @@ export class MainCanvas {
   }
 `)
 export class Controls {
+  __mount__() {
+    this.el.innerHTML = `
+      <button class="a-btn">A</button>
+      <button class="b-btn">B</button>
+    `
+  }
+
   @on.click.at('.a-btn')
   @pub('a')
   a() {
@@ -135,5 +142,6 @@ export class Controls {
   @on.click.at('.b-btn')
   @pub('b')
   b() {
+
   }
 }
