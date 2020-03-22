@@ -1,7 +1,7 @@
 import gameloop = require('gameloopjs')
 import bezier = require('bezier-easing')
 import Color = require('color')
-import { Rect, Motion, Wave, WaveRect, Result } from './models'
+import { Rect, Motion, Wave, WaveRect, Result, Text } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
 import { component, on, pub, sub, is } from 'capsid'
@@ -28,6 +28,13 @@ export class MainCanvas {
   constructor() {
     this.wave = new Wave()
     this.result = new Result()
+    this.text = new Text(
+      'Tententen',
+      'Avenir Next',
+      1 / 6,
+      this.colors[0].alpha(1).toString(),
+      this.colors[1].alpha(1).toString()
+    )
     this.loop = gameloop(this.main, 60)
   }
 
@@ -65,20 +72,20 @@ export class MainCanvas {
     const ratioA = ratioY
     const ratioW = dice(1)
 
-    const min = Math.min(this.width, this.height)
+    const min = 1
     const w = min / 3 * ratioW + min / 6
     const hw = w / 2
-    const dw = this.width * ratioX
-    const dh = this.height * ratioX
+    const dw = ratioX
+    const dh = ratioX
     const alpha = ratioA
     const c0 = this.colors[0].alpha(alpha).toString()
     const c1 = this.colors[1].alpha(alpha).toString()
     const c2 = this.colors[2].alpha(alpha).toString()
     const c3 = this.colors[3].alpha(alpha).toString()
     const r0 = new Rect(0 - hw, dh, w, w, c0)
-    const r1 = new Rect(this.width - dw, -hw, w, w, c1)
-    const r2 = new Rect(this.width + hw, this.height - dh, w, w, c2)
-    const r3 = new Rect(dw, this.height + hw, w, w, c3)
+    const r1 = new Rect(1 - dw, -hw, w, w, c1)
+    const r2 = new Rect(1 + hw, 1 - dh, w, w, c2)
+    const r3 = new Rect(dw, 1 + hw, w, w, c3)
     const frames = 60
     const m0 = new Motion(frames, this.easing0, w, 0)
     const m1 = new Motion(frames, this.easing0, 0, w)
@@ -97,29 +104,35 @@ export class MainCanvas {
   drawRects(rects: Rect[]) {
     rects.forEach(rect => {
       this.ctx!.fillStyle = rect.color
-      this.ctx!.fillRect(rect.left(), rect.top(), rect.width, rect.height)
+      this.ctx!.fillRect(rect.left() * this.width, rect.top() * this.height, rect.width * this.width, rect.height * this.height)
     })
   }
 
   drawText(): void {
     const text = 'Tententen'
-    const fontSize = this.width / 7
+    const textSize = 1 / 3.5
+    let font = "Avenir Next"
+    font = "Arial"
+    font = "Verdana"
+    font = "Arial Black"
+    font = "AmericanTypewriter-Bold"
+    font = "Chalkboard SE"
+    font = "Copperplate-Bold"
+    font = "GillSans-UltraBold"
+    font = "DIN Condensed"
+
     this.ctx.save()
-    this.ctx.font = `bold ${fontSize}px "Avenir Next"`
-    this.ctx.font = `bold ${fontSize}px "Arial"`
-    this.ctx.font = `bold ${fontSize}px "Verdana"`
-    this.ctx.font = `bold ${fontSize}px "Arial Black"`
-    this.ctx.font = `bold ${fontSize}px "AmericanTypewriter-Bold"`
-    this.ctx.font = `bold ${fontSize}px "Chalkboard SE"`
-    this.ctx.font = `bold ${fontSize}px "Copperplate-Bold"`
-    this.ctx.font = `bold ${fontSize}px "GillSans-UltraBold"`
-    this.ctx.fillStyle = this.colors[1].alpha(1).toString()
+
+    this.ctx.font = this.text.font(this.height)
+    this.ctx.fillStyle = this.text.textColor
+    this.ctx.shadowColor = this.text.textShadowColor
+    this.ctx.shadowBlur = this.text.shadowBlur(this.height)
+
     this.ctx.shadowOffsetX = 0
     this.ctx.shadowOffsetY = 0
-    this.ctx.shadowColor = this.colors[2].alpha(1).toString()
-    this.ctx.shadowBlur = fontSize / 20
     this.ctx.textAlign = 'center'
-    this.ctx.fillText(text, this.width / 2, this.height / 2 + fontSize / 3)
+
+    this.ctx.fillText(text, this.width / 2, this.height / 2 + this.height * this.text.textSize / 3)
     this.ctx.restore()
   }
 

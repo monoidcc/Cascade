@@ -137,3 +137,24 @@ export class Result {
     this.rects.splice(0, this.rects.length)
   }
 }
+
+/**
+ * Text represents the text on the canvas
+ */
+export class Text {
+  constructor(
+    public text: string,
+    public fontFamily: string,
+    public textSize: number,
+    public textColor: string,
+    public textShadowColor: string
+  ) {}
+
+  font(height: number): string {
+    return `bold ${height * this.textSize}px "${this.fontFamily}"`
+  }
+
+  shadowBlur(height: number): number {
+    return height * this.textSize / 20
+  }
+}
