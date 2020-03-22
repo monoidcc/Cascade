@@ -49,22 +49,28 @@ export class MainCanvas {
     this.ctx!.clearRect(0, 0, this.width, this.height)
     this.drawRects(this.result.rects)
     this.drawRects(this.wave.toArray())
-
+    this.drawText()
   }
 
   rotateColor(): void {
     this.colors.push(this.colors.shift()!)
   }
 
-  newWave(): void {
+  newWave(e: MouseEvent): void {
     this.rotateColor()
+
+    const ratioX = e.clientX / this.width
+    const ratioY = (this.height - e.clientY) / this.height
+
+    const ratioA = ratioY
+    const ratioW = dice(1)
+
     const min = Math.min(this.width, this.height)
-    const w = dice(min / 3) + min / 6
+    const w = min / 3 * ratioW + min / 6
     const hw = w / 2
-    const ratio = Math.random()
-    const dw = this.width * ratio
-    const dh = this.height * ratio
-    const alpha = dice(1)
+    const dw = this.width * ratioX
+    const dh = this.height * ratioX
+    const alpha = ratioA
     const c0 = this.colors[0].alpha(alpha).toString()
     const c1 = this.colors[1].alpha(alpha).toString()
     const c2 = this.colors[2].alpha(alpha).toString()
@@ -95,13 +101,39 @@ export class MainCanvas {
     })
   }
 
+  drawText(): void {
+    const text = 'Tententen'
+    const fontSize = this.width / 7
+    this.ctx.save()
+    this.ctx.font = `bold ${fontSize}px "Avenir Next"`
+    this.ctx.font = `bold ${fontSize}px "Arial"`
+    this.ctx.font = `bold ${fontSize}px "Verdana"`
+    this.ctx.font = `bold ${fontSize}px "Arial Black"`
+    this.ctx.font = `bold ${fontSize}px "AmericanTypewriter-Bold"`
+    this.ctx.font = `bold ${fontSize}px "Chalkboard SE"`
+    this.ctx.font = `bold ${fontSize}px "Copperplate-Bold"`
+    this.ctx.font = `bold ${fontSize}px "GillSans-UltraBold"`
+    this.ctx.fillStyle = this.colors[1].alpha(1).toString()
+    this.ctx.shadowOffsetX = 0
+    this.ctx.shadowOffsetY = 0
+    this.ctx.shadowColor = this.colors[2].alpha(1).toString()
+    this.ctx.shadowBlur = fontSize / 20
+    this.ctx.textAlign = 'center'
+    this.ctx.fillText(text, this.width / 2, this.height / 2 + fontSize / 3)
+    this.ctx.restore()
+  }
+
+  @on('mouseup')
+  mouseup(e: MouseEvent): void {
+    this.newWave(e)
+  }
+
   @on('a')
-  a() {
-    this.newWave()
+  a(): void {
   }
 
   @on('b')
-  b() {
+  b(): void {
     this.wave.eject()
     this.result.clear()
   }
