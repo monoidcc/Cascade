@@ -1,10 +1,10 @@
 import gameloop = require('gameloopjs')
 import bezier = require('bezier-easing')
 import Color = require('color')
-import { Rect, Motion, Wave, WaveRect, Result, Text } from './models'
+import { Rect, Motion, Wave, WaveRect, Result, TextLabel } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
-import { component, on, pub, sub, is, innerHTML } from 'capsid'
+import { wired, component, on, pub, sub, emits, is, innerHTML } from 'capsid'
 import { css } from 'emotion'
 
 @component('main-canvas')
@@ -31,8 +31,8 @@ export class MainCanvas {
     this.textColors = this.baseColors.map(c => c.alpha(1))
     this.wave = new Wave()
     this.result = new Result()
-    this.text = new Text(
-      'Tententen',
+    this.text = new TextLabel(
+      '',
       'Avenir Next',
       1 / 6,
       this.colors[0].alpha(1).toString(),
@@ -68,8 +68,8 @@ export class MainCanvas {
 
   rotateTextColors(): void {
     this.textColors.push(this.textColors.shift()!)
-    this.text.textColor = this.textColors[0].string()
-    this.text.textShadowColor = this.textColors[1].string()
+    this.text.color = this.textColors[0].string()
+    this.text.shadowColor = this.textColors[1].string()
   }
 
   newWave(e: MouseEvent): void {
@@ -121,21 +121,21 @@ export class MainCanvas {
     this.ctx.save()
 
     this.ctx.font = this.text.font(this.height)
-    this.ctx.fillStyle = this.text.textColor
-    this.ctx.shadowColor = this.text.textShadowColor
+    this.ctx.fillStyle = this.text.color
+    this.ctx.shadowColor = this.text.shadowColor
     this.ctx.shadowBlur = this.text.shadowBlur(this.height)
 
     this.ctx.shadowOffsetX = 0
     this.ctx.shadowOffsetY = 0
     this.ctx.textAlign = 'center'
 
-    this.ctx.fillText(this.text.text, this.width / 2, this.height / 2 + this.height * this.text.textSize / 3)
+    this.ctx.fillText(this.text.body, this.width / 2, this.height / 2 + this.height * this.text.size / 3)
     this.ctx.restore()
   }
 
   @on('text')
   onText({ detail }): void {
-    this.text.text = detail
+    this.text.body = detail
   }
 
   @on('mouseup')
@@ -170,6 +170,8 @@ export class MainCanvas {
   }
 }
 
+const KEY_TEXT = 'tententen-current-text'
+
 @component('controls')
 @is(css`
   position: fixed;
@@ -190,19 +192,30 @@ export class MainCanvas {
   }
 `)
 @innerHTML(`
-  <input class="text-input" value="Tententen" />
+  <input class="text-input" />
   <button class="font-btn">Font</button>
   <button class="up-btn">⬆️</button>
   <button class="down-btn">⬇️</button>
   <button class="a-btn">A</button>
   <button class="b-btn">B</button>
 `)
-@sub('initial-text')
 export class Controls {
+  @wired('.text-input')
+  textInput: HTMLInputElement
+
+  __mount__() {
+    setTimeout(() => {
+      this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
+      this.text()
+    }, 1)
+  }
+
   @on('input', { at: '.text-input' })
   @pub('text')
-  text(e) {
-    return e.target.value
+  text() {
+    const value = this.textInput!.value
+    localStorage[KEY_TEXT] = value
+    return value
   }
 
   @on.click.at('.a-btn')

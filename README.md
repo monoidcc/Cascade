@@ -16,27 +16,29 @@ Tententen uses the following tools and frameworks.
 
 # Spec
 
-## Tenten format
+## Data format
 
-Tenten object has the following structure.
+Tententen has the following data types.
 
 ```ts
-type Tenten = {
-  canvas: {
-    width: number // the width of the canvas
-    height: number // the height of the canvas
-    color: string // the color of the canvas
-  }
-  boxes: Array<{
-    x: number // the x of the box
-    y: number // the y of the box
-    width: number // the width of the box
-    height: number // the height of the box
-    color: string // the color of the box
-  }>
+type Box = {
+  x: number // the x of the box
+  y: number // the y of the box
+  width: number // the width of the box
+  height: number // the height of the box
+  color: string // the color of the box
+}
+
+type Work = {
+  backgroundColor: string // the color of the canvas. Default is 'white'.
+  boxes: Box[]
   text: {
     body: string // text body
     size: number // text font size in px
+    fontFamily: string // text font family
+    color: string // text color
+    shadowColor: string // color of text shadow
+    shadowBlur: number // blur width of text shadow
   }
 }
 ```

@@ -132,7 +132,7 @@ export class Result {
 /**
  * Text represents the text on the canvas
  */
-export class Text {
+export class TextLabel {
   const sizeInverse: number
   const fonts = [
     "Avenir Next",
@@ -146,23 +146,23 @@ export class Text {
     "DIN Condensed"
   ]
   constructor(
-    public text: string,
+    public body: string,
     public fontFamily: string,
-    public textSize: number,
-    public textColor: string,
-    public textShadowColor: string
+    public size: number,
+    public color: string,
+    public shadowColor: string
   ) {
-    this.sizeInverse = 1 / textSize
+    this.sizeInverse = 1 / size
   }
 
   sizeUp(): void {
     this.sizeInverse -= 1
-    this.textSize = 1 / this.sizeInverse
+    this.size = 1 / this.sizeInverse
   }
 
   sizeDown(): void {
     this.sizeInverse += 1
-    this.textSize = 1 / this.sizeInverse
+    this.size = 1 / this.sizeInverse
   }
 
   rotateFonts(): void {
@@ -171,10 +171,29 @@ export class Text {
   }
 
   font(height: number): string {
-    return `bold ${height * this.textSize}px "${this.fontFamily}"`
+    return `bold ${height * this.size}px "${this.fontFamily}"`
   }
 
   shadowBlur(height: number): number {
-    return height * this.textSize / 20
+    return height * this.size / 20
   }
+}
+
+export class Work {
+  constructor(
+    public boxes: Rect[],
+    public text: TextLabel,
+    public backgroundColor: string
+  ) {}
+}
+
+/**
+ * Creates a work from the result and text.
+ */
+export function createWork(result: Result, text: TextLabel) {
+  return new Work(
+    result.rects,
+    text,
+    'white'
+  )
 }
