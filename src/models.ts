@@ -19,11 +19,6 @@ export class Rect {
     return this.y - this.height / 2
   }
 
-  move(speed: Speed): void {
-    this.x += speed.x
-    this.y += speed.y
-  }
-
   goto(x: number, y: number): void {
     this.x = x
     this.y = y
@@ -33,10 +28,6 @@ export class Rect {
     this.width += width
     this.height += height
   }
-}
-
-export class Speed {
-  constructor(public x: number, public y: number) {}
 }
 
 export class Motion {

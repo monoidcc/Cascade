@@ -173,7 +173,6 @@ export class MainCanvas {
 @component('controls')
 @is(css`
   position: fixed;
-  _height: 50px;
   width: 100%;
   left: 0;
   bottom: 0;
