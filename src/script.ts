@@ -4,11 +4,11 @@ import Color = require('color')
 import { Rect, Motion, Wave, WaveRect, Result, Text } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
-import { component, on, pub, sub, is } from 'capsid'
+import { component, on, pub, sub, is, innerHTML } from 'capsid'
 import { css } from 'emotion'
 
 @component('main-canvas')
-@sub('a', 'b')
+@sub('a', 'b', 'down', 'up', 'font', 'text')
 export class MainCanvas {
   width = 0
   height = 0
@@ -18,14 +18,17 @@ export class MainCanvas {
   loop: any
   el?: HTMLCanvasElement
   easing0 = bezier(0.42, 0, 0.58, 1)
-  colors = [
+  baseColors = [
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
   ]
+  colors: Array<any>
 
   constructor() {
+    this.colors = [...this.baseColors]
+    this.textColors = this.baseColors.map(c => c.alpha(1))
     this.wave = new Wave()
     this.result = new Result()
     this.text = new Text(
@@ -59,12 +62,18 @@ export class MainCanvas {
     this.drawText()
   }
 
-  rotateColor(): void {
+  rotateColors(): void {
     this.colors.push(this.colors.shift()!)
   }
 
+  rotateTextColors(): void {
+    this.textColors.push(this.textColors.shift()!)
+    this.text.textColor = this.textColors[0].string()
+    this.text.textShadowColor = this.textColors[1].string()
+  }
+
   newWave(e: MouseEvent): void {
-    this.rotateColor()
+    this.rotateColors()
 
     const ratioX = e.clientX / this.width
     const ratioY = (this.height - e.clientY) / this.height
@@ -109,18 +118,6 @@ export class MainCanvas {
   }
 
   drawText(): void {
-    const text = 'Tententen'
-    const textSize = 1 / 3.5
-    let font = "Avenir Next"
-    font = "Arial"
-    font = "Verdana"
-    font = "Arial Black"
-    font = "AmericanTypewriter-Bold"
-    font = "Chalkboard SE"
-    font = "Copperplate-Bold"
-    font = "GillSans-UltraBold"
-    font = "DIN Condensed"
-
     this.ctx.save()
 
     this.ctx.font = this.text.font(this.height)
@@ -132,8 +129,13 @@ export class MainCanvas {
     this.ctx.shadowOffsetY = 0
     this.ctx.textAlign = 'center'
 
-    this.ctx.fillText(text, this.width / 2, this.height / 2 + this.height * this.text.textSize / 3)
+    this.ctx.fillText(this.text.text, this.width / 2, this.height / 2 + this.height * this.text.textSize / 3)
     this.ctx.restore()
+  }
+
+  @on('text')
+  onText({ detail }): void {
+    this.text.text = detail
   }
 
   @on('mouseup')
@@ -141,8 +143,24 @@ export class MainCanvas {
     this.newWave(e)
   }
 
+  @on('font')
+  font(): void {
+    this.text.rotateFonts()
+  }
+
+  @on('up')
+  up(): void {
+    this.text.sizeUp()
+  }
+
+  @on('down')
+  down(): void {
+    this.text.sizeDown()
+  }
+
   @on('a')
   a(): void {
+    this.rotateTextColors()
   }
 
   @on('b')
@@ -155,38 +173,56 @@ export class MainCanvas {
 @component('controls')
 @is(css`
   position: fixed;
-  height: 50px;
+  _height: 50px;
   width: 100%;
   left: 0;
   bottom: 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  flex-wrap: wrap;
 
   button {
     width: 150px;
     height: 36px;
-    margin: 0 5px;
+    margin: 8px 15px;
     background-color: hsla(220,20%,80%,0.8);
     border-width: 0;
   }
 `)
+@innerHTML(`
+  <input class="text-input" value="Tententen" />
+  <button class="font-btn">Font</button>
+  <button class="up-btn">⬆️</button>
+  <button class="down-btn">⬇️</button>
+  <button class="a-btn">A</button>
+  <button class="b-btn">B</button>
+`)
+@sub('initial-text')
 export class Controls {
-  __mount__() {
-    this.el.innerHTML = `
-      <button class="a-btn">A</button>
-      <button class="b-btn">B</button>
-    `
+  @on('input', { at: '.text-input' })
+  @pub('text')
+  text(e) {
+    return e.target.value
   }
 
   @on.click.at('.a-btn')
   @pub('a')
-  a() {
-  }
+  a() {}
 
   @on.click.at('.b-btn')
   @pub('b')
-  b() {
+  b() {}
 
-  }
+  @on.click.at('.down-btn')
+  @pub('down')
+  down() {}
+
+  @on.click.at('.up-btn')
+  @pub('up')
+  up() {}
+
+  @on.click.at('.font-btn')
+  @pub('font')
+  font() {}
 }

@@ -142,13 +142,42 @@ export class Result {
  * Text represents the text on the canvas
  */
 export class Text {
+  const sizeInverse: number
+  const fonts = [
+    "Avenir Next",
+    "Arial",
+    "Verdana",
+    "Arial Black",
+    "AmericanTypewriter-Bold",
+    "Chalkboard SE",
+    "Copperplate-Bold",
+    "GillSans-UltraBold",
+    "DIN Condensed"
+  ]
   constructor(
     public text: string,
     public fontFamily: string,
     public textSize: number,
     public textColor: string,
     public textShadowColor: string
-  ) {}
+  ) {
+    this.sizeInverse = 1 / textSize
+  }
+
+  sizeUp(): void {
+    this.sizeInverse -= 1
+    this.textSize = 1 / this.sizeInverse
+  }
+
+  sizeDown(): void {
+    this.sizeInverse += 1
+    this.textSize = 1 / this.sizeInverse
+  }
+
+  rotateFonts(): void {
+    this.fonts.push(this.fonts.shift()!)
+    this.fontFamily = this.fonts[0]
+  }
 
   font(height: number): string {
     return `bold ${height * this.textSize}px "${this.fontFamily}"`

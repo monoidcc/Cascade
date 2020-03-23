@@ -2333,10 +2333,10 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001027:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001028.tgz#f2241242ac70e0fa9cda55c2776d32a0867971c2"
   integrity sha512-Vnrq+XMSHpT7E+LWoIYhs3Sne8h9lx9YJV3acH3THNCwU/9zV93/ta4xVfzTtnqd3rvnuVpVjE3DFqf56tr3aQ==
 
-capsid@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/capsid/-/capsid-1.3.1.tgz#356a5235880a0f26ce6f795034ae9fda4a0233b1"
-  integrity sha512-DLbC1X5f2SC6HYKDK+Nb9odT75s9ytaAv+HkHnEP3eSv8yniDri8Ar9ZjCT1OOKmOdES9rzilqP000FDdl+Q4w==
+capsid@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/capsid/-/capsid-1.5.0.tgz#34217ccc903343927c87e84d20b1629d791f13ce"
+  integrity sha512-D/+oxPQpxWz5ynLVXQxQ7RWizVV/Rj4eU4SCEn2zv1KwewQD0vH/Bqe3QUar1IedxWNBU9EqJB4Cl3NC+EQ0jQ==
 
 capture-exit@^2.0.0:
   version "2.0.0"
