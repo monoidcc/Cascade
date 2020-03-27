@@ -18,29 +18,39 @@ export class MainCanvas {
   loop: any
   el?: HTMLCanvasElement
   easing0 = bezier(0.42, 0, 0.58, 1)
-  baseColors = [
-    Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
-    Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
-    Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
-    Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
-  ]
   textColors: Array<any>
   colors: Array<any>
   text: TextLabel
 
   constructor() {
-    this.colors = [...this.baseColors]
-    this.textColors = this.baseColors.map(c => c.alpha(1))
     this.wave = new Wave()
     this.result = new Result()
     this.text = new TextLabel(
       '',
       'Avenir Next',
       1 / 6,
-      this.colors[0].alpha(1).toString(),
-      this.colors[1].alpha(1).toString()
+      '#fff',
+      '#fff'
     )
+    this.resetColors()
     this.loop = gameloop(this.main, 60)
+  }
+
+  resetColors() {
+    const baseColors = this.baseColors()
+    this.colors = [...baseColors]
+    this.textColors = baseColors.map(c => c.alpha(1))
+    this.text.color = this.colors[0].alpha(1).toString()
+    this.text.shadowColor = this.colors[1].alpha(1).toString()
+  }
+
+  baseColors() {
+    return [
+      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
+      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
+      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
+      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
+    ]
   }
 
   __mount__() {
@@ -170,6 +180,7 @@ export class MainCanvas {
   b(): void {
     this.wave.eject()
     this.result.clear()
+    this.resetColors()
   }
 }
 
