@@ -1,7 +1,7 @@
 import gameloop = require('gameloopjs')
 import bezier = require('bezier-easing')
 import Color = require('color')
-import { Rect, Motion, Wave, WaveRect, Result, TextLabel } from './models'
+import { Rect, Motion, Wave, WaveRect, Result, TextLabel, createWork, WorkRepository } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
 import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
@@ -177,7 +177,10 @@ export class MainCanvas {
   }
 
   @on('b')
-  b(): void {
+  async b(): void {
+    const work = createWork(this.result, this.text)
+    const r = new WorkRepository()
+    await r.save(work)
     this.wave.eject()
     this.result.clear()
     this.resetColors()

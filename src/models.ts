@@ -216,7 +216,7 @@ export class WorkCollection {
   }
 
   findIndexById(id: string): number {
-    return this.works.findIndex(work.id === id)
+    return this.works.findIndex(work => work.id === id)
   }
 
   remove(work: Work): void {
@@ -264,21 +264,24 @@ export class WorkRepository {
     const { getItem } = await getStorage()
     const arr = (await getItem(KEY_WORK_COLLECTION)) || []
 
-    return new WorkCollection(arr.map(WorkCollection.objToWork))
+    return new WorkCollection(arr.map(WorkRepository.dtoToWork))
   }
 
   async save(work: Work) {
-    const { setItem } = await getStorage()
     const works = await this.get()
     works.upsert(work)
-    await setItem(KEY_WORK_COLLECTION, works)
+    await this.saveAll(works)
+  }
+
+  async saveAll(works: Work[]) {
+    const { setItem } = await getStorage()
+    await setItem(KEY_WORK_COLLECTION, works.works)
   }
 
   async remove(work: Work) {
-    const { setItem } = await getStorage()
     const works = await this.get()
     works.remove(work)
-    await setItem(KEY_WORK_COLLECTION, works)
+    await this.saveAll(works)
   }
 
   static dtoToWork(dto: WorkDto): Work {
