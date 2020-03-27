@@ -1128,6 +1128,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
+"@lepont/async-storage@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.2.1.tgz#e2e011c5a7d2ba861660bfc7189140d83a74a5f3"
+  integrity sha512-w2aZxuPI2alhXBEZpbrx82lkdG5I+sK0gqBD6s4E22Vj8CHut7EspCA3Op2FRj7dM/JM4VVo40A6hjOAyGETQQ==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -5407,6 +5412,11 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
+lepont@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/lepont/-/lepont-0.10.1.tgz#1854cb1c6c1dec059763f41d0888a24098e52e31"
+  integrity sha512-+BU/uqhNTIREw3b+iA9ra3dWD39nfNHQpRUOnfIMCfOVhQpI0jTHqXR8apz6anTnXVAyLs39go0Rz4ZtA/OxTQ==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -8782,6 +8792,11 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.2.tgz#7ff5c203467e91f5e0d85cfcbaaf7d2ebbca9be6"
+  integrity sha512-vy9V/+pKG+5ZTYKf+VcphF5Oc6EFiu3W8Nv3P3zIh0EqVI80ZxOzuPfe9EHjkFNvf8+xuTHVeei4Drydlx4zjw==
 
 v8-compile-cache@^2.0.0, v8-compile-cache@^2.0.3:
   version "2.1.0"

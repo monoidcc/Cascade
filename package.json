@@ -15,7 +15,9 @@
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts"
   },
   "dependencies": {
+    "@lepont/async-storage": "^0.2.1",
     "dist": "^0.1.2",
+    "lepont": "^0.10.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
     "react-native-webview": "^8.1.2"
@@ -43,7 +45,8 @@
     "prettier": "^1.19.1",
     "react-test-renderer": "16.9.0",
     "rimraf": "^3.0.2",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.3",
+    "uuid": "^7.0.2"
   },
   "jest": {
     "preset": "react-native",

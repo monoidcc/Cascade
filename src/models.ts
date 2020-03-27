@@ -1,3 +1,6 @@
+import * as uuid from 'uuid'
+import { getStorage } from './infrastructure'
+
 export class Rect {
   constructor(
     public x: number,
@@ -181,6 +184,7 @@ export class TextLabel {
 
 export class Work {
   constructor(
+    public id: string,
     public boxes: Rect[],
     public text: TextLabel,
     public backgroundColor: string
@@ -192,8 +196,117 @@ export class Work {
  */
 export function createWork(result: Result, text: TextLabel) {
   return new Work(
+    uuid.v4(),
     result.rects,
     text,
     'white'
   )
+}
+
+export class WorkCollection {
+  constructor(public works: Work[]) {}
+
+  upsert(work: Work): void {
+    const i = this.findIndexById(work.id)
+    if (i === -1) {
+      this.works.unshift(work)
+    } else {
+      this.works[i] = work
+    }
+  }
+
+  findIndexById(id: string): number {
+    return this.works.findIndex(work.id === id)
+  }
+
+  remove(work: Work): void {
+    this.removeById(work.id)
+  }
+
+  removeById(id: string): void {
+    const i = this.findIndexById(id)
+
+    if (i === -1) {
+      throw new Error(`Work not found: id=${id}`)
+    }
+
+    this.works.splice(i, 1)
+  }
+}
+
+const KEY_WORK_COLLECTION = 'Tententen/work-collection'
+
+type TextLabelDto = {
+  body: string
+  fontFamily: string
+  size: number
+  color: string
+  shadowColor: string
+}
+
+type RectDto = {
+  x: number
+  y: number
+  width: number
+  height: number
+  color: string
+}
+
+type WorkDto = {
+  id: string
+  text: TextLabelDto
+  boxes: RectDto[]
+  backgroundColor: string
+}
+
+export class WorkRepository {
+  async get(): WorkCollection {
+    const { getItem } = await getStorage()
+    const arr = (await getItem(KEY_WORK_COLLECTION)) || []
+
+    return new WorkCollection(arr.map(WorkCollection.objToWork))
+  }
+
+  async save(work: Work) {
+    const { setItem } = await getStorage()
+    const works = await this.get()
+    works.upsert(work)
+    await setItem(KEY_WORK_COLLECTION, works)
+  }
+
+  async remove(work: Work) {
+    const { setItem } = await getStorage()
+    const works = await this.get()
+    works.remove(work)
+    await setItem(KEY_WORK_COLLECTION, works)
+  }
+
+  static dtoToWork(dto: WorkDto): Work {
+    return new Work(
+      dto.id,
+      dto.boxes.map(WorkRepository.dtoToRect),
+      WorkRepository.dtoToTextLabel(dto.text),
+      dto.backgroundColor
+    )
+  }
+
+  static dtoToTextLabel(dto: TextLabelDto): TextLabel {
+    return new TextLabel(
+      dto.body,
+      dto.fontFamily,
+      dto.size,
+      dto.color,
+      dto.shadowColor
+    )
+  }
+
+  static dtoToRect(dto: RectDto): Rect {
+    return new Rect(
+      dto.x,
+      dto.y,
+      dto.width,
+      dto.height,
+      dto.color
+    )
+  }
 }

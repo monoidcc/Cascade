@@ -4,7 +4,7 @@ import Color = require('color')
 import { Rect, Motion, Wave, WaveRect, Result, TextLabel } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
-import { wired, component, on, pub, sub, emits, is, innerHTML } from 'capsid'
+import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
 import { css } from 'emotion'
 
 @component('main-canvas')
@@ -24,7 +24,9 @@ export class MainCanvas {
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
     Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
   ]
+  textColors: Array<any>
   colors: Array<any>
+  text: TextLabel
 
   constructor() {
     this.colors = [...this.baseColors]
@@ -118,23 +120,24 @@ export class MainCanvas {
   }
 
   drawText(): void {
-    this.ctx.save()
+    const ctx = this.ctx!
+    ctx.save()
 
-    this.ctx.font = this.text.font(this.height)
-    this.ctx.fillStyle = this.text.color
-    this.ctx.shadowColor = this.text.shadowColor
-    this.ctx.shadowBlur = this.text.shadowBlur(this.height)
+    ctx.font = this.text.font(this.height)
+    ctx.fillStyle = this.text.color
+    ctx.shadowColor = this.text.shadowColor
+    ctx.shadowBlur = this.text.shadowBlur(this.height)
 
-    this.ctx.shadowOffsetX = 0
-    this.ctx.shadowOffsetY = 0
-    this.ctx.textAlign = 'center'
+    ctx.shadowOffsetX = 0
+    ctx.shadowOffsetY = 0
+    ctx.textAlign = 'center'
 
-    this.ctx.fillText(this.text.body, this.width / 2, this.height / 2 + this.height * this.text.size / 3)
-    this.ctx.restore()
+    ctx.fillText(this.text.body, this.width / 2, this.height / 2 + this.height * this.text.size / 3)
+    ctx.restore()
   }
 
   @on('text')
-  onText({ detail }): void {
+  onText({ detail }: { detail: string }): void {
     this.text.body = detail
   }
 
@@ -201,7 +204,7 @@ const KEY_TEXT = 'tententen-current-text'
 `)
 export class Controls {
   @wired('.text-input')
-  textInput: HTMLInputElement
+  textInput?: HTMLInputElement
 
   __mount__() {
     setTimeout(() => {
@@ -213,9 +216,7 @@ export class Controls {
   @on('input', { at: '.text-input' })
   @pub('text')
   text() {
-    const value = this.textInput!.value
-    localStorage[KEY_TEXT] = value
-    return value
+    return localStorage[KEY_TEXT] = this.textInput!.value
   }
 
   @on.click.at('.a-btn')

@@ -29,17 +29,19 @@ type Box = {
   color: string // the color of the box
 }
 
+type TextLabel = {
+  body: string // text body
+  size: number // text font size in px
+  fontFamily: string // text font family
+  color: string // text color
+  shadowColor: string // color of text shadow
+  shadowBlur: number // blur width of text shadow
+}
+
 type Work = {
   backgroundColor: string // the color of the canvas. Default is 'white'.
   boxes: Box[]
-  text: {
-    body: string // text body
-    size: number // text font size in px
-    fontFamily: string // text font family
-    color: string // text color
-    shadowColor: string // color of text shadow
-    shadowBlur: number // blur width of text shadow
-  }
+  text: TextLabel
 }
 ```
 
