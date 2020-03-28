@@ -1,7 +1,10 @@
-import { pub, innerHTML, on, is, sub, component } from 'capsid'
+import { install, pub, emits, innerHTML, on, is, sub, component } from 'capsid'
+import debug = require('capsid/debug')
+install(debug)
 import { css } from 'emotion'
 import { Ctx } from './dom'
 import { drawText } from './draw-util'
+import { Result } from './models'
 
 @component('preview-modal')
 @sub('preview-modal')
@@ -10,7 +13,7 @@ import { drawText } from './draw-util'
 `)
 @is(css`
   display: none;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   left: 0;
   top: 0;
@@ -33,6 +36,7 @@ class PreviewModal {
     return detail
   }
 
+  @on.click
   hide() {
     this.el.classList.remove('show')
   }
@@ -54,9 +58,17 @@ class PreviewCanvas {
   }
 
   @on('preview-draw')
-  draw({ detail: result }) {
+  draw({ detail }) {
+    const result: Result = detail
     this.resize()
     const ctx = this.el.getContext('2d')!
+    ctx.fillStyle = result.backgroundColor
+    ctx.fillRect(0, 0, this.el.width, this.el.height)
     drawText(ctx, result.text, this.el.width, this.el.height)
+  }
+
+  @on.click
+  onClick(e) {
+    e.stopPropagation()
   }
 }
