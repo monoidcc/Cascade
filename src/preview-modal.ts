@@ -3,7 +3,7 @@ import debug = require('capsid/debug')
 install(debug)
 import { css } from 'emotion'
 import { Ctx } from './dom'
-import { drawText } from './draw-util'
+import { drawText, drawRects } from './canvas-adapter'
 import { Result } from './models'
 
 @component('preview-modal')
@@ -58,13 +58,14 @@ class PreviewCanvas {
   }
 
   @on('preview-draw')
-  draw({ detail }) {
-    const result: Result = detail
+  draw({ detail: work }: { detail: Work }) {
     this.resize()
     const ctx = this.el.getContext('2d')!
-    ctx.fillStyle = result.backgroundColor
-    ctx.fillRect(0, 0, this.el.width, this.el.height)
-    drawText(ctx, result.text, this.el.width, this.el.height)
+    const { width, height } = this.el!
+    ctx.fillStyle = work.backgroundColor
+    ctx.fillRect(0, 0, width, height)
+    drawRects(ctx, work.boxes, width, height)
+    drawText(ctx, work.text, width, height)
   }
 
   @on.click

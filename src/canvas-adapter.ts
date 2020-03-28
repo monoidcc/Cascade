@@ -21,3 +21,20 @@ export function drawText(
   ctx.fillText(text.body, width / 2, height / 2 + (height * text.size) / 3)
   ctx.restore()
 }
+
+export function drawRects(
+  ctx: Ctx,
+  rects: Rect[],
+  width: number,
+  height: number
+): void {
+  rects.forEach(rect => {
+    ctx.fillStyle = rect.color
+    ctx.fillRect(
+      rect.left() * width,
+      rect.top() * height,
+      rect.width * width,
+      rect.height * height
+    )
+  })
+}

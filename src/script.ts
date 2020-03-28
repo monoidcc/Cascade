@@ -16,7 +16,7 @@ import {
 import { dice } from './random'
 import { Ctx } from './dom'
 import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
-import { drawText } from './draw-util'
+import { drawText, drawRects } from './canvas-adapter'
 import './app'
 import './preview-modal'
 
@@ -59,8 +59,14 @@ export class MainCanvas {
       .alpha(0.35)
   }
 
-  baseColors() {
-    return [...Array(4)].map(() => this.randomColor())
+  baseColors(): object[] {
+    //return [...Array(4)].map(() => this.randomColor())
+    return [
+      this.randomColor(),
+      this.randomColor(),
+      this.randomColor(),
+      this.randomColor(),
+    ]
   }
 
   __mount__() {
@@ -78,10 +84,12 @@ export class MainCanvas {
     if (finished) {
       this.result.add(...finished.map(wr => wr.rect))
     }
-    this.ctx!.clearRect(0, 0, this.width, this.height)
-    this.drawRects(this.result.rects)
-    this.drawRects(this.wave.toArray())
-    drawText(this.ctx!, this.text, this.width, this.height)
+    const ctx = this.ctx!
+    const { width, height } = this.el!
+    ctx.clearRect(0, 0, width, height)
+    drawRects(ctx, this.result.rects, width, height)
+    drawRects(ctx, this.wave.toArray(), width, height)
+    drawText(ctx, this.text, width, height)
   }
 
   rotateColors(): void {
@@ -130,18 +138,6 @@ export class MainCanvas {
     this.wave.add(new WaveRect(r1, m1))
     this.wave.add(new WaveRect(r2, m2))
     this.wave.add(new WaveRect(r3, m3))
-  }
-
-  drawRects(rects: Rect[]) {
-    rects.forEach(rect => {
-      this.ctx!.fillStyle = rect.color
-      this.ctx!.fillRect(
-        rect.left() * this.width,
-        rect.top() * this.height,
-        rect.width * this.width,
-        rect.height * this.height
-      )
-    })
   }
 
   @on('text')
