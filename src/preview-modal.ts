@@ -3,8 +3,8 @@ import debug = require('capsid/debug')
 install(debug)
 import { css } from 'emotion'
 import { Ctx } from './dom'
-import { drawText, drawRects } from './canvas-adapter'
-import { Result } from './models'
+import { drawText, drawRects, drawWork } from './canvas-adapter'
+import { Work } from './models'
 
 @component('preview-modal')
 @sub('preview-modal')
@@ -28,23 +28,26 @@ import { Result } from './models'
   }
 `)
 class PreviewModal {
+  el?: HTMLDivElement
+
   @on('preview-modal')
   @pub('preview-draw')
-  open({ detail }) {
-    this.el.classList.add('show')
-    console.log(detail)
+  open({ detail }: { detail: Work }): Work {
+    this.el!.classList.add('show')
     return detail
   }
 
   @on.click
   hide() {
-    this.el.classList.remove('show')
+    this.el!.classList.remove('show')
   }
 }
 
 @component('preview-canvas')
 @sub('preview-draw')
 class PreviewCanvas {
+  el?: HTMLCanvasElement
+
   resize() {
     const size = this.getCanvasSize()
     this.el!.width = size
@@ -53,23 +56,20 @@ class PreviewCanvas {
 
   getCanvasSize() {
     const el = this.el!
-    const parent = this.el.parentElement!
+    const parent = el.parentElement!
     return Math.min(parent.clientWidth, parent.clientHeight) * 0.8
   }
 
   @on('preview-draw')
   draw({ detail: work }: { detail: Work }) {
     this.resize()
-    const ctx = this.el.getContext('2d')!
-    const { width, height } = this.el!
-    ctx.fillStyle = work.backgroundColor
-    ctx.fillRect(0, 0, width, height)
-    drawRects(ctx, work.boxes, width, height)
-    drawText(ctx, work.text, width, height)
+    const el = this.el!
+    const ctx = el.getContext('2d')!
+    drawWork(ctx, work, el.width, el.height)
   }
 
   @on.click
-  onClick(e) {
+  onClick(e: Event) {
     e.stopPropagation()
   }
 }

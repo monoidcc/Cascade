@@ -1128,10 +1128,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@lepont/async-storage@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.2.3.tgz#5080d70843c4d22ee2dc44ade670e19e0b024aac"
-  integrity sha512-EHW9KJ32RI+YFvljnIbj1jSuVIsbx7HVu2AAK0No3ATuy/4hcKFcYj8jD02D+TAKkJLdu8J3LELuNJ8oWwh+ag==
+"@lepont/async-storage@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.3.0.tgz#8a8acb46b89bb40bccfe925c992c51c1bb8ec3fb"
+  integrity sha512-DS0oNWnGq6haKQ7XLbh/4dVcQ/no/wPu/cQanVvj263mZp8QJNrzybh2OBdGy8Q4f4Hv/gaMnJR9HMorTt9o5w==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -1384,6 +1384,11 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha512-8+KAKzEvSUdeo+kmqnKrqgeE+LcA0tjYWFY7RPProVYwnqDjukzO+3b6dLD56rYX5TdWejnEOLJYOIeh4CXKuA==
 
+"@types/node@^13.9.5":
+  version "13.9.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.9.5.tgz#59738bf30b31aea1faa2df7f4a5f55613750cf00"
+  integrity sha512-hkzMMD3xu6BrJpGVLeQ3htQQNAcOrJjX7WFmtK8zWQpz2UJf13LCFF2ALA7c9OVdvc2vQJeDdjfR35M0sBCxvw==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -1426,6 +1431,11 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
+
+"@types/uuid@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-7.0.2.tgz#d680a9c596ef84abf5c4c07a32ffd66d582526f8"
+  integrity sha512-8Ly3zIPTnT0/8RCU6Kg/G3uTICf9sRwYOpUzSIM3503tLIKcnJPRuinHhXngJUy2MntrEf6dlpOHXJju90Qh5w==
 
 "@types/yargs-parser@*":
   version "15.0.0"

@@ -7,6 +7,7 @@ import {
   Rect,
   Motion,
   Wave,
+  Work,
   WaveRect,
   Result,
   TextLabel,
@@ -31,8 +32,8 @@ export class MainCanvas {
   loop: any
   el?: HTMLCanvasElement
   easing0 = bezier(0.42, 0, 0.58, 1)
-  textColors: Array<any>
-  colors: Array<any>
+  textColors: any[] = []
+  colors: any[] = []
   text: TextLabel
 
   constructor() {
@@ -51,7 +52,7 @@ export class MainCanvas {
     this.text.shadowColor = this.colors[1].alpha(1).toString()
   }
 
-  randomColor(): object {
+  randomColor(): any {
     return Color()
       .hue(dice(360))
       .saturationl(dice(100))
@@ -59,7 +60,7 @@ export class MainCanvas {
       .alpha(0.35)
   }
 
-  baseColors(): object[] {
+  baseColors(): any[] {
     //return [...Array(4)].map(() => this.randomColor())
     return [
       this.randomColor(),
@@ -171,16 +172,15 @@ export class MainCanvas {
   }
 
   @on('b')
-  async b(): void {
+  async b(): Promise<void> {
     this.wave.eject()
     this.result.clear()
     this.resetColors()
-    return work
   }
 
   @on('save')
   @pub('preview-modal')
-  async save(): void {
+  async save(): Promise<Work> {
     const work = createWork(this.result, this.text)
     const r = new WorkRepository()
     await r.save(work)

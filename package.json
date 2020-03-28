@@ -8,6 +8,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
+    "type": "tsc --noEmit --incremental false",
     "build": "parcel build --public-url . src/index.html",
     "bundle": "npm run clean && npm run build && cp dist/* html/Web.bundle/",
     "web": "parcel src/index.html",
@@ -15,7 +16,7 @@
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts"
   },
   "dependencies": {
-    "@lepont/async-storage": "^0.2.3",
+    "@lepont/async-storage": "^0.3.0",
     "dist": "^0.1.2",
     "lepont": "^0.10.1",
     "react": "16.9.0",
@@ -28,8 +29,10 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "@types/color": "^3.0.1",
     "@types/jest": "^24.0.24",
+    "@types/node": "^13.9.5",
     "@types/react-native": "^0.60.25",
     "@types/react-test-renderer": "16.9.1",
+    "@types/uuid": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^2.12.0",
     "@typescript-eslint/parser": "^2.12.0",
     "babel-jest": "^24.9.0",

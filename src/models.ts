@@ -255,25 +255,25 @@ type WorkDto = {
 }
 
 export class WorkRepository {
-  async get(): WorkCollection {
+  async get(): Promise<WorkCollection> {
     const { getItem } = await getStorage()
-    const arr = (await getItem(KEY_WORK_COLLECTION)) || []
+    const arr: WorkDto[] = (await getItem<WorkDto[]>(KEY_WORK_COLLECTION)) || []
 
     return new WorkCollection(arr.map(WorkRepository.dtoToWork))
   }
 
-  async save(work: Work) {
+  async save(work: Work): Promise<void> {
     const works = await this.get()
     works.upsert(work)
     await this.saveAll(works)
   }
 
-  async saveAll(works: Work[]) {
+  async saveAll(works: WorkCollection): Promise<void> {
     const { setItem } = await getStorage()
-    await setItem(KEY_WORK_COLLECTION, works.works)
+    await setItem<WorkDto[]>(KEY_WORK_COLLECTION, works.works)
   }
 
-  async remove(work: Work) {
+  async remove(work: Work): Promise<void> {
     const works = await this.get()
     works.remove(work)
     await this.saveAll(works)

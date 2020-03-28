@@ -1,6 +1,6 @@
 type StorageModule = {
-  setItem: (k: string, v: string) => Promise<void>
-  getItem: (k: string) => Promise<string>
+  setItem: <T>(k: string, v: T) => Promise<void>
+  getItem: <T>(k: string) => Promise<T | null>
 }
 
 export async function getStorage(): Promise<StorageModule> {
