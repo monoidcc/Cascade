@@ -21,7 +21,7 @@ import './app'
 import './preview-modal'
 
 @component('main-canvas')
-@sub('a', 'b', 'down', 'up', 'font', 'text')
+@sub('a', 'b', 'down', 'up', 'font', 'text', 'save')
 export class MainCanvas {
   width = 0
   height = 0
@@ -51,29 +51,16 @@ export class MainCanvas {
     this.text.shadowColor = this.colors[1].alpha(1).toString()
   }
 
+  randomColor(): object {
+    return Color()
+      .hue(dice(360))
+      .saturationl(dice(100))
+      .lightness(dice(100))
+      .alpha(0.35)
+  }
+
   baseColors() {
-    return [
-      Color()
-        .hue(dice(360))
-        .saturationl(dice(100))
-        .lightness(dice(100))
-        .alpha(0.35),
-      Color()
-        .hue(dice(360))
-        .saturationl(dice(100))
-        .lightness(dice(100))
-        .alpha(0.35),
-      Color()
-        .hue(dice(360))
-        .saturationl(dice(100))
-        .lightness(dice(100))
-        .alpha(0.35),
-      Color()
-        .hue(dice(360))
-        .saturationl(dice(100))
-        .lightness(dice(100))
-        .alpha(0.35)
-    ]
+    return [...Array(4)].map(() => this.randomColor())
   }
 
   __mount__() {
@@ -188,14 +175,19 @@ export class MainCanvas {
   }
 
   @on('b')
-  @pub('preview-modal')
   async b(): void {
-    const work = createWork(this.result, this.text)
-    const r = new WorkRepository()
-    await r.save(work)
     this.wave.eject()
     this.result.clear()
     this.resetColors()
+    return work
+  }
+
+  @on('save')
+  @pub('preview-modal')
+  async save(): void {
+    const work = createWork(this.result, this.text)
+    const r = new WorkRepository()
+    await r.save(work)
     return work
   }
 }
@@ -223,11 +215,12 @@ const KEY_TEXT = 'tententen-current-text'
 `)
 @innerHTML(`
   <input class="text-input" />
-  <button class="font-btn">Font</button>
+  <button class="font-btn">🔁FONT</button>
   <button class="up-btn">⬆️</button>
   <button class="down-btn">⬇️</button>
   <button class="a-btn">A</button>
   <button class="b-btn">B</button>
+  <button class="save-btn">SAVE</button>
 `)
 export class Controls {
   @wired('.text-input')
@@ -265,4 +258,8 @@ export class Controls {
   @on.click.at('.font-btn')
   @pub('font')
   font() {}
+
+  @on.click.at('.save-btn')
+  @pub('save')
+  save() {}
 }
