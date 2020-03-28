@@ -136,17 +136,17 @@ export class Result {
  * Text represents the text on the canvas
  */
 export class TextLabel {
-  const sizeInverse: number
-  const fonts = [
-    "Avenir Next",
-    "Arial",
-    "Verdana",
-    "Arial Black",
-    "AmericanTypewriter-Bold",
-    "Chalkboard SE",
-    "Copperplate-Bold",
-    "GillSans-UltraBold",
-    "DIN Condensed"
+  sizeInverse: number
+  fonts = [
+    'Avenir Next',
+    'Arial',
+    'Verdana',
+    'Arial Black',
+    'AmericanTypewriter-Bold',
+    'Chalkboard SE',
+    'Copperplate-Bold',
+    'GillSans-UltraBold',
+    'DIN Condensed'
   ]
   constructor(
     public body: string,
@@ -178,7 +178,7 @@ export class TextLabel {
   }
 
   shadowBlur(height: number): number {
-    return height * this.size / 20
+    return (height * this.size) / 20
   }
 }
 
@@ -195,12 +195,7 @@ export class Work {
  * Creates a work from the result and text.
  */
 export function createWork(result: Result, text: TextLabel) {
-  return new Work(
-    uuid.v4(),
-    result.rects,
-    text,
-    'white'
-  )
+  return new Work(uuid.v4(), result.rects, text, 'white')
 }
 
 export class WorkCollection {
@@ -304,12 +299,6 @@ export class WorkRepository {
   }
 
   static dtoToRect(dto: RectDto): Rect {
-    return new Rect(
-      dto.x,
-      dto.y,
-      dto.width,
-      dto.height,
-      dto.color
-    )
+    return new Rect(dto.x, dto.y, dto.width, dto.height, dto.color)
   }
 }

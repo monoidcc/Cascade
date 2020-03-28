@@ -1,11 +1,24 @@
 import gameloop = require('gameloopjs')
 import bezier = require('bezier-easing')
 import Color = require('color')
-import { Rect, Motion, Wave, WaveRect, Result, TextLabel, createWork, WorkRepository } from './models'
+import { css } from 'emotion'
+
+import {
+  Rect,
+  Motion,
+  Wave,
+  WaveRect,
+  Result,
+  TextLabel,
+  createWork,
+  WorkRepository
+} from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
 import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
-import { css } from 'emotion'
+import { drawText } from './draw-util'
+import './app'
+import './preview-modal'
 
 @component('main-canvas')
 @sub('a', 'b', 'down', 'up', 'font', 'text')
@@ -25,13 +38,7 @@ export class MainCanvas {
   constructor() {
     this.wave = new Wave()
     this.result = new Result()
-    this.text = new TextLabel(
-      '',
-      'Avenir Next',
-      1 / 6,
-      '#fff',
-      '#fff'
-    )
+    this.text = new TextLabel('', 'Avenir Next', 1 / 6, '#fff', '#fff')
     this.resetColors()
     this.loop = gameloop(this.main, 60)
   }
@@ -46,10 +53,26 @@ export class MainCanvas {
 
   baseColors() {
     return [
-      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
-      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
-      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35),
-      Color().hue(dice(360)).saturationl(dice(100)).lightness(dice(100)).alpha(0.35)
+      Color()
+        .hue(dice(360))
+        .saturationl(dice(100))
+        .lightness(dice(100))
+        .alpha(0.35),
+      Color()
+        .hue(dice(360))
+        .saturationl(dice(100))
+        .lightness(dice(100))
+        .alpha(0.35),
+      Color()
+        .hue(dice(360))
+        .saturationl(dice(100))
+        .lightness(dice(100))
+        .alpha(0.35),
+      Color()
+        .hue(dice(360))
+        .saturationl(dice(100))
+        .lightness(dice(100))
+        .alpha(0.35)
     ]
   }
 
@@ -71,7 +94,7 @@ export class MainCanvas {
     this.ctx!.clearRect(0, 0, this.width, this.height)
     this.drawRects(this.result.rects)
     this.drawRects(this.wave.toArray())
-    this.drawText()
+    drawText(this.ctx!, this.text, this.width, this.height)
   }
 
   rotateColors(): void {
@@ -94,7 +117,7 @@ export class MainCanvas {
     const ratioW = dice(1)
 
     const min = 1
-    const w = min / 3 * ratioW + min / 6
+    const w = (min / 3) * ratioW + min / 6
     const hw = w / 2
     const dw = ratioX
     const dh = ratioX
@@ -125,25 +148,13 @@ export class MainCanvas {
   drawRects(rects: Rect[]) {
     rects.forEach(rect => {
       this.ctx!.fillStyle = rect.color
-      this.ctx!.fillRect(rect.left() * this.width, rect.top() * this.height, rect.width * this.width, rect.height * this.height)
+      this.ctx!.fillRect(
+        rect.left() * this.width,
+        rect.top() * this.height,
+        rect.width * this.width,
+        rect.height * this.height
+      )
     })
-  }
-
-  drawText(): void {
-    const ctx = this.ctx!
-    ctx.save()
-
-    ctx.font = this.text.font(this.height)
-    ctx.fillStyle = this.text.color
-    ctx.shadowColor = this.text.shadowColor
-    ctx.shadowBlur = this.text.shadowBlur(this.height)
-
-    ctx.shadowOffsetX = 0
-    ctx.shadowOffsetY = 0
-    ctx.textAlign = 'center'
-
-    ctx.fillText(this.text.body, this.width / 2, this.height / 2 + this.height * this.text.size / 3)
-    ctx.restore()
   }
 
   @on('text')
@@ -177,6 +188,7 @@ export class MainCanvas {
   }
 
   @on('b')
+  @pub('preview-modal')
   async b(): void {
     const work = createWork(this.result, this.text)
     const r = new WorkRepository()
@@ -184,6 +196,7 @@ export class MainCanvas {
     this.wave.eject()
     this.result.clear()
     this.resetColors()
+    return work
   }
 }
 
@@ -204,7 +217,7 @@ const KEY_TEXT = 'tententen-current-text'
     width: 150px;
     height: 36px;
     margin: 8px 15px;
-    background-color: hsla(220,20%,80%,0.8);
+    background-color: hsla(220, 20%, 80%, 0.8);
     border-width: 0;
   }
 `)
@@ -230,7 +243,7 @@ export class Controls {
   @on('input', { at: '.text-input' })
   @pub('text')
   text() {
-    return localStorage[KEY_TEXT] = this.textInput!.value
+    return (localStorage[KEY_TEXT] = this.textInput!.value)
   }
 
   @on.click.at('.a-btn')
