@@ -1,5 +1,5 @@
 import { Ctx } from './dom'
-import { TextLabel, Work, Rect } from './models'
+import { TextLabel, Artwork, Rect } from './models'
 
 export function drawText(
   ctx: Ctx,
@@ -39,14 +39,14 @@ export function drawRects(
   })
 }
 
-export function drawWork(
+export function drawArtwork(
   ctx: Ctx,
-  work: Work,
+  artwork: Artwork,
   width: number,
   height: number
 ): void {
-  ctx.fillStyle = work.backgroundColor
+  ctx.fillStyle = artwork.backgroundColor
   ctx.fillRect(0, 0, width, height)
-  drawRects(ctx, work.boxes, width, height)
-  drawText(ctx, work.text, width, height)
+  drawRects(ctx, artwork.boxes, width, height)
+  drawText(ctx, artwork.text, width, height)
 }

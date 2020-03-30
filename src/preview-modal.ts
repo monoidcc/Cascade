@@ -3,8 +3,8 @@ import debug = require('capsid/debug')
 install(debug)
 import { css } from 'emotion'
 import { Ctx } from './dom'
-import { drawText, drawRects, drawWork } from './canvas-adapter'
-import { Work } from './models'
+import { drawText, drawRects, drawArtwork } from './canvas-adapter'
+import { Artork } from './models'
 
 @component('preview-modal')
 @sub('preview-modal')
@@ -33,12 +33,13 @@ class PreviewModal {
 
   @on('preview-modal')
   @pub('preview-draw')
-  open({ detail }: { detail: Work }): Work {
+  open({ detail }: { detail: Artwork }): Artwork {
     this.el!.classList.add('show')
     return detail
   }
 
   @on.click
+  @on('preview-modal-hide')
   hide() {
     this.el!.classList.remove('show')
   }
@@ -46,8 +47,10 @@ class PreviewModal {
 
 @component('preview-canvas')
 @sub('preview-draw')
+@sub('preview-save')
 class PreviewCanvas {
   el?: HTMLCanvasElement
+  artwork?: Artwork
 
   resize() {
     const size = this.getCanvasSize()
@@ -62,11 +65,19 @@ class PreviewCanvas {
   }
 
   @on('preview-draw')
-  draw({ detail: work }: { detail: Work }) {
+  draw({ detail: artwork }: { detail: Artwork }) {
     this.resize()
+    this.artwork = artwork
     const el = this.el!
     const ctx = el.getContext('2d')!
-    drawWork(ctx, work, el.width, el.height)
+    drawArtwork(ctx, artwork, el.width, el.height)
+  }
+
+  @on('preview-save')
+  @pub('artwork-save')
+  @emits('preview-modal-hide')
+  previewSave() {
+    return this.artwork
   }
 
   @on.click
@@ -105,7 +116,6 @@ class PreviewControls {
   @on.click.at('.save')
   @pub('preview-save')
   previewSave() {
-    alert('save')
   }
 
   @on.click.at('.cancel')

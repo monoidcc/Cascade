@@ -182,40 +182,41 @@ export class TextLabel {
   }
 }
 
-export class Work {
+export class Artwork {
   constructor(
     public id: string,
     public boxes: Rect[],
     public text: TextLabel,
-    public backgroundColor: string
+    public backgroundColor: string,
+    public createdAt: number
   ) {}
 }
 
 /**
  * Creates a work from the result and text.
  */
-export function createWork(result: Result, text: TextLabel) {
-  return new Work(uuid.v4(), result.rects, text, 'white')
+export function createArtwork(result: Result, text: TextLabel) {
+  return new Artwork(uuid.v4(), result.rects, text, 'white', Date.now())
 }
 
-export class WorkCollection {
-  constructor(public works: Work[]) {}
+export class ArtworkCollection {
+  constructor(public artworks: Artwork[]) {}
 
-  upsert(work: Work): void {
-    const i = this.findIndexById(work.id)
+  upsert(artwork: Artwork): void {
+    const i = this.findIndexById(artwork.id)
     if (i === -1) {
-      this.works.unshift(work)
+      this.artworks.unshift(artwork)
     } else {
-      this.works[i] = work
+      this.artworks[i] = artwork
     }
   }
 
   findIndexById(id: string): number {
-    return this.works.findIndex(work => work.id === id)
+    return this.artworks.findIndex(artwork => artwork.id === id)
   }
 
-  remove(work: Work): void {
-    this.removeById(work.id)
+  remove(artwork: Artwork): void {
+    this.removeById(artwork.id)
   }
 
   removeById(id: string): void {
@@ -225,11 +226,11 @@ export class WorkCollection {
       throw new Error(`Work not found: id=${id}`)
     }
 
-    this.works.splice(i, 1)
+    this.artworks.splice(i, 1)
   }
 }
 
-const KEY_WORK_COLLECTION = 'Tententen/work-collection'
+const KEY_ARTWORK_COLLECTION = 'Tententen/artwork-collection'
 
 type TextLabelDto = {
   body: string
@@ -247,43 +248,43 @@ type RectDto = {
   color: string
 }
 
-type WorkDto = {
+type ArtworkDto = {
   id: string
   text: TextLabelDto
   boxes: RectDto[]
   backgroundColor: string
 }
 
-export class WorkRepository {
-  async get(): Promise<WorkCollection> {
+export class ArtworkRepository {
+  async get(): Promise<ArtworkCollection> {
     const { getItem } = await getStorage()
-    const arr: WorkDto[] = (await getItem<WorkDto[]>(KEY_WORK_COLLECTION)) || []
+    const arr: ArtworkDto[] = (await getItem<ArtworkDto[]>(KEY_ARTWORK_COLLECTION)) || []
 
-    return new WorkCollection(arr.map(WorkRepository.dtoToWork))
+    return new ArtworkCollection(arr.map(ArtworkRepository.dtoToArtwork))
   }
 
-  async save(work: Work): Promise<void> {
-    const works = await this.get()
-    works.upsert(work)
-    await this.saveAll(works)
+  async save(artwork: Artwork): Promise<void> {
+    const artworks = await this.get()
+    artworks.upsert(artwork)
+    await this.saveAll(artworks)
   }
 
-  async saveAll(works: WorkCollection): Promise<void> {
+  async saveAll(artworks: ArtworkCollection): Promise<void> {
     const { setItem } = await getStorage()
-    await setItem<WorkDto[]>(KEY_WORK_COLLECTION, works.works)
+    await setItem<ArtworkDto[]>(KEY_ARTWORK_COLLECTION, artworks.artworks)
   }
 
-  async remove(work: Work): Promise<void> {
-    const works = await this.get()
-    works.remove(work)
-    await this.saveAll(works)
+  async remove(artwork: Artwork): Promise<void> {
+    const artworks = await this.get()
+    artworks.remove(artwork)
+    await this.saveAll(artworks)
   }
 
-  static dtoToWork(dto: WorkDto): Work {
-    return new Work(
+  static dtoToArtwork(dto: ArtworkDto): Artwork {
+    return new Artwork(
       dto.id,
-      dto.boxes.map(WorkRepository.dtoToRect),
-      WorkRepository.dtoToTextLabel(dto.text),
+      dto.boxes.map(ArtworkRepository.dtoToRect),
+      ArtworkRepository.dtoToTextLabel(dto.text),
       dto.backgroundColor
     )
   }

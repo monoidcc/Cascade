@@ -7,18 +7,19 @@ import {
   Rect,
   Motion,
   Wave,
-  Work,
+  Artwork,
   WaveRect,
   Result,
   TextLabel,
-  createWork,
-  WorkRepository
+  createArtwork,
+  ArtworkRepository
 } from './models'
 import { dice } from './random'
 import { Ctx } from './dom'
 import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
 import { drawText, drawRects } from './canvas-adapter'
 import './app'
+import './list-modal'
 import './preview-modal'
 
 @component('main-canvas')
@@ -180,11 +181,11 @@ export class MainCanvas {
 
   @on('save')
   @pub('preview-modal')
-  async save(): Promise<Work> {
-    const work = createWork(this.result, this.text)
-    const r = new WorkRepository()
-    await r.save(work)
-    return work
+  async save(): Promise<Artwork> {
+    const artwork = createArtwork(this.result, this.text)
+    const r = new ArtworkRepository()
+    await r.save(artwork)
+    return artwork
   }
 }
 
