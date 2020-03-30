@@ -253,6 +253,7 @@ type ArtworkDto = {
   text: TextLabelDto
   boxes: RectDto[]
   backgroundColor: string
+  createdAt: number
 }
 
 export class ArtworkRepository {
@@ -285,7 +286,8 @@ export class ArtworkRepository {
       dto.id,
       dto.boxes.map(ArtworkRepository.dtoToRect),
       ArtworkRepository.dtoToTextLabel(dto.text),
-      dto.backgroundColor
+      dto.backgroundColor,
+      dto.createdAt
     )
   }
 

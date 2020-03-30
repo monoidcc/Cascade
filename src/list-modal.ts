@@ -35,19 +35,19 @@ class ListModal {
   async open() {
     const artworks = await (new ArtworkRepository().get())
 
-    artworks.artworks.forEach((artwork: Artork) => {
+    artworks.artworks.forEach((artwork: Artwork) => {
       const item = document.createElement('canvas')
       item.width = 150
       item.height = 150
-      this.el.appendChild(item)
-      drawArtwork(item.getContext('2d'), artwork, 150, 150)
+      this.el!!.appendChild(item)
+      drawArtwork(item.getContext('2d')!, artwork, 150, 150)
     })
 
-    this.el.classList.add('show')
+    this.el!.classList.add('show')
   }
 
   @on.click.at('.close-button')
   close() {
-    this.el.classList.remove('show')
+    this.el!.classList.remove('show')
   }
 }

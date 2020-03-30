@@ -1,10 +1,10 @@
 import { install, pub, emits, innerHTML, on, is, sub, component } from 'capsid'
-import debug = require('capsid/debug')
+import debug from 'capsid/debug'
 install(debug)
 import { css } from 'emotion'
 import { Ctx } from './dom'
 import { drawText, drawRects, drawArtwork } from './canvas-adapter'
-import { Artork } from './models'
+import { Artwork } from './models'
 
 @component('preview-modal')
 @sub('preview-modal')
