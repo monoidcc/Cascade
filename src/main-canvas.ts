@@ -13,11 +13,11 @@ import {
   TextLabel,
   createArtwork,
   ArtworkRepository
-} from './models'
-import { dice } from './random'
-import { Ctx } from './dom'
+} from './domain/models'
+import { dice } from './util/random'
+import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
-import { drawText, drawRects } from './adapter-canvas'
+import { drawText, drawRects } from './adapters/canvas'
 
 @component('main-canvas')
 @sub('a', 'b', 'down', 'up', 'font', 'text', 'save')

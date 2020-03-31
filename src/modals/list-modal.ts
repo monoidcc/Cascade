@@ -1,7 +1,7 @@
 import { wired, is, component, on, sub, innerHTML } from 'capsid'
 import { css } from 'emotion'
-import { Artwork, ArtworkRepository } from './models'
-import { drawArtwork } from './adapter-canvas'
+import { Artwork, ArtworkRepository } from '../domain/models'
+import { drawArtwork } from '../adapters/canvas'
 
 @component('list-modal')
 @is(css`

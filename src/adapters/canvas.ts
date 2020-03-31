@@ -1,5 +1,5 @@
-import { Ctx } from './dom'
-import { TextLabel, Artwork, Rect } from './models'
+import { Ctx } from '../util/dom'
+import { TextLabel, Artwork, Rect } from '../domain/models'
 
 export function drawText(
   ctx: Ctx,

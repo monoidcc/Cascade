@@ -1,7 +1,7 @@
 import { pub, emits, innerHTML, on, is, sub, component } from 'capsid'
 import { css } from 'emotion'
-import { drawArtwork } from './adapter-canvas'
-import { Artwork } from './models'
+import { drawArtwork } from '../adapters/canvas'
+import { Artwork } from '../domain/models'
 
 @component('preview-modal')
 @sub('preview-modal')

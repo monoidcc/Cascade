@@ -1,5 +1,5 @@
 import * as uuid from 'uuid'
-import { getStorage } from './infrastructure'
+import { getStorage } from '../util/storage'
 
 export class Rect {
   constructor(
