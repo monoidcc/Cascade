@@ -1,4 +1,4 @@
-import { is, component, on, sub, innerHTML } from 'capsid'
+import { wired, is, component, on, sub, innerHTML } from 'capsid'
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from './models'
 import { drawArtwork } from './canvas-adapter'
@@ -18,13 +18,35 @@ import { drawArtwork } from './canvas-adapter'
     display: flex;
     flex-wrap: wrap;
   }
+
+  canvas {
+    width: min(25vw, 25vh);
+    height: min(25vw, 25vh);
+  }
+
+  .list-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .close-button {
+      width: 150px;
+      height: 36px;
+    }
+  }
 `)
 @innerHTML(`
-  <button class="close-button">CLOSE</button>
+  <div class="list-area"></div>
+  <div class="list-controls">
+    <button class="close-button">CLOSE</button>
+  </div>
 `)
 @sub('artwork-save')
 class ListModal {
   el?: HTMLDivElement
+
+  @wired('.list-area')
+  listArea
 
   @on('artwork-save')
   async artworkSave({ detail: artwork }: { detail: Artwork }) {
@@ -33,13 +55,14 @@ class ListModal {
   }
 
   async open() {
+    this.listArea!.innerHTML = ''
     const artworks = await (new ArtworkRepository().get())
 
     artworks.artworks.forEach((artwork: Artwork) => {
       const item = document.createElement('canvas')
       item.width = 150
       item.height = 150
-      this.el!!.appendChild(item)
+      this.listArea!.appendChild(item)
       drawArtwork(item.getContext('2d')!, artwork, 150, 150)
     })
 
