@@ -1,9 +1,6 @@
-import { install, pub, emits, innerHTML, on, is, sub, component } from 'capsid'
-import debug from 'capsid/debug'
-install(debug)
+import { pub, emits, innerHTML, on, is, sub, component } from 'capsid'
 import { css } from 'emotion'
-import { Ctx } from './dom'
-import { drawText, drawRects, drawArtwork } from './canvas-adapter'
+import { drawArtwork } from './adapter-canvas'
 import { Artwork } from './models'
 
 @component('preview-modal')
@@ -28,7 +25,7 @@ import { Artwork } from './models'
     align-items: center;
   }
 `)
-class PreviewModal {
+export class PreviewModal {
   el?: HTMLDivElement
 
   @on('preview-modal')
@@ -48,7 +45,7 @@ class PreviewModal {
 @component('preview-canvas')
 @sub('preview-draw')
 @sub('preview-save')
-class PreviewCanvas {
+export class PreviewCanvas {
   el?: HTMLCanvasElement
   artwork?: Artwork
 
@@ -107,7 +104,7 @@ class PreviewCanvas {
   <button class="cancel">CANCEL</button>
 `)
 @component('preview-controls')
-class PreviewControls {
+export class PreviewControls {
   @on.click
   onClick(e: Event) {
     e.stopPropagation()

@@ -1,7 +1,7 @@
 import { wired, is, component, on, sub, innerHTML } from 'capsid'
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from './models'
-import { drawArtwork } from './canvas-adapter'
+import { drawArtwork } from './adapter-canvas'
 
 @component('list-modal')
 @is(css`
@@ -42,11 +42,11 @@ import { drawArtwork } from './canvas-adapter'
   </div>
 `)
 @sub('artwork-save')
-class ListModal {
+export class ListModal {
   el?: HTMLDivElement
 
   @wired('.list-area')
-  listArea
+  listArea?: HTMLDivElement
 
   @on('artwork-save')
   async artworkSave({ detail: artwork }: { detail: Artwork }) {

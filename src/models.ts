@@ -195,7 +195,7 @@ export class Artwork {
 /**
  * Creates a work from the result and text.
  */
-export function createArtwork(result: Result, text: TextLabel) {
+export function createArtwork(result: Result, text: TextLabel): Artwork {
   return new Artwork(uuid.v4(), result.rects, text, 'white', Date.now())
 }
 
