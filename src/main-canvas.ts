@@ -19,8 +19,11 @@ import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML } from 'capsid'
 import { drawText, drawRects } from './adapters/canvas'
 
+/**
+ * The main canvas where the user edit the contents of the artworks.
+ */
 @component('main-canvas')
-@sub('a', 'b', 'down', 'up', 'font', 'text', 'save')
+@sub('a', 'b', 'down', 'up', 'font', 'text', 'save', 'list')
 export class MainCanvas {
   width = 0
   height = 0
@@ -178,11 +181,8 @@ export class MainCanvas {
 
   @on('save')
   @pub('preview-modal')
-  async save(): Promise<Artwork> {
-    const artwork = createArtwork(this.result, this.text)
-    const r = new ArtworkRepository()
-    await r.save(artwork)
-    return artwork
+  save(): Artwork {
+    return createArtwork(this.result, this.text)
   }
 }
 
@@ -215,6 +215,7 @@ const KEY_TEXT = 'tententen-current-text'
   <button class="a-btn">A</button>
   <button class="b-btn">B</button>
   <button class="save-btn">SAVE</button>
+  <button class="list-btn">LIST</button>
 `)
 export class MainCanvasControls {
   @wired('.text-input')
@@ -256,4 +257,8 @@ export class MainCanvasControls {
   @on.click.at('.save-btn')
   @pub('save')
   save() {}
+
+  @on.click.at('.list-btn')
+  @pub('list-modal-open')
+  list() {}
 }

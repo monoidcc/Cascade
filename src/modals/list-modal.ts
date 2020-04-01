@@ -41,7 +41,7 @@ import { drawArtwork } from '../adapters/canvas'
     <button class="close-button">CLOSE</button>
   </div>
 `)
-@sub('artwork-save')
+@sub('artwork-save', 'list-modal-open')
 export class ListModal {
   el?: HTMLDivElement
 
@@ -54,6 +54,7 @@ export class ListModal {
     this.open()
   }
 
+  @on('list-modal-open')
   async open() {
     this.listArea!.innerHTML = ''
     const artworks = await (new ArtworkRepository().get())
