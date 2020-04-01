@@ -116,8 +116,7 @@ export class PreviewControls {
   }
 
   @on.click.at('.cancel')
-  @pub('preview-cancel')
+  @emits('preview-modal-hide')
   previewCancel() {
-    alert('cancel')
   }
 }
