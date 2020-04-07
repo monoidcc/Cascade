@@ -17,10 +17,12 @@
   },
   "dependencies": {
     "@lepont/async-storage": "^0.3.0",
+    "@lepont/share": "^0.1.5",
     "dist": "^0.1.2",
     "lepont": "^0.10.1",
     "react": "16.9.0",
     "react-native": "0.61.5",
+    "react-native-share": "^3.1.2",
     "react-native-webview": "^8.1.2"
   },
   "devDependencies": {

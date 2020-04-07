@@ -1133,6 +1133,11 @@
   resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.3.0.tgz#8a8acb46b89bb40bccfe925c992c51c1bb8ec3fb"
   integrity sha512-DS0oNWnGq6haKQ7XLbh/4dVcQ/no/wPu/cQanVvj263mZp8QJNrzybh2OBdGy8Q4f4Hv/gaMnJR9HMorTt9o5w==
 
+"@lepont/share@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@lepont/share/-/share-0.1.5.tgz#c37a1d92dc3c7a94eaaf844ff61b81a960822c54"
+  integrity sha512-sbGaRCtcFhywDQ0WrMIf0uMDEbqbYxP26YXQUOeOqIEPyU9+0qzxbYMw0PewAA2/zJntYhT6GIY9MJA0bOe3aw==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -7321,6 +7326,11 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
+
+react-native-share@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-3.1.2.tgz#124a175b4088fa8993b842ac357620a8b100aa6c"
+  integrity sha512-BWcIQ5u/8tDUrfCHye/cZ4cDtkSjPql/LqxFAffCgVV97Po4t8i061e2XHHgqCVp6IDNj1AiS331BW6i0jogag==
 
 react-native-webview@^8.1.2:
   version "8.1.2"

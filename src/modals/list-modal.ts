@@ -1,4 +1,4 @@
-import { wired, is, component, on, sub, innerHTML, make, get } from 'capsid'
+import { wired, is, component, on, sub, innerHTML, make, get, pub } from 'capsid'
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
@@ -109,7 +109,9 @@ export class ListItem {
   }
 
   @on.click
-  onClick(e: Event): void {
+  @pub('open-edit-modal')
+  onClick(e: Event): Artwork {
     e.stopPropagation()
+    return this.artwork!
   }
 }
