@@ -18,6 +18,7 @@
   "dependencies": {
     "@lepont/async-storage": "^0.3.0",
     "@lepont/share": "^0.1.5",
+    "@react-native-community/async-storage": "^1.9.0",
     "dist": "^0.1.2",
     "lepont": "^0.10.1",
     "react": "16.9.0",
