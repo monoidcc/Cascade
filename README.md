@@ -12,7 +12,9 @@ Tententen uses the following tools and frameworks.
 - react-native-webview
 - [capsid][] (DOM programming)
 - HTML5 Canvas
-- Web Share API
+- [lepont][] native bridge library
+  - [@lepont/async-storage][] for storgin persistent data
+  - [@lepont/share][] for sharing image
 
 # Spec
 
@@ -50,3 +52,6 @@ type Work = {
 MIT
 
 [capsid]: https://capsid.js.org/
+[lepont]: https://github.com/kt3k/lepont
+[@lepont/async-storage]: https://github.com/kt3k/lepont-async-storage
+[@lepont/share]: https://github.com/kt3k/lepont-share
