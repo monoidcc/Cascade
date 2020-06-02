@@ -132,22 +132,41 @@ export class Result {
   }
 }
 
+const fontsForIos = [
+  '"Avenir Next"',
+  'Arial',
+  'Verdana',
+  '"Arial Black"',
+  'AmericanTypewriter-Bold',
+  '"Chalkboard SE"',
+  'Copperplate-Bold',
+  'GillSans-UltraBold',
+  '"DIN Condensed"'
+]
+
+const fontsForAndroid = [
+  'Arial',
+  'Baskerville',
+  'Casual',
+  'Courier',
+  'Cursive',
+  'Fantasy',
+  'Helvetica',
+  'monospace',
+  'sans-serif',
+  'sans-serif-black',
+  'sans-serif-condensed',
+  'sans-serif-condensed-light',
+  'sans-serif-light',
+]
 /**
  * Text represents the text on the canvas
  */
 export class TextLabel {
   sizeInverse: number
-  fonts = [
-    'Avenir Next',
-    'Arial',
-    'Verdana',
-    'Arial Black',
-    'AmericanTypewriter-Bold',
-    'Chalkboard SE',
-    'Copperplate-Bold',
-    'GillSans-UltraBold',
-    'DIN Condensed'
-  ]
+
+  fonts = fontsForIos
+
   constructor(
     public body: string,
     public fontFamily: string,
@@ -174,7 +193,7 @@ export class TextLabel {
   }
 
   font(height: number): string {
-    return `bold ${height * this.size}px "${this.fontFamily}"`
+    return `bold ${height * this.size}px ${this.fontFamily}`
   }
 
   shadowBlur(height: number): number {
