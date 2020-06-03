@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist/* html/Web.bundle/*",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "PLATFORM=android npm run build && react-native run-android",
+    "ios": "PLATFORM=ios npm run build && react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "type": "tsc -p ./tsconfig.web.json --noEmit --incremental false",
