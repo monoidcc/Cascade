@@ -67,16 +67,23 @@ export class SplashScreen {
     this.logo!.classList.remove('in')
     await defer(1000)
     this.logo!.classList.add('out')
-    await defer(500)
-    el.innerHTML = `<span class="logo in is-tententen">Tententen</span>`
-    await defer(50)
-    this.logo!.classList.remove('in')
-    await defer(1000)
-    this.logo!.classList.add('out')
+    await this.showLogoHtml(`<span class="logo in is-tententen">Tententen</span>`)
+    await this.showLogoHtml(`<span class="logo in">Upper is thicker</span>`)
+    await this.showLogoHtml(`<span class="logo in">Lower is thinner</span>`)
+    await this.showLogoHtml(`<span class="logo in is-tententen">Enjoy!</span>`)
     el.classList.add('hidden')
     this.startMain()
     await defer(500)
     el.parentElement?.removeChild(el)
+  }
+
+  async showLogoHtml(html: string) {
+    await defer(500)
+    this.el!.innerHTML = html
+    await defer(50)
+    this.logo!.classList.remove('in')
+    await defer(1000)
+    this.logo!.classList.add('out')
   }
 
   @pub('start-main')
