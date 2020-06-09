@@ -13,6 +13,7 @@ import {
   TextLabel,
   createArtwork,
 } from './domain/models'
+import * as E from './events'
 import { dice } from './util/random'
 import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
@@ -80,6 +81,7 @@ export class MainCanvas {
     this.loop.run()
   }
 
+  /** The step function of the main loop */
   main = () => {
     const finished = this.wave.step()
     if (finished) {
@@ -206,6 +208,7 @@ const KEY_TEXT = 'tententen-current-text'
     border-width: 0;
   }
 `)
+@sub(E.INIT_CANVAS_CONTROLS)
 @innerHTML(`
   <input class="text-input" />
   <button class="font-btn">🔁FONT</button>
@@ -220,11 +223,10 @@ export class MainCanvasControls {
   @wired('.text-input')
   textInput?: HTMLInputElement
 
-  __mount__() {
-    setTimeout(() => {
-      this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
-      this.text()
-    }, 1)
+  @on(E.INIT_CANVAS_CONTROLS)
+  init() {
+    this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
+    this.text()
   }
 
   @on('input', { at: '.text-input' })
@@ -258,7 +260,7 @@ export class MainCanvasControls {
   save() {}
 
   @on.click.at('.list-btn')
-  @pub('list-modal-open')
+  @pub(E.LIST_MODAL_OPEM)
   list() {}
 }
 
@@ -267,6 +269,7 @@ export class MainCanvasControls {
 export class Main {
   el?: HTMLElement
   @on('start-main')
+  @pub(E.INIT_CANVAS_CONTROLS)
   start() {
     const el = this.el!
     el.classList.remove('hidden')

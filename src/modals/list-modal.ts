@@ -2,6 +2,7 @@ import { wired, is, component, on, sub, innerHTML, make, get, pub } from 'capsid
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
+import * as E from '../events'
 
 @component('list-modal')
 @is(css`
@@ -37,7 +38,7 @@ import { drawArtwork } from '../adapters/canvas'
     <button class="close-button">CLOSE</button>
   </div>
 `)
-@sub('artwork-save', 'list-modal-open')
+@sub('artwork-save', E.LIST_MODAL_OPEM)
 export class ListModal {
   el?: HTMLDivElement
 
@@ -50,7 +51,7 @@ export class ListModal {
     this.open()
   }
 
-  @on('list-modal-open')
+  @on(E.LIST_MODAL_OPEM)
   async open() {
     this.listArea!.innerHTML = ''
     const artworks = await (new ArtworkRepository().get())

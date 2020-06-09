@@ -165,7 +165,7 @@ const fontsForAndroid = [
 export class TextLabel {
   sizeInverse: number
 
-  fonts = process.env.PLATFORM === 'ios' ? fontsForIos : fontsForAndroid
+  fonts = process.env.PLATFORM === 'android' ? fontsForAndroid : fontsForIos
 
   constructor(
     public body: string,

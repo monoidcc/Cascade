@@ -58,7 +58,7 @@ export class SplashScreen {
 
   async sequence() {
     const el = this.el!
-    await defer(10)
+    await defer(50)
     el.classList.add('ready')
     const img = await onLoadImage(monoidSvg)
     img.classList.add('logo', 'in', 'is-monoid')
