@@ -17,7 +17,6 @@ import { dice } from './util/random'
 import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
 import { drawText, drawRects } from './adapters/canvas'
-import { prep } from 'android/app/build/intermediates/merged_assets/debug/out/Web.bundle/app.3757db15'
 
 /**
  * The main canvas where the user edit the contents of the artworks.

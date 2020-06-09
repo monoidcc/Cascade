@@ -1,12 +1,13 @@
 import { component, innerHTML, is, wired, pub } from 'capsid'
 import { css } from 'emotion'
 import { defer } from './util/async'
+import { onLoadImage } from './util/dom'
+import monoidSvg from './img/monoid-white.svg'
 
 @component('splash-screen')
-@innerHTML(`
-  <span class="logo in">monoid</span>
-`)
 @is(css`
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -29,6 +30,15 @@ import { defer } from './util/async'
     transition-duration: 500ms;
     opacity: 1;
   }
+  .logo.is-monoid {
+    max-width: 40%;
+    filter: drop-shadow(0 0 20px white);
+  }
+  .logo.is-tententen {
+    font-size: 60px;
+    font-family: serif;
+    font-weight: bold;
+  }
   .logo.out {
     transform: translate(0, -10px);
     opacity: 0;
@@ -50,19 +60,23 @@ export class SplashScreen {
     const el = this.el!
     await defer(10)
     el.classList.add('ready')
-    el.innerHTML = `<span class="logo in">monoid</span>`
+    const img = await onLoadImage(monoidSvg)
+    img.classList.add('logo', 'in', 'is-monoid')
+    el.appendChild(img)
     await defer(50)
     this.logo!.classList.remove('in')
     await defer(1000)
     this.logo!.classList.add('out')
     await defer(500)
-    el.innerHTML = `<span class="logo in">Tententen</span>`
+    el.innerHTML = `<span class="logo in is-tententen">Tententen</span>`
     await defer(50)
     this.logo!.classList.remove('in')
     await defer(1000)
     this.logo!.classList.add('out')
     el.classList.add('hidden')
     this.startMain()
+    await defer(500)
+    el.parentElement?.removeChild(el)
   }
 
   @pub('start-main')
