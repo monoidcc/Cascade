@@ -218,6 +218,9 @@ export function createArtwork(result: Result, text: TextLabel): Artwork {
   return new Artwork(uuid.v4(), result.rects, text, 'white', Date.now())
 }
 
+/**
+ * The collection of artworks.
+ */
 export class ArtworkCollection {
   constructor(public artworks: Artwork[]) {}
 
@@ -275,6 +278,9 @@ type ArtworkDto = {
   createdAt: number
 }
 
+/**
+ * The repository for artwork
+ */
 export class ArtworkRepository {
   async get(): Promise<ArtworkCollection> {
     const { getItem } = await getStorage()
