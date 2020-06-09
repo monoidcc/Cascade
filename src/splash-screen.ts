@@ -68,7 +68,7 @@ export class SplashScreen {
     await defer(1000)
     this.logo!.classList.add('out')
     await this.showLogoHtml(`<span class="logo in is-tententen">Tententen</span>`)
-    await this.showLogoHtml(`<span class="logo in">Upper is thicker</span>`)
+    await this.showLogoHtml(`<span class="logo in">Upper is thicker</span>`) // TODO: i18n
     await this.showLogoHtml(`<span class="logo in">Lower is thinner</span>`)
     await this.showLogoHtml(`<span class="logo in is-tententen">Enjoy!</span>`)
     el.classList.add('hidden')
