@@ -52,11 +52,23 @@ export class SplashScreen {
   el?: HTMLElement
   @wired('.logo')
   logo?: HTMLElement
-  __mount__() {
-    this.sequence()
+  async __mount__() {
+    await this.sequence()
+    this.startMain()
+    await this.fadeOut()
+  }
+
+  async fadeOut() {
+    const el = this.el!
+    el.classList.add('hidden')
+    await defer(500)
+    el.parentElement?.removeChild(el)
   }
 
   async sequence() {
+    if (!process.env.SPLASH_SCREEN) {
+      return
+    }
     const el = this.el!
     await defer(50)
     el.classList.add('ready')
@@ -71,10 +83,6 @@ export class SplashScreen {
     await this.showLogoHtml(`<span class="logo in">Upper is thicker</span>`) // TODO: i18n
     await this.showLogoHtml(`<span class="logo in">Lower is thinner</span>`)
     await this.showLogoHtml(`<span class="logo in is-tententen">Enjoy!</span>`)
-    el.classList.add('hidden')
-    this.startMain()
-    await defer(500)
-    el.parentElement?.removeChild(el)
   }
 
   async showLogoHtml(html: string) {
