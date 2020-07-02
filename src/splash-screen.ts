@@ -53,7 +53,9 @@ export class SplashScreen {
   @wired('.logo')
   logo?: HTMLElement
   async __mount__() {
-    await this.sequence()
+    if (!process.env.SPLASH_SCREEN) {
+      await this.sequence()
+    }
     this.startMain()
     await this.fadeOut()
   }
@@ -66,9 +68,6 @@ export class SplashScreen {
   }
 
   async sequence() {
-    if (!process.env.SPLASH_SCREEN) {
-      return
-    }
     const el = this.el!
     await defer(50)
     el.classList.add('ready')
