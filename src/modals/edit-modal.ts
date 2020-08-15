@@ -68,10 +68,15 @@ export class EditModal {
 
   @on.click.at('.share-btn')
   share() {
+    const text = this.artwork!.text.body
+    const base64Image = this.canvas!.toDataURL()
     share({
-      urls: [this.canvas!.toDataURL()],
+      url: base64Image,
+      //urls: [base64Image],
+      //filenames: [btoa(`${text}.png`)],
       type: 'image/png',
-      message: this.artwork!.text.body
-    })
+      //message: text,
+      //title: text,
+    } as any)
   }
 }
