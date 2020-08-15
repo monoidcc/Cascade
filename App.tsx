@@ -1,5 +1,5 @@
 import React from 'react'
-import { StatusBar } from 'react-native'
+import { StatusBar, Platform } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useRegistry } from 'lepont'
 import { useAsyncStorage } from '@lepont/async-storage/bridge'
@@ -9,18 +9,18 @@ import Share from 'react-native-share'
 
 const isDev = process.env.NODE_ENV === 'development'
 
-const webBundleUrl =
-  Platform.OS === 'android'
-    ? 'file:///android_asset/Web.bundle/index.html'
-    : 'Web.bundle/index.html'
+const webBundleUrl = Platform.select({
+  android: 'file:///android_asset/Web.bundle/index.html',
+  ios: 'Web.bundle/index.html'
+})!
 
 //const uri = isDev ? 'http://localhost:1234' : webBundleUrl
 const uri = webBundleUrl
 
 const App = () => {
   const registry = useRegistry()
-  useAsyncStorage(registry, AsyncStorage)
-  useShare(registry, Share)
+  useAsyncStorage(registry, AsyncStorage as any)
+  useShare(registry, Share as any)
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -29,7 +29,7 @@ const App = () => {
         originWhitelist={['*']}
         javaScriptEnabled
         domStorageEnabled
-        ref={registry.ref}
+        ref={registry.ref as any}
         onMessage={registry.onMessage}
       />
     </>
