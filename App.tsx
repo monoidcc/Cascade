@@ -1,5 +1,5 @@
-import React from 'react'
-import { StatusBar, Platform } from 'react-native'
+import React, { useEffect } from 'react'
+import { StatusBar, Platform, PermissionsAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useRegistry } from 'lepont'
 import { useAsyncStorage } from '@lepont/async-storage/bridge'
@@ -14,13 +14,37 @@ const webBundleUrl = Platform.select({
   ios: 'Web.bundle/index.html'
 })!
 
-//const uri = isDev ? 'http://localhost:1234' : webBundleUrl
+//const uri = isDev ? 'http//localhost:1234' : webBundleUrl
 const uri = webBundleUrl
 
 const App = () => {
   const registry = useRegistry()
   useAsyncStorage(registry, AsyncStorage as any)
   useShare(registry, Share as any)
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      (async () => {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 3000)
+        })
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Cool Photo App Camera Permission",
+            message:
+              "Cool Photo App needs access to your camera " +
+              "so you can take awesome pictures.",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        )
+        alert(granted === PermissionsAndroid.RESULTS.GRANTED)
+      })()
+    }
+  }, [])
+
   return (
     <>
       <StatusBar barStyle="dark-content" />

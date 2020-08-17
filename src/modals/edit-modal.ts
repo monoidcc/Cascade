@@ -1,6 +1,6 @@
 import { component, innerHTML, on, sub, is, wired } from 'capsid'
 import { css } from 'emotion'
-import { share } from '@lepont/share'
+// import { share } from '@lepont/share'
 import { Artwork } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 
@@ -9,7 +9,8 @@ import { drawArtwork } from '../adapters/canvas'
   <canvas class="edit-canvas" width="500" height="500"></canvas>
   <div class="edit-controls">
     <button class="delete-btn">DELETE</button>
-    <button class="share-btn">SHARE</button>
+    <button class="share-btn"><s>SHARE<s></button>
+    <button class="download-btn">DOWNLOAD</button>
     <button class="cancel-btn">CANCEL</button>
   </div>
 `)
@@ -68,15 +69,34 @@ export class EditModal {
 
   @on.click.at('.share-btn')
   share() {
+    alert('doesn\'t work now')
+    /*
     const text = this.artwork!.text.body
     const base64Image = this.canvas!.toDataURL()
+    alert(typeof base64Image)
+    alert(base64Image.substr(0, 100))
     share({
+      // urls: [base64Image],
+      // urls: ['https://google.com/'],
       url: base64Image,
-      //urls: [base64Image],
-      //filenames: [btoa(`${text}.png`)],
-      type: 'image/png',
-      //message: text,
-      //title: text,
-    } as any)
+      // filenames: [`${text}.png`],
+      // type: 'image/png',
+      // message: text,
+      // title: text,
+      // foo: 'bar'
+    } as any).catch(e => {
+      alert('error!!')
+      alert(e)
+    })
+    */
+  }
+
+  @on.click.at('.download-btn')
+  download() {
+    const base64Image = this.canvas!.toDataURL()
+    const a = document.createElement('a')
+    a.setAttribute('download', 'tententen-share.png')
+    a.href= base64Image
+    a.click()
   }
 }
