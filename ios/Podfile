@@ -36,7 +36,6 @@ target 'Tententen' do
 
 
 
-  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 
   target 'TententenTests' do
     inherit! :search_paths
