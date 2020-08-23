@@ -3,6 +3,7 @@ import { css } from 'emotion'
 // import { share } from '@lepont/share'
 import { Artwork } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
+import { sendMessage } from 'lepont/browser'
 
 @component('edit-modal')
 @innerHTML(`
@@ -92,11 +93,17 @@ export class EditModal {
   }
 
   @on.click.at('.download-btn')
-  download() {
+  async download() {
     const base64Image = this.canvas!.toDataURL()
+    /*
     const a = document.createElement('a')
     a.setAttribute('download', 'tententen-share.png')
     a.href = base64Image
     a.click()
+    */
+    await sendMessage({
+      type: 'cameraroll:save',
+      payload: { tag: base64Image }
+    })
   }
 }
