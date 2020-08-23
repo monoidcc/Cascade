@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { StatusBar, Platform, PermissionsAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
-import { useRegistry } from 'lepont'
-import { useAsyncStorage } from '@lepont/async-storage/bridge'
+import { useBridge } from 'lepont'
+import { AsyncStorageBridge } from '@lepont/async-storage/bridge'
 import AsyncStorage from '@react-native-community/async-storage'
-import { useShare } from '@lepont/share/bridge'
+import { ShareBridge } from '@lepont/share/bridge'
 import Share from 'react-native-share'
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -18,26 +18,28 @@ const webBundleUrl = Platform.select({
 const uri = webBundleUrl
 
 const App = () => {
-  const registry = useRegistry()
-  useAsyncStorage(registry, AsyncStorage as any)
-  useShare(registry, Share as any)
+  const [ref, onMessage] = useBridge(
+    registry => registry.register('cameraroll', async (payload, _) => {}),
+    AsyncStorageBridge(AsyncStorage as any),
+    ShareBridge(Share as any)
+  )
 
   useEffect(() => {
     if (Platform.OS === 'android') {
-      (async () => {
-        await new Promise((resolve) => {
+      ;(async () => {
+        await new Promise(resolve => {
           setTimeout(resolve, 3000)
         })
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Cool Photo App Camera Permission",
+            title: 'Cool Photo App Camera Permission',
             message:
-              "Cool Photo App needs access to your camera " +
-              "so you can take awesome pictures.",
-            buttonNeutral: "Ask Me Later",
-            buttonNegative: "Cancel",
-            buttonPositive: "OK"
+              'Cool Photo App needs access to your camera ' +
+              'so you can take awesome pictures.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK'
           }
         )
         alert(granted === PermissionsAndroid.RESULTS.GRANTED)
@@ -53,8 +55,8 @@ const App = () => {
         originWhitelist={['*']}
         javaScriptEnabled
         domStorageEnabled
-        ref={registry.ref as any}
-        onMessage={registry.onMessage}
+        ref={ref}
+        onMessage={onMessage}
       />
     </>
   )

@@ -1128,15 +1128,15 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@lepont/async-storage@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.3.0.tgz#8a8acb46b89bb40bccfe925c992c51c1bb8ec3fb"
-  integrity sha512-DS0oNWnGq6haKQ7XLbh/4dVcQ/no/wPu/cQanVvj263mZp8QJNrzybh2OBdGy8Q4f4Hv/gaMnJR9HMorTt9o5w==
+"@lepont/async-storage@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.4.1.tgz#eccd57ba49a51db2528fa5869e531dd8fbda85cf"
+  integrity sha512-5Dr73VBVRJ30c91vrALYeanJjKOZUUUo8fBE1KAknwzpXobTOyLCspFyaY55NnXKQKjl/r4kxbwZXLZ5FMceKg==
 
-"@lepont/share@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@lepont/share/-/share-0.1.5.tgz#c37a1d92dc3c7a94eaaf844ff61b81a960822c54"
-  integrity sha512-sbGaRCtcFhywDQ0WrMIf0uMDEbqbYxP26YXQUOeOqIEPyU9+0qzxbYMw0PewAA2/zJntYhT6GIY9MJA0bOe3aw==
+"@lepont/share@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@lepont/share/-/share-0.2.1.tgz#824c65e8b82a7c1df2ae007ad98c5fc4c88af68f"
+  integrity sha512-Xr14x1rErceEsKcmb/CpHxoQonVj8g8/I9PrLjnryB003L6oeYKt7DJOzVzhIKrbHLO4pUccRvaemi+kYEfIYg==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -5471,10 +5471,10 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
-lepont@^0.10.1:
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/lepont/-/lepont-0.10.1.tgz#1854cb1c6c1dec059763f41d0888a24098e52e31"
-  integrity sha512-+BU/uqhNTIREw3b+iA9ra3dWD39nfNHQpRUOnfIMCfOVhQpI0jTHqXR8apz6anTnXVAyLs39go0Rz4ZtA/OxTQ==
+lepont@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/lepont/-/lepont-0.11.1.tgz#16ba7e22057bd06ad315c9f5d2abe371d242a351"
+  integrity sha512-1X9+92bLJXCBvTeFtRAVXx/PBp+iUt7FzqFuaNIGJBlwy7OdGZZ2w8v4kFjo/O5WtMg2rWpsWvFp/Ue+uzlXtw==
 
 leven@^3.1.0:
   version "3.1.0"
