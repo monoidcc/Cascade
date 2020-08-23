@@ -1128,10 +1128,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@lepont/async-storage@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.4.1.tgz#eccd57ba49a51db2528fa5869e531dd8fbda85cf"
-  integrity sha512-5Dr73VBVRJ30c91vrALYeanJjKOZUUUo8fBE1KAknwzpXobTOyLCspFyaY55NnXKQKjl/r4kxbwZXLZ5FMceKg==
+"@lepont/async-storage@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.4.2.tgz#06e36a2289ec43a0f622022bc0719d43aad27f12"
+  integrity sha512-7chbGPR+3A1U9HXZhXNDIO/5qjHfmqD6O5qpWC7zYtYD9Yy4BvTfprBsHhS3EPHDZizyZkBe2VsntdYByASw1A==
 
 "@lepont/share@^0.2.1":
   version "0.2.1"
