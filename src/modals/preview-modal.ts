@@ -96,7 +96,7 @@ export class PreviewCanvas {
     width: 150px;
     height: 36px;
     border-width: 0;
-    background-color: hsla(220,20%,80%,0.8);
+    background-color: hsla(220, 20%, 80%, 0.8);
   }
 `)
 @innerHTML(`
@@ -112,11 +112,9 @@ export class PreviewControls {
 
   @on.click.at('.save')
   @pub('preview-save')
-  previewSave() {
-  }
+  previewSave() {}
 
   @on.click.at('.cancel')
   @emits('preview-modal-hide')
-  previewCancel() {
-  }
+  previewCancel() {}
 }

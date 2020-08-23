@@ -157,7 +157,7 @@ const fontsForAndroid = [
   'sans-serif-black',
   'sans-serif-condensed',
   'sans-serif-condensed-light',
-  'sans-serif-light',
+  'sans-serif-light'
 ]
 /**
  * Text represents the text on the canvas
@@ -284,7 +284,8 @@ type ArtworkDto = {
 export class ArtworkRepository {
   async get(): Promise<ArtworkCollection> {
     const { getItem } = await getStorage()
-    const arr: ArtworkDto[] = (await getItem<ArtworkDto[]>(KEY_ARTWORK_COLLECTION)) || []
+    const arr: ArtworkDto[] =
+      (await getItem<ArtworkDto[]>(KEY_ARTWORK_COLLECTION)) || []
 
     return new ArtworkCollection(arr.map(ArtworkRepository.dtoToArtwork))
   }

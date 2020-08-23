@@ -69,7 +69,7 @@ export class EditModal {
 
   @on.click.at('.share-btn')
   share() {
-    alert('doesn\'t work now')
+    alert("doesn't work now")
     /*
     const text = this.artwork!.text.body
     const base64Image = this.canvas!.toDataURL()
@@ -96,7 +96,7 @@ export class EditModal {
     const base64Image = this.canvas!.toDataURL()
     const a = document.createElement('a')
     a.setAttribute('download', 'tententen-share.png')
-    a.href= base64Image
+    a.href = base64Image
     a.click()
   }
 }

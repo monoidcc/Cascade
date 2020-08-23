@@ -1,4 +1,14 @@
-import { wired, is, component, on, sub, innerHTML, make, get, pub } from 'capsid'
+import {
+  wired,
+  is,
+  component,
+  on,
+  sub,
+  innerHTML,
+  make,
+  get,
+  pub
+} from 'capsid'
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
@@ -12,7 +22,7 @@ import * as Events from '../events'
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
   overflow: scroll;
 
   &.show {
@@ -54,14 +64,18 @@ export class ListModal {
   @on(Events.LIST_MODAL_OPEM)
   async open() {
     this.listArea!.innerHTML = ''
-    const artworks = await (new ArtworkRepository().get())
+    const artworks = await new ArtworkRepository().get()
 
-    artworks.artworks.map((artwork: Artwork): [Artwork, HTMLDivElement] =>
-      [artwork, this.el!.querySelector(`[dataset-key="${artwork.id}"]`) || document.createElement('div')]
-    ).forEach(([artwork, div]: [Artwork, HTMLDivElement]) => {
-      make<ListItem>('list-item', div).update(artwork)
-      this.listArea!.appendChild(div)
-    })
+    artworks.artworks
+      .map((artwork: Artwork): [Artwork, HTMLDivElement] => [
+        artwork,
+        this.el!.querySelector(`[dataset-key="${artwork.id}"]`) ||
+          document.createElement('div')
+      ])
+      .forEach(([artwork, div]: [Artwork, HTMLDivElement]) => {
+        make<ListItem>('list-item', div).update(artwork)
+        this.listArea!.appendChild(div)
+      })
 
     this.el!.classList.add('show')
   }
@@ -106,7 +120,12 @@ export class ListItem {
   }
 
   draw(): void {
-    drawArtwork(this.canvas!.getContext('2d')!, this.artwork!, this.canvas!.width, this.canvas!.height)
+    drawArtwork(
+      this.canvas!.getContext('2d')!,
+      this.artwork!,
+      this.canvas!.width,
+      this.canvas!.height
+    )
   }
 
   @on.click
