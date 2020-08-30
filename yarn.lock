@@ -1133,10 +1133,10 @@
   resolved "https://registry.yarnpkg.com/@lepont/async-storage/-/async-storage-0.4.2.tgz#06e36a2289ec43a0f622022bc0719d43aad27f12"
   integrity sha512-7chbGPR+3A1U9HXZhXNDIO/5qjHfmqD6O5qpWC7zYtYD9Yy4BvTfprBsHhS3EPHDZizyZkBe2VsntdYByASw1A==
 
-"@lepont/share@^0.2.1":
+"@lepont/permissions-android@^0.2.1":
   version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@lepont/share/-/share-0.2.1.tgz#824c65e8b82a7c1df2ae007ad98c5fc4c88af68f"
-  integrity sha512-Xr14x1rErceEsKcmb/CpHxoQonVj8g8/I9PrLjnryB003L6oeYKt7DJOzVzhIKrbHLO4pUccRvaemi+kYEfIYg==
+  resolved "https://registry.yarnpkg.com/@lepont/permissions-android/-/permissions-android-0.2.1.tgz#f1a98e0b6f46ad45b1e813ee191880f013997110"
+  integrity sha512-zCWjgp0YSK5V2pK8iz3wULwhHOfBnSLqpFS9A08wxJJpkI1EYfxkWS0X+biDgmm2UM13GJ0pj9fOZD9dZfuv4g==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -2067,6 +2067,11 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
+
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+  integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
 
 base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3:
   version "1.3.1"
@@ -5452,10 +5457,10 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
-lepont@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/lepont/-/lepont-0.11.1.tgz#16ba7e22057bd06ad315c9f5d2abe371d242a351"
-  integrity sha512-1X9+92bLJXCBvTeFtRAVXx/PBp+iUt7FzqFuaNIGJBlwy7OdGZZ2w8v4kFjo/O5WtMg2rWpsWvFp/Ue+uzlXtw==
+lepont@^0.11.3:
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/lepont/-/lepont-0.11.3.tgz#0912a157037bf63e578a071131ec79ffb0e1a1b1"
+  integrity sha512-rEdUpFU9evJ3hkZ7UrotvxnK1scHxGFeHDfugNXX7SLUXnh2KtfOgUG8CoCX4uowMbsIUx09d0wonnVN62WHsQ==
 
 leven@^3.1.0:
   version "3.1.0"
@@ -7350,10 +7355,13 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
-react-native-share@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-3.7.0.tgz#5b5bcc87530ddaaabcb8b70a9366dce88a6f9495"
-  integrity sha512-MCTGiPcBfelrnX/7n82N5eQAl31F6xljqFK2CWbPDTSt7bbJUZH3Znvy8KYePLYqAr7HVrk621eanQN6vSFMzA==
+react-native-fs@^2.16.6:
+  version "2.16.6"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.16.6.tgz#2901789a43210a35a0ef0a098019bbef3af395fd"
+  integrity sha512-ZWOooD1AuFoAGY3HS2GY7Qx2LZo4oIg6AK0wbC68detxwvX75R/q9lRqThXNKP6vIo2VHWa0fYUo/SrLw80E8w==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^3.0.0"
 
 react-native-webview@^8.1.2:
   version "8.1.2"
@@ -8791,6 +8799,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+utf8@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-3.0.0.tgz#f052eed1364d696e769ef058b183df88c87f69d1"
+  integrity sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==
 
 util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"

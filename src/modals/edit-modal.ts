@@ -1,16 +1,15 @@
-import { component, innerHTML, on, sub, is, wired } from 'capsid'
+import { component, innerHTML, on, sub, is, wired, emits } from 'capsid'
 import { css } from 'emotion'
-// import { share } from '@lepont/share'
 import { Artwork } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 import { sendMessage } from 'lepont/browser'
+import { PermissionsAndroid } from '@lepont/permissions-android'
 
 @component('edit-modal')
 @innerHTML(`
   <canvas class="edit-canvas" width="500" height="500"></canvas>
   <div class="edit-controls">
     <button class="delete-btn">DELETE</button>
-    <button class="share-btn"><s>SHARE<s></button>
     <button class="download-btn">DOWNLOAD</button>
     <button class="cancel-btn">CANCEL</button>
   </div>
@@ -68,42 +67,44 @@ export class EditModal {
     alert('not impletemented!')
   }
 
-  @on.click.at('.share-btn')
-  share() {
-    alert("doesn't work now")
-    /*
-    const text = this.artwork!.text.body
-    const base64Image = this.canvas!.toDataURL()
-    alert(typeof base64Image)
-    alert(base64Image.substr(0, 100))
-    share({
-      // urls: [base64Image],
-      // urls: ['https://google.com/'],
-      url: base64Image,
-      // filenames: [`${text}.png`],
-      // type: 'image/png',
-      // message: text,
-      // title: text,
-      // foo: 'bar'
-    } as any).catch(e => {
-      alert('error!!')
-      alert(e)
-    })
-    */
-  }
-
   @on.click.at('.download-btn')
+  @emits('hide-edit-modal')
   async download() {
-    const base64Image = this.canvas!.toDataURL()
-    /*
-    const a = document.createElement('a')
-    a.setAttribute('download', 'tententen-share.png')
-    a.href = base64Image
-    a.click()
-    */
-    await sendMessage({
-      type: 'cameraroll:save',
-      payload: { tag: base64Image }
-    })
+    const base64Content = this.canvas!.toDataURL().substr(22)
+    try {
+      const permission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Tententen Storage Permission',
+          message:
+            'Tententen needs access to your storage ' +
+            'so you can save awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK'
+        }
+      )
+      if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
+        alert('permission denied')
+        return
+      }
+      const savedPath = await sendMessage({
+        type: 'write-tmp-image',
+        payload: {
+          content: base64Content,
+          filename: 'tmp.png',
+          encode: 'base64'
+        }
+      })
+      await sendMessage({
+        type: 'cameraroll:save',
+        payload: { tag: savedPath, type: 'photo', album: 'Tententen' }
+      })
+      window.navigator.vibrate([200, 100, 200])
+      alert('Saved the picture to the album')
+    } catch (e) {
+      alert(e)
+      alert(e.stack)
+    }
   }
 }
