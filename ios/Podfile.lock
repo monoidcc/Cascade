@@ -223,7 +223,7 @@ PODS:
     - ReactCommon/jscallinvoker (= 0.61.5)
   - RNCAsyncStorage (1.9.0):
     - React
-  - RNShare (3.7.0):
+  - RNFS (2.16.6):
     - React
   - Yoga (1.14.0)
 
@@ -258,7 +258,7 @@ DEPENDENCIES:
   - ReactCommon/jscallinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
-  - RNShare (from `../node_modules/react-native-share`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -320,8 +320,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
-  RNShare:
-    :path: "../node_modules/react-native-share"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -354,7 +354,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: a49a1f42bf8f5acf1c3e297097517c6b3af377ad
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   RNCAsyncStorage: 453cd7c335ec9ba3b877e27d02238956b76f3268
-  RNShare: a1d5064df7a0ebe778d001869b3f0a124bf0a491
+  RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
 PODFILE CHECKSUM: b3286a9b12377cc8cff3ab8de8f5606fba7e52b0

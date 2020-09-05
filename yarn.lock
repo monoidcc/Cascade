@@ -1138,6 +1138,11 @@
   resolved "https://registry.yarnpkg.com/@lepont/permissions-android/-/permissions-android-0.2.1.tgz#f1a98e0b6f46ad45b1e813ee191880f013997110"
   integrity sha512-zCWjgp0YSK5V2pK8iz3wULwhHOfBnSLqpFS9A08wxJJpkI1EYfxkWS0X+biDgmm2UM13GJ0pj9fOZD9dZfuv4g==
 
+"@lepont/platform@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@lepont/platform/-/platform-0.1.4.tgz#135ced11b98946163cf6997f36a584fabec31cb7"
+  integrity sha512-DUPPWXpKaekj3exvtP4E7Ld8zMPg4EU6199dpNsXr7UdlcqU9tajuiS0Gjl8iI8CAQ94d2f/3HcFcFbmWg+Qsw==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"

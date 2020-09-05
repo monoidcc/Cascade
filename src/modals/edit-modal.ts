@@ -4,6 +4,7 @@ import { Artwork } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 import { sendMessage } from 'lepont/browser'
 import { PermissionsAndroid } from '@lepont/permissions-android'
+import { getOS } from '@lepont/platform'
 
 @component('edit-modal')
 @innerHTML(`
@@ -72,21 +73,24 @@ export class EditModal {
   async download() {
     const base64Content = this.canvas!.toDataURL().substr(22)
     try {
-      const permission = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Tententen Storage Permission',
-          message:
-            'Tententen needs access to your storage ' +
-            'so you can save awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK'
+      const os = await getOS()
+      if (os === 'android') {
+        const permission = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Tententen Storage Permission',
+            message:
+              'Tententen needs access to your storage ' +
+              'so you can save awesome pictures.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK'
+          }
+        )
+        if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
+          alert('permission denied')
+          return
         }
-      )
-      if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
-        alert('permission denied')
-        return
       }
       const savedPath = await sendMessage({
         type: 'write-tmp-image',
@@ -100,7 +104,6 @@ export class EditModal {
         type: 'cameraroll:save',
         payload: { tag: savedPath, type: 'photo', album: 'Tententen' }
       })
-      window.navigator.vibrate([200, 100, 200])
       alert('Saved the picture to the album')
     } catch (e) {
       alert(e)
