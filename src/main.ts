@@ -35,6 +35,12 @@ import { drawText, drawRects } from './adapters/canvas'
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-color: hsla(220, 20%, 80%, 0.8);
+
+    canvas {
+      background-color: white;
+    }
   }
 `)
 @sub('start-main')
@@ -100,7 +106,6 @@ export class MainCanvas {
   }
 
   baseColors(): any[] {
-    //return [...Array(4)].map(() => this.randomColor())
     return [
       this.randomColor(),
       this.randomColor(),
@@ -114,8 +119,6 @@ export class MainCanvas {
     const wrapper = el.parentElement!
     this.ctx = el.getContext('2d')!
     await new Promise(setTimeout)
-    console.log(wrapper)
-    console.log(wrapper.clientWidth, wrapper.clientHeight)
     const canvasSize = Math.min(wrapper.clientWidth, wrapper.clientHeight)
     el.width = this.width = canvasSize
     el.height = this.height = canvasSize
@@ -146,11 +149,17 @@ export class MainCanvas {
     this.text.shadowColor = this.textColors[1].string()
   }
 
+  /** Creates a new wave (set of 4 boxes coming into the canvas)
+   * based on the given client position
+   */
   newWave(e: MouseEvent): void {
     this.rotateColors()
 
-    const ratioX = e.clientX / this.width
-    const ratioY = (this.height - e.clientY) / this.height
+    const canvasY = e.clientY - this.el!.offsetTop
+    const canvasX = e.clientX - this.el!.offsetLeft
+
+    const ratioX = canvasX / this.width
+    const ratioY = (this.height - canvasY) / this.height
 
     const ratioA = ratioY
     const ratioW = dice(1)
@@ -263,9 +272,9 @@ const KEY_TEXT = 'tententen-current-text'
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
-  <button class="up-btn">⬆️</button>
-  <input class="text-input" />
   <button class="down-btn">⬇️</button>
+  <input class="text-input" />
+  <button class="up-btn">⬆️</button>
 `)
 export class MainHeaderControls {
   @wired('.text-input')
