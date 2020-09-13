@@ -18,6 +18,7 @@ import { dice } from './util/random'
 import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
 import { drawText, drawRects } from './adapters/canvas'
+import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
 
 /** The main area */
 @component('main')
@@ -36,7 +37,7 @@ import { drawText, drawRects } from './adapters/canvas'
     justify-content: center;
     align-items: center;
 
-    background-color: hsla(220, 20%, 80%, 0.8);
+    background-color: ${GRAYISH_BLUE_ALPHA80};
 
     canvas {
       background-color: white;
@@ -251,23 +252,25 @@ const KEY_TEXT = 'tententen-current-text'
   flex-shrink: 0;
 
   border-bottom-width: 1px;
-  border-bottom-color: hsla(220, 20%, 80%, 0.8);
+  border-bottom-color: ${GRAYISH_BLUE_ALPHA80};
   border-bottom-style: solid;
 
   button {
     width: 42px;
     height: 42px;
     margin: 8px 10px;
-    background-color: hsla(220, 20%, 80%, 0.8);
+    background-color: ${GRAYISH_BLUE_ALPHA80};
     border-radius: 8px;
     border-width: 0;
+    color: ${VERY_DARK_GRAYISH_BLUE};
   }
 
   input {
     text-align: center;
     height: 40px;
     border-radius: 8px;
-    border: solid 1px hsla(220, 20%, 80%, 0.8);
+    border: solid 1px ${GRAYISH_BLUE_ALPHA80};
+    color: ${VERY_DARK_GRAYISH_BLUE};
   }
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
@@ -313,23 +316,24 @@ export class MainHeaderControls {
   flex-shrink: 0;
 
   border-top-width: 1px;
-  border-top-color: hsla(220, 20%, 80%, 0.8);
+  border-top-color: ${GRAYISH_BLUE_ALPHA80};
   border-top-style: solid;
 
   button {
-    width: 80px;
+    width: 100px;
     height: 42px;
     margin: 0 15px;
-    background-color: hsla(220, 20%, 80%, 0.8);
+    background-color: ${GRAYISH_BLUE_ALPHA80};
     border-width: 0;
     border-radius: 8px;
+    color: ${VERY_DARK_GRAYISH_BLUE};
   }
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
-  <button class="font-btn">🔁FONT</button>
-  <button class="a-btn">A</button>
-  <button class="b-btn">B</button>
+  <button class="font-btn">♻ FONT</button>
+  <button class="a-btn" style="width: 100px;">♻ COLOR</button>
+  <button class="b-btn">♻ RESET</button>
 `)
 export class MainMiddleControls {
   @on.click.at('.a-btn')
@@ -356,31 +360,34 @@ export class MainMiddleControls {
   width: 100%;
 
   border-top-width: 1px;
-  border-top-color: hsla(220, 20%, 80%, 0.8);
+  border-top-color: ${GRAYISH_BLUE_ALPHA80};
   border-top-style: solid;
 
   button {
-    width: 150px;
+    width: 100px;
     height: 52px;
     background-color: white;
     border-width: 0;
+    font-weight: bold;
+    color: ${VERY_DARK_GRAYISH_BLUE};
   }
 
   button:first-child {
     border-right-style: solid;
     border-right-width: 1px;
-    border-right-color: hsla(220, 20%, 80%, 0.8);
+    border-right-color: ${GRAYISH_BLUE_ALPHA80};
   }
 
   button:last-child {
     border-left-style: solid;
     border-left-width: 1px;
-    border-left-color: hsla(220, 20%, 80%, 0.8);
+    border-left-color: ${GRAYISH_BLUE_ALPHA80};
   }
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
   <button class="list-btn">LIST</button>
+  <button class="help-btn">?</button>
   <button class="save-btn">SAVE</button>
 `)
 export class MainFooterControls {
