@@ -13,16 +13,54 @@ import {
   TextLabel,
   createArtwork,
 } from './domain/models'
-import * as E from './events'
+import * as Events from './events'
 import { dice } from './util/random'
 import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
 import { drawText, drawRects } from './adapters/canvas'
 
+/** The main area */
+@component('main')
+@is(css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  height: 100vh;
+
+  .main__canvas-wrapper {
+    flex-grow: 1;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`)
+@sub('start-main')
+export class Main {
+  el?: HTMLElement
+  @on('start-main')
+  @pub(Events.INIT_CANVAS_CONTROLS)
+  start() {
+    const el = this.el!
+    el.classList.remove('hidden')
+    el.innerHTML = `
+      <div class="main__header-controls"></div>
+      <div class="main__canvas-wrapper">
+        <canvas class="main__canvas" width="1" height="1"></canvas>
+      </div>
+      <div class="main__middle-controls"></div>
+      <div class="main__footer-controls"></div>
+    `
+    prep()
+  }
+}
+
 /**
  * The main canvas where the user edit the contents of the artworks.
  */
-@component('main-canvas')
+@component('main__canvas')
 @sub('a', 'b', 'down', 'up', 'font', 'text', 'save', 'list')
 export class MainCanvas {
   width = 0
@@ -71,11 +109,14 @@ export class MainCanvas {
     ]
   }
 
-  __mount__() {
+  async __mount__() {
     const el = this.el!
-    const main = el.parentElement!
+    const wrapper = el.parentElement!
     this.ctx = el.getContext('2d')!
-    const canvasSize = Math.min(main.clientWidth, main.clientHeight)
+    await new Promise(setTimeout)
+    console.log(wrapper)
+    console.log(wrapper.clientWidth, wrapper.clientHeight)
+    const canvasSize = Math.min(wrapper.clientWidth, wrapper.clientHeight)
     el.width = this.width = canvasSize
     el.height = this.height = canvasSize
     this.loop.run()
@@ -189,41 +230,48 @@ export class MainCanvas {
 
 const KEY_TEXT = 'tententen-current-text'
 
-@component('main-canvas-controls')
+@component('main__header-controls')
 @is(css`
-  position: fixed;
-  width: 100%;
-  left: 0;
-  bottom: 0;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row;
+  width: 100%;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: center;
+
+  height: 62px;
+  flex-shrink: 0;
+
+  border-bottom-width: 1px;
+  border-bottom-color: hsla(220, 20%, 80%, 0.8);
+  border-bottom-style: solid;
 
   button {
-    width: 150px;
-    height: 36px;
-    margin: 8px 15px;
+    width: 42px;
+    height: 42px;
+    margin: 8px 10px;
     background-color: hsla(220, 20%, 80%, 0.8);
+    border-radius: 8px;
     border-width: 0;
   }
+
+  input {
+    text-align: center;
+    height: 40px;
+    border-radius: 8px;
+    border: solid 1px hsla(220, 20%, 80%, 0.8);
+  }
 `)
-@sub(E.INIT_CANVAS_CONTROLS)
+@sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
-  <input class="text-input" />
-  <button class="font-btn">🔁FONT</button>
   <button class="up-btn">⬆️</button>
+  <input class="text-input" />
   <button class="down-btn">⬇️</button>
-  <button class="a-btn">A</button>
-  <button class="b-btn">B</button>
-  <button class="save-btn">SAVE</button>
-  <button class="list-btn">LIST</button>
 `)
-export class MainCanvasControls {
+export class MainHeaderControls {
   @wired('.text-input')
   textInput?: HTMLInputElement
 
-  @on(E.INIT_CANVAS_CONTROLS)
+  @on(Events.INIT_CANVAS_CONTROLS)
   init() {
     this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
     this.text()
@@ -235,6 +283,46 @@ export class MainCanvasControls {
     return (localStorage[KEY_TEXT] = this.textInput!.value)
   }
 
+  @on.click.at('.down-btn')
+  @pub('down')
+  down() {}
+
+  @on.click.at('.up-btn')
+  @pub('up')
+  up() {}
+}
+
+@component('main__middle-controls')
+@is(css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  height: 82px;
+  width: 100%;
+  flex-shrink: 0;
+
+  border-top-width: 1px;
+  border-top-color: hsla(220, 20%, 80%, 0.8);
+  border-top-style: solid;
+
+  button {
+    width: 80px;
+    height: 42px;
+    margin: 0 15px;
+    background-color: hsla(220, 20%, 80%, 0.8);
+    border-width: 0;
+    border-radius: 8px;
+  }
+`)
+@sub(Events.INIT_CANVAS_CONTROLS)
+@innerHTML(`
+  <button class="font-btn">🔁FONT</button>
+  <button class="a-btn">A</button>
+  <button class="b-btn">B</button>
+`)
+export class MainMiddleControls {
   @on.click.at('.a-btn')
   @pub('a')
   a() {}
@@ -243,37 +331,55 @@ export class MainCanvasControls {
   @pub('b')
   b() {}
 
-  @on.click.at('.down-btn')
-  @pub('down')
-  down() {}
-
-  @on.click.at('.up-btn')
-  @pub('up')
-  up() {}
-
   @on.click.at('.font-btn')
   @pub('font')
   font() {}
+}
 
+@component('main__footer-controls')
+@is(css`
+  height: 52px;
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  border-top-width: 1px;
+  border-top-color: hsla(220, 20%, 80%, 0.8);
+  border-top-style: solid;
+
+  button {
+    width: 150px;
+    height: 52px;
+    background-color: white;
+    border-width: 0;
+  }
+
+  button:first-child {
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: hsla(220, 20%, 80%, 0.8);
+  }
+
+  button:last-child {
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: hsla(220, 20%, 80%, 0.8);
+  }
+`)
+@sub(Events.INIT_CANVAS_CONTROLS)
+@innerHTML(`
+  <button class="list-btn">LIST</button>
+  <button class="save-btn">SAVE</button>
+`)
+export class MainFooterControls {
   @on.click.at('.save-btn')
   @pub('save')
   save() {}
 
   @on.click.at('.list-btn')
-  @pub(E.LIST_MODAL_OPEM)
+  @pub(Events.LIST_MODAL_OPEM)
   list() {}
-}
-
-@component('main')
-@sub('start-main')
-export class Main {
-  el?: HTMLElement
-  @on('start-main')
-  @pub(E.INIT_CANVAS_CONTROLS)
-  start() {
-    const el = this.el!
-    el.classList.remove('hidden')
-    el.innerHTML = '<canvas class="main-canvas" width="1" height="1" />'
-    prep()
-  }
 }
