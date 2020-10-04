@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StatusBar, Platform, PermissionsAndroid } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { useBridge } from 'lepont'
@@ -20,6 +20,11 @@ const webBundleUrl = Platform.select({
 const uri = webBundleUrl
 
 const App = () => {
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor('#ffffff')
+    }
+  }, [])
   const [ref, onMessage] = useBridge(
     registry =>
       registry.register(
