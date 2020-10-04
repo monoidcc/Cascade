@@ -11,7 +11,7 @@ import {
   WaveRect,
   Result,
   TextLabel,
-  createArtwork,
+  createArtwork,, ArtworkRepository
 } from './domain/models'
 import * as Events from './events'
 import { dice } from './util/random'
@@ -232,9 +232,11 @@ export class MainCanvas {
   }
 
   @on('save')
-  @pub('preview-modal')
-  save(): Artwork {
-    return createArtwork(this.result, this.text)
+  @pub('open-edit-modal')
+  async save(): Promise<Artwork> {
+    const artwork = createArtwork(this.result, this.text)
+    await new ArtworkRepository().save(artwork)
+    return artwork
   }
 }
 

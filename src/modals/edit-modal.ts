@@ -15,7 +15,6 @@ import { getOS } from '@lepont/platform'
     <button class="cancel-btn">CANCEL</button>
   </div>
 `)
-@sub('edit-modal')
 @is(css`
   display: flex;
   flex-direction: column;

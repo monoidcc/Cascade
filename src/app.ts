@@ -6,7 +6,6 @@ import './main'
 import './app'
 import './modals/list-modal'
 import './modals/edit-modal'
-import './modals/preview-modal'
 
 @component('app')
 export class App {}
