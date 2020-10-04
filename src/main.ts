@@ -262,7 +262,13 @@ const KEY_TEXT = 'tententen-current-text'
     background-color: ${GRAYISH_BLUE_ALPHA80};
     border-radius: 8px;
     border-width: 0;
+    font-weight: 900;
     color: ${VERY_DARK_GRAYISH_BLUE};
+
+    svg {
+      height: 21px;
+      width: 21px;
+    }
   }
 
   input {
@@ -275,9 +281,17 @@ const KEY_TEXT = 'tententen-current-text'
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
-  <button class="down-btn">⬇️</button>
+  <button class="down-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+  </svg>
+  </button>
   <input class="text-input" />
-  <button class="up-btn">⬆️</button>
+  <button class="up-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+  </svg>
+  </button>
 `)
 export class MainHeaderControls {
   @wired('.text-input')
@@ -362,6 +376,7 @@ export class MainMiddleControls {
   border-top-width: 1px;
   border-top-color: ${GRAYISH_BLUE_ALPHA80};
   border-top-style: solid;
+  background-color: #fcfcfc;
 
   button {
     width: 100px;
@@ -370,18 +385,8 @@ export class MainMiddleControls {
     border-width: 0;
     font-weight: bold;
     color: ${VERY_DARK_GRAYISH_BLUE};
-  }
-
-  button:first-child {
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-right-color: ${GRAYISH_BLUE_ALPHA80};
-  }
-
-  button:last-child {
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-left-color: ${GRAYISH_BLUE_ALPHA80};
+    color: #868686;
+    background-color: transparent;
   }
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)

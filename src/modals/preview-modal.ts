@@ -10,19 +10,21 @@ import { Artwork } from '../domain/models'
   <div class="preview-controls"></div>
 `)
 @is(css`
-  display: none;
-  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
+  transform: translateX(100vw);
+  transition: transform 500ms;
 
   &.show {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    transform: translateX(0);
   }
 `)
 export class PreviewModal {

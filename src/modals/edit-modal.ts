@@ -17,24 +17,21 @@ import { getOS } from '@lepont/platform'
 `)
 @sub('edit-modal')
 @is(css`
-  display: none;
-  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
-
-  canvas {
-    width: min(80vh, 80vw);
-    height: min(80vh, 80vw);
-  }
+  transform: translateX(100vw);
+  transition: transform 500ms;
 
   &.show {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    transform: translateX(0);
   }
 `)
 @sub('open-edit-modal')

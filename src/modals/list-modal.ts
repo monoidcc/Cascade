@@ -16,19 +16,21 @@ import * as Events from '../events'
 
 @component('list-modal')
 @is(css`
-  display: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
   overflow: scroll;
+  transform: translateX(100vw);
+  transition: transform 500ms;
 
   &.show {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    transform: translateX(0);
   }
 
   .list-controls {
