@@ -249,6 +249,7 @@ const KEY_TEXT = 'tententen-current-text'
   width: 100%;
   align-items: center;
   justify-content: center;
+  gap: 8px;
 
   height: 62px;
   flex-shrink: 0;
@@ -258,12 +259,14 @@ const KEY_TEXT = 'tententen-current-text'
   border-bottom-style: solid;
 
   button {
-    width: 42px;
-    height: 42px;
-    margin: 8px 10px;
-    background-color: ${GRAYISH_BLUE_ALPHA80};
+    width: 40px;
+    height: 40px;
+    background-color: #fcfcfc;
     border-radius: 8px;
-    border-width: 0;
+    border-width: 1;
+    border-color: ${GRAYISH_BLUE_ALPHA80};
+    border-style: solid;
+    box-shadow: 0 0 2px 2px rgba(0,0,0,0.01) inset;
     font-weight: 900;
     color: ${VERY_DARK_GRAYISH_BLUE};
 
@@ -326,6 +329,7 @@ export class MainHeaderControls {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 12px;
 
   height: 82px;
   width: 100%;
@@ -336,19 +340,23 @@ export class MainHeaderControls {
   border-top-style: solid;
 
   button {
-    width: 100px;
-    height: 42px;
-    margin: 0 15px;
-    background-color: ${GRAYISH_BLUE_ALPHA80};
-    border-width: 0;
+    height: 40px;
+    background-color: #fcfcfc;
     border-radius: 8px;
+    border-width: 1;
+    border-color: ${GRAYISH_BLUE_ALPHA80};
+    border-style: solid;
+    padding-left: 12px;
+    padding-right: 12px;
+    box-shadow: 0 0 2px 2px rgba(0,0,0,0.01) inset;
+    font-weight: 900;
     color: ${VERY_DARK_GRAYISH_BLUE};
   }
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
   <button class="font-btn">♻ FONT</button>
-  <button class="a-btn" style="width: 100px;">♻ COLOR</button>
+  <button class="a-btn">♻ COLOR</button>
   <button class="b-btn">♻ RESET</button>
 `)
 export class MainMiddleControls {
