@@ -5,12 +5,14 @@ import { drawArtwork } from '../adapters/canvas'
 import { sendMessage } from 'lepont/browser'
 import { PermissionsAndroid } from '@lepont/permissions-android'
 import { getOS } from '@lepont/platform'
+import { share } from '@lepont/share'
 
 @component('edit-modal')
 @innerHTML(`
   <canvas class="edit-canvas" width="500" height="500"></canvas>
   <div class="edit-controls">
     <button class="delete-btn">DELETE</button>
+    <button class="share-btn">SHARE</button>
     <button class="download-btn">DOWNLOAD</button>
     <button class="cancel-btn">CANCEL</button>
   </div>
@@ -62,6 +64,39 @@ export class EditModal {
   @on.click.at('.delete-btn')
   delete() {
     alert('not impletemented!')
+  }
+
+  @on.click.at('.share-btn')
+  async share() {
+    const base64Content = this.canvas!.toDataURL()//.substr(22)
+    try {
+      const os = await getOS()
+      if (os === 'android') {
+        const permission = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Tententen Storage Permission',
+            message:
+              'Tententen needs access to your storage ' +
+              'so you can save awesome pictures.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK'
+          }
+        )
+        if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
+          alert('permission denied')
+          return
+        }
+      }
+      share({
+        message: `${this.artwork?.text.body} #tententenapp`,
+        urls: [base64Content],
+      })
+    } catch (e) {
+      alert(e)
+      alert(e.stack)
+    }
   }
 
   @on.click.at('.download-btn')

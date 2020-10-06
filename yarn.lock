@@ -1232,6 +1232,11 @@
   resolved "https://registry.yarnpkg.com/@lepont/platform/-/platform-0.1.4.tgz#135ced11b98946163cf6997f36a584fabec31cb7"
   integrity sha512-DUPPWXpKaekj3exvtP4E7Ld8zMPg4EU6199dpNsXr7UdlcqU9tajuiS0Gjl8iI8CAQ94d2f/3HcFcFbmWg+Qsw==
 
+"@lepont/share@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@lepont/share/-/share-0.2.2.tgz#22c5aac3a31cb4f98805722f17ce85af45fddb9c"
+  integrity sha512-qoSBpCjbdVMWiNfYmWCI0mJScWxYdHZKrJixxLuGkb0F9++yDCi5DJCuT7nkON0sqmYjb7CxKPv3P/Wr4kLaIQ==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -7782,6 +7787,11 @@ react-native-fs@^2.16.6:
   dependencies:
     base-64 "^0.1.0"
     utf8 "^3.0.0"
+
+react-native-share@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-4.0.1.tgz#8e4025461c60e5cc59d6dc5dc7ab052fd542c1c5"
+  integrity sha512-KJjUDGw4wb+NXAhqjV6npw4tYrHUfdekTkYnWVmLIjHoukEE+1wkh4LwauuFbFdTjy3vLGyjNmc8XbTYrR0LJw==
 
 react-native-webview@^8.1.2:
   version "8.2.1"
