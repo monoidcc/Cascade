@@ -50,7 +50,7 @@ import * as Events from '../events'
     <button class="close-button">CLOSE</button>
   </div>
 `)
-@sub('artwork-save', Events.LIST_MODAL_OPEM)
+@sub('artwork-save', Events.LIST_MODAL_OPEN)
 export class ListModal {
   el?: HTMLDivElement
 
@@ -63,7 +63,7 @@ export class ListModal {
     this.open()
   }
 
-  @on(Events.LIST_MODAL_OPEM)
+  @on(Events.LIST_MODAL_OPEN)
   async open() {
     this.listArea!.innerHTML = ''
     const artworks = await new ArtworkRepository().get()

@@ -411,6 +411,6 @@ export class MainFooterControls {
   save() {}
 
   @on.click.at('.list-btn')
-  @pub(Events.LIST_MODAL_OPEM)
+  @pub(Events.LIST_MODAL_OPEN)
   list() {}
 }
