@@ -11,7 +11,8 @@ import {
   WaveRect,
   Result,
   TextLabel,
-  createArtwork,, ArtworkRepository
+  createArtwork,
+  ArtworkRepository
 } from './domain/models'
 import * as Events from './events'
 import { dice } from './util/random'
@@ -78,8 +79,8 @@ export class MainCanvas {
   loop: any
   el?: HTMLCanvasElement
   easing0 = bezier(0.42, 0, 0.58, 1)
-  textColors: any[] = []
-  colors: any[] = []
+  textColors: Color[] = []
+  colors: Color[] = []
   text: TextLabel
 
   constructor() {
@@ -98,7 +99,7 @@ export class MainCanvas {
     this.text.shadowColor = this.colors[1].alpha(1).toString()
   }
 
-  randomColor(): any {
+  randomColor(): Color {
     return Color()
       .hue(dice(360))
       .saturationl(dice(100))
@@ -106,7 +107,7 @@ export class MainCanvas {
       .alpha(0.35)
   }
 
-  baseColors(): any[] {
+  baseColors(): Color[] {
     return [
       this.randomColor(),
       this.randomColor(),
