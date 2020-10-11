@@ -1,4 +1,4 @@
-import { component, innerHTML, is, wired, pub } from 'capsid'
+import { component, is, wired, pub } from 'capsid'
 import { css } from 'emotion'
 import { defer } from './util/async'
 import { onLoadImage } from './util/dom'

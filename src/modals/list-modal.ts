@@ -12,7 +12,7 @@ import {
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
-import * as Events from '../events'
+import * as Events from '../const/event'
 
 @component('list-modal')
 @is(css`

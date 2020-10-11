@@ -3,6 +3,7 @@ import bezier = require('bezier-easing')
 import Color = require('color')
 import { css } from 'emotion'
 
+import { devicePixelRatio } from './const'
 import {
   Rect,
   Motion,
@@ -14,12 +15,13 @@ import {
   createArtwork,
   ArtworkRepository
 } from './domain/models'
-import * as Events from './events'
+import * as Events from './const/event'
 import { dice } from './util/random'
 import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
 import { drawText, drawRects } from './adapters/canvas'
 import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
+import { defer } from './util/async'
 
 /** The main area */
 @component('main')
@@ -120,10 +122,12 @@ export class MainCanvas {
     const el = this.el!
     const wrapper = el.parentElement!
     this.ctx = el.getContext('2d')!
-    await new Promise(setTimeout)
+    await defer(0)
     const canvasSize = Math.min(wrapper.clientWidth, wrapper.clientHeight)
-    el.width = this.width = canvasSize
-    el.height = this.height = canvasSize
+    el.width = this.width = canvasSize * devicePixelRatio
+    el.height = this.height = canvasSize * devicePixelRatio
+    el.style.width = `${canvasSize}px`
+    el.style.height = `${canvasSize}px`
     this.loop.run()
   }
 
@@ -157,8 +161,8 @@ export class MainCanvas {
   newWave(e: MouseEvent): void {
     this.rotateColors()
 
-    const canvasY = e.clientY - this.el!.offsetTop
-    const canvasX = e.clientX - this.el!.offsetLeft
+    const canvasY = (e.clientY - this.el!.offsetTop) * devicePixelRatio
+    const canvasX = (e.clientX - this.el!.offsetLeft) * devicePixelRatio
 
     const ratioX = canvasX / this.width
     const ratioY = (this.height - canvasY) / this.height
@@ -244,6 +248,7 @@ export class MainCanvas {
 const KEY_TEXT = 'tententen-current-text'
 
 @component('main__header-controls')
+@sub(Events.INIT_CANVAS_CONTROLS)
 @is(css`
   display: flex;
   flex-direction: row;
@@ -285,7 +290,6 @@ const KEY_TEXT = 'tententen-current-text'
     color: ${VERY_DARK_GRAYISH_BLUE};
   }
 `)
-@sub(Events.INIT_CANVAS_CONTROLS)
 @innerHTML(`
   <button class="down-btn">
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -325,6 +329,12 @@ export class MainHeaderControls {
 }
 
 @component('main__middle-controls')
+@sub(Events.INIT_CANVAS_CONTROLS)
+@innerHTML(`
+  <button class="font-btn">♻ FONT</button>
+  <button class="a-btn">♻ COLOR</button>
+  <button class="b-btn">♻ RESET</button>
+`)
 @is(css`
   display: flex;
   flex-direction: row;
@@ -354,12 +364,6 @@ export class MainHeaderControls {
     color: ${VERY_DARK_GRAYISH_BLUE};
   }
 `)
-@sub(Events.INIT_CANVAS_CONTROLS)
-@innerHTML(`
-  <button class="font-btn">♻ FONT</button>
-  <button class="a-btn">♻ COLOR</button>
-  <button class="b-btn">♻ RESET</button>
-`)
 export class MainMiddleControls {
   @on.click.at('.a-btn')
   @pub('a')
@@ -375,6 +379,11 @@ export class MainMiddleControls {
 }
 
 @component('main__footer-controls')
+@innerHTML(`
+  <button class="list-btn">LIST</button>
+  <button class="help-btn">?</button>
+  <button class="save-btn">SAVE</button>
+`)
 @is(css`
   height: 52px;
   flex-shrink: 0;
@@ -401,11 +410,6 @@ export class MainMiddleControls {
   }
 `)
 @sub(Events.INIT_CANVAS_CONTROLS)
-@innerHTML(`
-  <button class="list-btn">LIST</button>
-  <button class="help-btn">?</button>
-  <button class="save-btn">SAVE</button>
-`)
 export class MainFooterControls {
   @on.click.at('.save-btn')
   @pub('save')
