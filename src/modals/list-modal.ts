@@ -15,23 +15,19 @@ import { drawArtwork } from '../adapters/canvas'
 import * as Events from '../const/event'
 
 @component('list-modal')
+@sub('artwork-save', Events.LIST_MODAL_OPEN)
+@innerHTML(`
+  <div class="list-area"></div>
+  <div class="list-controls">
+    <button class="close-button">CLOSE</button>
+  </div>
+`)
 @is(css`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
   background-color: rgba(255, 255, 255, 0.9);
   overflow: scroll;
-  transform: translateX(100vw);
-  transition: transform 500ms;
-
-  &.show {
-    transform: translateX(0);
-  }
 
   .list-controls {
     display: flex;
@@ -44,13 +40,6 @@ import * as Events from '../const/event'
     }
   }
 `)
-@innerHTML(`
-  <div class="list-area"></div>
-  <div class="list-controls">
-    <button class="close-button">CLOSE</button>
-  </div>
-`)
-@sub('artwork-save', Events.LIST_MODAL_OPEN)
 export class ListModal {
   el?: HTMLDivElement
 

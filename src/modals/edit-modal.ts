@@ -8,8 +8,9 @@ import { getOS } from '@lepont/platform'
 import { share } from '@lepont/share'
 
 @component('edit-modal')
+@sub('open-edit-modal')
 @innerHTML(`
-  <canvas class="edit-canvas" width="500" height="500"></canvas>
+  <canvas class="edit-canvas" width="50" height="50"></canvas>
   <div class="edit-controls">
     <button class="delete-btn">DELETE</button>
     <button class="share-btn">SHARE</button>
@@ -23,19 +24,7 @@ import { share } from '@lepont/share'
   justify-content: center;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.9);
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  transform: translateX(100vw);
-  transition: transform 500ms;
-
-  &.show {
-    transform: translateX(0);
-  }
 `)
-@sub('open-edit-modal')
 export class EditModal {
   el?: Element
 

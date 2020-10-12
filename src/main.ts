@@ -15,7 +15,7 @@ import {
   createArtwork,
   ArtworkRepository
 } from './domain/models'
-import * as Events from './const/event'
+import * as Event from './const/event'
 import { dice } from './util/random'
 import { Ctx } from './util/dom'
 import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
@@ -51,7 +51,7 @@ import { defer } from './util/async'
 export class Main {
   el?: HTMLElement
   @on('start-main')
-  @pub(Events.INIT_CANVAS_CONTROLS)
+  @pub(Event.INIT_CANVAS_CONTROLS)
   start() {
     const el = this.el!
     el.classList.remove('hidden')
@@ -248,7 +248,7 @@ export class MainCanvas {
 const KEY_TEXT = 'tententen-current-text'
 
 @component('main__header-controls')
-@sub(Events.INIT_CANVAS_CONTROLS)
+@sub(Event.INIT_CANVAS_CONTROLS)
 @is(css`
   display: flex;
   flex-direction: row;
@@ -307,7 +307,7 @@ export class MainHeaderControls {
   @wired('.text-input')
   textInput?: HTMLInputElement
 
-  @on(Events.INIT_CANVAS_CONTROLS)
+  @on(Event.INIT_CANVAS_CONTROLS)
   init() {
     this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
     this.text()
@@ -329,7 +329,7 @@ export class MainHeaderControls {
 }
 
 @component('main__middle-controls')
-@sub(Events.INIT_CANVAS_CONTROLS)
+@sub(Event.INIT_CANVAS_CONTROLS)
 @innerHTML(`
   <button class="font-btn">♻ FONT</button>
   <button class="a-btn">♻ COLOR</button>
@@ -409,13 +409,22 @@ export class MainMiddleControls {
     background-color: transparent;
   }
 `)
-@sub(Events.INIT_CANVAS_CONTROLS)
+@sub(Event.INIT_CANVAS_CONTROLS)
 export class MainFooterControls {
   @on.click.at('.save-btn')
   @pub('save')
-  save() {}
+  save() {
+    this.toast()
+  }
+
+  @pub(Event.TOAST)
+  toast() {
+    return { message: 'toast' }
+  }
 
   @on.click.at('.list-btn')
-  @pub(Events.LIST_MODAL_OPEN)
-  list() {}
+  //@pub(Event.LIST_MODAL_OPEN)
+  list() {
+    this.toast()
+  }
 }

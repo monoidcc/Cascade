@@ -26,12 +26,29 @@ button, input {
   outline-style: none;
 }
 
+.slides-in-from-right {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  transform: translateX(100vw);
+  transition-property: transform visibility;
+  transition-duration: 500ms;
+  visibility: hidden;
+}
+
+.slides-in-from-right.show {
+  transform: translateX(0);
+  visibility: visible;
+}
+
 </style>
 <script src="./app.ts">
 </script>
-<body>
+<body class="toast-provider">
   <main class="main hidden"></main>
   <div class="splash-screen"></div>
-  <div class="list-modal"></div>
-  <div class="edit-modal"></div>
+  <div class="list-modal slides-in-from-right"></div>
+  <div class="edit-modal slides-in-from-right"></div>
 </body>
