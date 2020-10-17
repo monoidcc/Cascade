@@ -414,17 +414,10 @@ export class MainFooterControls {
   @on.click.at('.save-btn')
   @pub('save')
   save() {
-    this.toast()
-  }
-
-  @pub(Event.TOAST)
-  toast() {
-    return { message: 'toast' }
   }
 
   @on.click.at('.list-btn')
-  //@pub(Event.LIST_MODAL_OPEN)
+  @pub(Event.LIST_MODAL_OPEN)
   list() {
-    this.toast()
   }
 }

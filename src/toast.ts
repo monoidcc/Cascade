@@ -1,5 +1,6 @@
 import { component, is, on, prep, sub } from 'capsid'
 import { css } from 'emotion'
+import { LIGHT_GRAYISH_LIME_GREEN, MOSTLY_BLACK, VERY_SOFT_RED } from './const/color'
 import * as Event from './const/event'
 import { defer } from './util/async'
 
@@ -9,10 +10,15 @@ export class ToastProvider {
   el?: HTMLElement
 
   @on(Event.TOAST)
-  onToast(e: CustomEvent) {
+  onToast(e: Event.ToastEvent) {
     const toast = document.createElement('div')
     toast.classList.add('toast')
     toast.textContent = e.detail.message
+    if (e.detail.variant === 'success') {
+      toast.classList.add('is-success')
+    } else if (e.detail.variant === 'danger') {
+      toast.classList.add('is-danger')
+    }
     this.el!.appendChild(toast)
     prep('toast', this.el)
   }
@@ -31,12 +37,19 @@ export class ToastProvider {
   transition-property: opacity;
   transition-duration: 500ms;
   text-align: center;
-  background-color: gray;
-  color: white;
+  background-color: ${MOSTLY_BLACK};
   padding: 8px;
 
   &.show {
     opacity: 0.9;
+  }
+
+  &.is-success {
+    background-color: ${LIGHT_GRAYISH_LIME_GREEN};
+  }
+
+  &.is-danger {
+    background-color: ${VERY_SOFT_RED}
   }
 `)
 export class Toast {

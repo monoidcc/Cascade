@@ -1,2 +1,5 @@
-export const VERY_DARK_GRAYISH_BLUE = 'hsla(220, 20%, 30%, 1)'
 export const GRAYISH_BLUE_ALPHA80 = 'hsla(220, 20%, 80%, 0.8)'
+export const LIGHT_GRAYISH_LIME_GREEN = '#DFF2DC'
+export const MOSTLY_BLACK = '#282828'
+export const VERY_DARK_GRAYISH_BLUE = 'hsla(220, 20%, 30%, 1)'
+export const VERY_SOFT_RED = '#DFB0B0'
