@@ -24,7 +24,7 @@ import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
 import { defer } from './util/async'
 
 /** The main area */
-@component('main')
+@component('main-screen')
 @is(css`
   display: flex;
   flex-direction: column;
