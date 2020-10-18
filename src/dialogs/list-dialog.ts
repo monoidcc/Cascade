@@ -14,7 +14,7 @@ import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 import * as Events from '../const/event'
 
-@component('list-modal')
+@component('list-dialog')
 @sub('artwork-save', Events.LIST_MODAL_OPEN)
 @innerHTML(`
   <div class="list-area"></div>

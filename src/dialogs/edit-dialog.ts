@@ -7,7 +7,7 @@ import { PermissionsAndroid } from '@lepont/permissions-android'
 import { getOS } from '@lepont/platform'
 import { share } from '@lepont/share'
 
-@component('edit-modal')
+@component('edit-dialog')
 @sub('open-edit-modal')
 @innerHTML(`
   <canvas class="edit-canvas" width="50" height="50"></canvas>
