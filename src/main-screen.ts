@@ -417,7 +417,14 @@ export class MainFooterControls {
   }
 
   @on.click.at('.list-btn')
-  @pub(Event.LIST_MODAL_OPEN)
-  list() {
+  // @pub(Event.LIST_MODAL_OPEN)
+  @pub(Event.OPEN_CONFIRM_DIALOG)
+  list(): Event.OpenConfirmDialogMessage {
+    return {
+      message: 'Are you sure to delete this image?',
+      confirmLabel: 'DELETE',
+      confirmVariant: 'danger',
+      onConfirm: () => alert('deleting'),
+    }
   }
 }
