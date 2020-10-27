@@ -14,7 +14,7 @@ import * as Event from '../const/event'
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
 `)
-@innerHTML(`<div class="confirm-dialog">aaa</div>`)
+@innerHTML(`<div class="confirm-dialog"></div>`)
 export class ConfirmDialogProvider {
   el?: HTMLElement
 
@@ -62,7 +62,7 @@ export class ConfirmDialogProvider {
       height: 40px;
       background-color: #fcfcfc;
       border-radius: 8px;
-      border-width: 1;
+      border-width: 1px;
       border-color: ${GRAYISH_BLUE_ALPHA80};
       border-style: solid;
       padding-left: 12px;

@@ -1,7 +1,6 @@
-import gameloop = require('gameloopjs')
-import bezier = require('bezier-easing')
-import Color = require('color')
 import { css } from 'emotion'
+import bezier from 'bezier-easing'
+import gameloop from 'gameloopjs'
 
 import { devicePixelRatio } from './const'
 import {
@@ -22,6 +21,7 @@ import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
 import { drawText, drawRects } from './adapters/canvas'
 import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
 import { defer } from './util/async'
+import Color from 'color'
 
 /** The main area */
 @component('main-screen')

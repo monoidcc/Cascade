@@ -38,6 +38,7 @@ export class ToastProvider {
   transition-duration: 500ms;
   text-align: center;
   background-color: ${MOSTLY_BLACK};
+  color: rgba(0, 0, 0, 0.7);
   padding: 8px;
 
   &.show {
