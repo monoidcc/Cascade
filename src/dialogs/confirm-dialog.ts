@@ -56,7 +56,6 @@ export class ConfirmDialogProvider {
     align-items: center;
     gap: 16px;
     padding: 16px;
-    height: 53px;
 
     button {
       height: 40px;
@@ -105,6 +104,9 @@ export class ConfirmDialog {
   @on(Event.OPEN_CONFIRM_DIALOG)
   onOpen (e: Event.OpenConfrimDialogEvent) {
     const msg = e.detail
+    console.log(msg)
+    console.log(this);
+    (window as any).x = this;
     this.content!.textContent = msg.message
     this.confirmButton!.textContent = msg.confirmLabel || 'OK'
     if (msg.confirmVariant === 'danger') {
