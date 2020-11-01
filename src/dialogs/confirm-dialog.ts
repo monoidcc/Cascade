@@ -3,7 +3,6 @@ import { css } from 'emotion'
 import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 import * as Event from '../const/event'
 
-
 @component('confirm-dialog-provider')
 @sub(Event.OPEN_CONFIRM_DIALOG)
 @sub(Event.CLOSE_CONFIRM_DIALOG)
@@ -18,8 +17,7 @@ import * as Event from '../const/event'
 export class ConfirmDialogProvider {
   el?: HTMLElement
 
-  __mount__() {
-  }
+  __mount__() {}
 
   @on(Event.OPEN_CONFIRM_DIALOG)
   open() {
@@ -72,7 +70,7 @@ export class ConfirmDialogProvider {
 
     button.is-danger {
       border-color: transparent;
-      background-color: #DFB0B0;
+      background-color: #dfb0b0;
     }
   }
 `)
@@ -102,11 +100,8 @@ export class ConfirmDialog {
   }
 
   @on(Event.OPEN_CONFIRM_DIALOG)
-  onOpen (e: Event.OpenConfrimDialogEvent) {
+  onOpen(e: Event.OpenConfrimDialogEvent) {
     const msg = e.detail
-    console.log(msg)
-    console.log(this);
-    (window as any).x = this;
     this.content!.textContent = msg.message
     this.confirmButton!.textContent = msg.confirmLabel || 'OK'
     if (msg.confirmVariant === 'danger') {
@@ -125,6 +120,5 @@ export class ConfirmDialog {
 
   @on.click.at('.confirm-dialog__cancel')
   @pub(Event.CLOSE_CONFIRM_DIALOG)
-  onCancel() {
-  }
+  onCancel() {}
 }

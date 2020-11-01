@@ -1,34 +1,46 @@
 import * as Event from './const/event'
+import { create } from './util/dom'
+import { component, pub, on } from 'capsid'
+
 
 export default {
   title: 'Toast'
 }
 
-export const success = () => {
-  const btn = document.createElement('button')
-  document.body.classList.add('toast-provider')
-  btn.textContent = 'Toast'
-  btn.addEventListener('click', () => {
-    const evt = new CustomEvent<Event.ToastMessage>(
-      Event.TOAST,
-      { detail: { message: 'Success!', variant: 'success' } }
-    )
-    document.body.dispatchEvent(evt)
-  })
-  return btn
+@component('toast-opener')
+class ConfirmDialogOpener {
+  el?: HTMLElement;
+  @on.click
+  @pub(Event.TOAST)
+  onClick(): Event.ToastMessage {
+    const { message, variant } = this.el!.dataset
+    return { message: message!, variant: variant as any  }
+  }
 }
 
-export const danger = () => {
-  const btn = document.createElement('button')
-  document.body.classList.add('toast-provider')
-  btn.textContent = 'Toast'
-  btn.addEventListener('click', () => {
-    const evt = new CustomEvent<Event.ToastMessage>(
-      Event.TOAST,
-      { detail: { message: 'Failed!', variant: 'danger' } }
-    )
-    document.body.dispatchEvent(evt)
-  })
-  return btn
-}
+export const success = () => create(`
+  <div>
+    <div class="toast-provider fixed-fill-content"></div>
+    <button
+      class="toast-opener"
+      data-message="Toast message lorem ipsum"
+      data-variant="success"
+    >
+      open Toast
+    </button>
+  </div>
+`)
+
+export const danger = () => create(`
+  <div>
+    <div class="toast-provider fixed-fill-content"></div>
+    <button
+      class="toast-opener"
+      data-message="Toast message lorem ipsum"
+      data-variant="danger"
+    >
+      open Toast
+    </button>
+  </div>
+`)
 

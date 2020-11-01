@@ -63,7 +63,7 @@ const App = () => {
     AsyncStorageBridge(AsyncStorage as any),
     PermissionsAndroidBridge(PermissionsAndroid as any),
     PlatformBridge(Platform),
-    ShareBridge(ReactNativeShare as any),
+    ShareBridge(ReactNativeShare as any)
   )
 
   return (

@@ -11,3 +11,12 @@ export const onLoadImage = (src: string): Promise<HTMLImageElement> => {
     img.src = src
   })
 }
+
+export const create = (html: string): ChildNode => {
+  const div = document.createElement('div')
+  div.innerHTML = html
+  if (div.children.length === 0) {
+    throw new Error(`no valid element: ${html}`)
+  }
+  return div.children[0]
+}

@@ -1,5 +1,6 @@
 import '../src/index.ts'
 import { css } from 'emotion'
+import { prep } from 'capsid'
 
 const globalStyle = css`
 .fixed-fill-content {
@@ -28,7 +29,11 @@ const globalStyle = css`
 
 document.body.classList.add(globalStyle)
 
+const observer = new MutationObserver(() => prep())
+
+observer.observe(document.body, { childList: true, subtree: true })
+
 export const parameters = {
   layout: 'fullscreen',
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: "^on[A-Z].*" }
 }

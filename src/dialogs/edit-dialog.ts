@@ -57,7 +57,7 @@ export class EditModal {
 
   @on.click.at('.share-btn')
   async share() {
-    const base64Content = this.canvas!.toDataURL()//.substr(22)
+    const base64Content = this.canvas!.toDataURL()
     try {
       const os = await getOS()
       if (os === 'android') {
@@ -80,7 +80,7 @@ export class EditModal {
       }
       share({
         message: `${this.artwork?.text.body} #tententenapp`,
-        urls: [base64Content],
+        urls: [base64Content]
       })
     } catch (e) {
       alert(e)

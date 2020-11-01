@@ -6,6 +6,9 @@ import { defer } from './util/async'
 
 @component('toast-provider')
 @sub(Event.TOAST)
+@is(css`
+  pointer-events: none;
+`)
 export class ToastProvider {
   el?: HTMLElement
 
