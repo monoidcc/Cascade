@@ -8,7 +8,7 @@ export default {
 }
 
 @component('toast-opener')
-class ConfirmDialogOpener {
+class ToastOpener {
   el?: HTMLElement;
   @on.click
   @pub(Event.TOAST)
