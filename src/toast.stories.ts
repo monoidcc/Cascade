@@ -1,7 +1,7 @@
 import * as Event from './const/event'
 import { create } from './util/dom'
 import { component, pub, on } from 'capsid'
-
+import button from './button'
 
 export default {
   title: 'Toast'
@@ -19,10 +19,10 @@ class ToastOpener {
 }
 
 export const success = () => create(`
-  <div>
+  <div style="padding: 30px;">
     <div class="toast-provider fixed-fill-content"></div>
     <button
-      class="toast-opener"
+      class="${button} toast-opener"
       data-message="Toast message lorem ipsum"
       data-variant="success"
     >
@@ -32,10 +32,10 @@ export const success = () => create(`
 `)
 
 export const danger = () => create(`
-  <div>
+  <div style="padding: 30px;">
     <div class="toast-provider fixed-fill-content"></div>
     <button
-      class="toast-opener"
+      class="${button} toast-opener"
       data-message="Toast message lorem ipsum"
       data-variant="danger"
     >

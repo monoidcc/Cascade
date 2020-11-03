@@ -1,5 +1,6 @@
 import * as Event from '../const/event'
 import { create } from '../util/dom'
+import button from '../button'
 import { component, on, pub } from 'capsid'
 
 export default {
@@ -18,10 +19,10 @@ class ConfirmDialogOpener {
 
 export const normal = () =>
   create(`
-  <div>
+  <div style="padding: 30px;">
     <div class="confirm-dialog-provider fixed-fill-content fade-in-opacity"></div>
     <button
-      class="confirm-dialog-opener"
+      class="${button} confirm-dialog-opener"
       data-message="Confirm dialog message lorem ipsum"
     >
       open ConfirmDialog

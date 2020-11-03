@@ -22,9 +22,11 @@ import { drawText, drawRects } from './adapters/canvas'
 import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
 import { defer } from './util/async'
 import Color from 'color'
+import button from './button'
 
 /** The main area */
 @component('main-screen')
+@sub('start-main')
 @is(css`
   display: flex;
   flex-direction: column;
@@ -47,7 +49,6 @@ import Color from 'color'
     }
   }
 `)
-@sub('start-main')
 export class Main {
   el?: HTMLElement
   @on('start-main')
@@ -264,24 +265,6 @@ const KEY_TEXT = 'tententen-current-text'
   border-bottom-color: ${GRAYISH_BLUE_ALPHA80};
   border-bottom-style: solid;
 
-  button {
-    width: 40px;
-    height: 40px;
-    background-color: #fcfcfc;
-    border-radius: 8px;
-    border-width: 1;
-    border-color: ${GRAYISH_BLUE_ALPHA80};
-    border-style: solid;
-    box-shadow: 0 0 2px 2px rgba(0,0,0,0.01) inset;
-    font-weight: 900;
-    color: ${VERY_DARK_GRAYISH_BLUE};
-
-    svg {
-      height: 21px;
-      width: 21px;
-    }
-  }
-
   input {
     text-align: center;
     height: 40px;
@@ -291,16 +274,16 @@ const KEY_TEXT = 'tententen-current-text'
   }
 `)
 @innerHTML(`
-  <button class="down-btn">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-  </svg>
+  <button class="${button} down-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    </svg>
   </button>
   <input class="text-input" />
-  <button class="up-btn">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-  </svg>
+  <button class="${button} up-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
   </button>
 `)
 export class MainHeaderControls {
@@ -330,11 +313,6 @@ export class MainHeaderControls {
 
 @component('main__middle-controls')
 @sub(Event.INIT_CANVAS_CONTROLS)
-@innerHTML(`
-  <button class="font-btn">♻ FONT</button>
-  <button class="a-btn">♻ COLOR</button>
-  <button class="b-btn">♻ RESET</button>
-`)
 @is(css`
   display: flex;
   flex-direction: row;
@@ -349,20 +327,11 @@ export class MainHeaderControls {
   border-top-width: 1px;
   border-top-color: ${GRAYISH_BLUE_ALPHA80};
   border-top-style: solid;
-
-  button {
-    height: 40px;
-    background-color: #fcfcfc;
-    border-radius: 8px;
-    border-width: 1;
-    border-color: ${GRAYISH_BLUE_ALPHA80};
-    border-style: solid;
-    padding-left: 12px;
-    padding-right: 12px;
-    box-shadow: 0 0 2px 2px rgba(0,0,0,0.01) inset;
-    font-weight: 900;
-    color: ${VERY_DARK_GRAYISH_BLUE};
-  }
+`)
+@innerHTML(`
+  <button class="${button} font-btn">♻ FONT</button>
+  <button class="${button} a-btn">♻ COLOR</button>
+  <button class="${button} b-btn">♻ RESET</button>
 `)
 export class MainMiddleControls {
   @on.click.at('.a-btn')
