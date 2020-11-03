@@ -43,6 +43,7 @@ export class ToastProvider {
   background-color: ${MOSTLY_BLACK};
   color: rgba(0, 0, 0, 0.7);
   padding: 8px;
+  pointer-events: auto;
 
   &.show {
     opacity: 0.9;
