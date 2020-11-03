@@ -16,7 +16,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts",
     "storybook": "start-storybook -p 6008",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook -o docs/storybook"
   },
   "dependencies": {
     "@lepont/async-storage": "^0.4.2",
