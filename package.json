@@ -16,7 +16,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts",
     "storybook": "start-storybook -p 6008",
-    "build-storybook": "build-storybook -o docs/storybook"
+    "build-storybook": "build-storybook -o docs/storybook",
+    "docs": "npm run clean && npm run build && npm run build-storybook"
   },
   "dependencies": {
     "@lepont/async-storage": "^0.4.2",
@@ -60,8 +61,8 @@
     "parcel-bundler": "^1.12.4",
     "pod-install": "^0.1.10",
     "prettier": "^1.19.1",
-    "react-dom": "^17.0.1",
-    "react-is": "^17.0.1",
+    "react-dom": "^16.14.0",
+    "react-is": "^16.13.0",
     "react-native-share": "^4.0.1",
     "react-test-renderer": "16.9.0",
     "rimraf": "^3.0.2",
