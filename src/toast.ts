@@ -34,8 +34,8 @@ export class ToastProvider {
   justify-content: center;
   align-items: center;
   width: 100vw;
-  bottom: 52px;
-  height: 82px;
+  bottom: 134px; /* 52 + 82 */
+  height: 52px;
   opacity: 0;
   transition-property: opacity;
   transition-duration: 500ms;

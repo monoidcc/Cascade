@@ -6,24 +6,57 @@ import { sendMessage } from 'lepont/browser'
 import { PermissionsAndroid } from '@lepont/permissions-android'
 import { getOS } from '@lepont/platform'
 import { share } from '@lepont/share'
+import button from '../button'
+import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 
 @component('edit-dialog')
 @sub('open-edit-modal')
-@innerHTML(`
-  <canvas class="edit-canvas" width="50" height="50"></canvas>
-  <div class="edit-controls">
-    <button class="delete-btn">DELETE</button>
-    <button class="share-btn">SHARE</button>
-    <button class="download-btn">DOWNLOAD</button>
-    <button class="cancel-btn">CANCEL</button>
-  </div>
-`)
 @is(css`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.9);
+
+  .edit-dialog__header {
+    border-style: solid;
+    border-width: 0 0 1px;
+    border-bottom-color: ${GRAYISH_BLUE_ALPHA80};
+    height: 62px;
+    width: 100%;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+
+    svg {
+      margin-left: 12px;
+      width: 21px;
+      height: 21px;
+      cursor: pointer;
+    }
+  }
+
+  .edit-dialog__main {
+    flex-grow: 1;
+  }
+`)
+@innerHTML(`
+  <header class="edit-dialog__header">
+    <svg class="done-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+    </svg>
+  </header>
+  <div class="edit-dialog__main">
+    <canvas class="edit-canvas" width="50" height="50"></canvas>
+  </div>
+  <div class="edit-dialog__controls">
+    <button class="${button} is-danger delete-btn">DELETE</button>
+    <button class="${button} is-info share-btn">SHARE</button>
+    <button class="${button} is-info download-btn">DOWNLOAD</button>
+    <button class="${button} done-btn">DONE</button>
+  </div>
 `)
 export class EditModal {
   el?: Element
@@ -44,7 +77,7 @@ export class EditModal {
     this.el!.classList.add('show')
   }
 
-  @on.click.at('.cancel-btn')
+  @on.click.at('.done-btn')
   @on('hide-edit-modal')
   hide() {
     this.el!.classList.remove('show')

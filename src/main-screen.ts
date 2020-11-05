@@ -383,11 +383,19 @@ export class MainFooterControls {
   @on.click.at('.save-btn')
   @pub('save')
   save() {
+    this.toast()
+  }
+
+  @pub(Event.TOAST)
+  toast(): Event.ToastMessage {
+    return {
+      message: 'Successfully saved the image!',
+      variant: 'success'
+    }
   }
 
   @on.click.at('.list-btn')
-  // @pub(Event.LIST_MODAL_OPEN)
-  @pub(Event.OPEN_CONFIRM_DIALOG)
+  @pub(Event.LIST_MODAL_OPEN)
   list(): Event.OpenConfirmDialogMessage {
     return {
       message: 'Are you sure to delete this image?',
