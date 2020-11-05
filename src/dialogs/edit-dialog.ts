@@ -41,6 +41,33 @@ import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
   .edit-dialog__main {
     flex-grow: 1;
   }
+
+  .edit-dialog__controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 134px;
+
+    border-style: solid;
+    border-width: 1px 0 0;
+    border-top-color: ${GRAYISH_BLUE_ALPHA80};
+
+    background-color: #fcfcfc;
+  }
+
+  .edit-dialog__controls > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    height: 40px;
+
+  }
+
+  .edit-dialog__controls > div:first-child {
+  }
 `)
 @innerHTML(`
   <header class="edit-dialog__header">
@@ -52,10 +79,14 @@ import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
     <canvas class="edit-canvas" width="50" height="50"></canvas>
   </div>
   <div class="edit-dialog__controls">
-    <button class="${button} is-danger delete-btn">DELETE</button>
-    <button class="${button} is-info share-btn">SHARE</button>
-    <button class="${button} is-info download-btn">DOWNLOAD</button>
-    <button class="${button} done-btn">DONE</button>
+    <div>
+      <button class="${button} is-info share-btn">SHARE</button>
+      <button class="${button} is-info download-btn">DOWNLOAD</button>
+    </div>
+    <div>
+      <button class="${button} is-danger delete-btn">DELETE</button>
+      <button class="${button} done-btn">DONE</button>
+    </div>
   </div>
 `)
 export class EditModal {
