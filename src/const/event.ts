@@ -1,5 +1,6 @@
 export const INIT_CANVAS_CONTROLS = 'init-canvas-controls'
 export const LIST_MODAL_OPEN = 'list-modal-open'
+export const LIST_DIALOG_REFRESH = 'refresh-list-dialog'
 export const TOAST = 'toast'
 export const OPEN_CONFIRM_DIALOG = 'open-confirm-dialog'
 export const CLOSE_CONFIRM_DIALOG = 'close-confirm-dialog'

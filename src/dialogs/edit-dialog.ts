@@ -1,6 +1,6 @@
-import { component, innerHTML, on, sub, is, wired, emits } from 'capsid'
+import { component, innerHTML, on, sub, is, wired, emits, pub } from 'capsid'
 import { css } from 'emotion'
-import { Artwork } from '../domain/models'
+import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 import { sendMessage } from 'lepont/browser'
 import { PermissionsAndroid } from '@lepont/permissions-android'
@@ -8,6 +8,7 @@ import { getOS } from '@lepont/platform'
 import { share } from '@lepont/share'
 import button from '../button'
 import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
+import * as Event from '../const/event'
 
 @component('edit-dialog')
 @sub('open-edit-modal')
@@ -130,8 +131,21 @@ export class EditModal {
   }
 
   @on.click.at('.delete-btn')
+  @pub(Event.OPEN_CONFIRM_DIALOG)
   delete() {
-    alert('not impletemented!')
+    return {
+      message: 'Are you sure to delete this image?',
+      onConfirm: () => {
+        this.onDelete()
+      }
+    }
+  }
+
+  @pub(Event.LIST_DIALOG_REFRESH)
+  async onDelete() {
+    const repository = new ArtworkRepository()
+    await repository.remove(this.artwork!)
+    this.hide()
   }
 
   @on.click.at('.share-btn')

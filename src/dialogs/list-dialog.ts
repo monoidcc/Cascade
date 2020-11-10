@@ -6,16 +6,15 @@ import {
   sub,
   innerHTML,
   make,
-  get,
   pub
 } from 'capsid'
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
-import * as Events from '../const/event'
+import * as Event from '../const/event'
 
 @component('list-dialog')
-@sub('artwork-save', Events.LIST_MODAL_OPEN)
+@sub('artwork-save', Event.LIST_MODAL_OPEN, Event.LIST_DIALOG_REFRESH)
 @innerHTML(`
   <div class="list-area"></div>
   <div class="list-controls">
@@ -52,8 +51,21 @@ export class ListModal {
     this.open()
   }
 
-  @on(Events.LIST_MODAL_OPEN)
+  @on(Event.LIST_MODAL_OPEN)
   async open() {
+    await this.refresh()
+
+    this.el!.classList.add('show')
+  }
+
+  @on.click
+  @on.click.at('.close-button')
+  close() {
+    this.el!.classList.remove('show')
+  }
+
+  @on(Event.LIST_DIALOG_REFRESH)
+  async refresh() {
     this.listArea!.innerHTML = ''
     const artworks = await new ArtworkRepository().get()
 
@@ -67,14 +79,6 @@ export class ListModal {
         make<ListItem>('list-item', div).update(artwork)
         this.listArea!.appendChild(div)
       })
-
-    this.el!.classList.add('show')
-  }
-
-  @on.click
-  @on.click.at('.close-button')
-  close() {
-    this.el!.classList.remove('show')
   }
 }
 
