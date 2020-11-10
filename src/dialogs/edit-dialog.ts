@@ -16,7 +16,7 @@ import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #f0f0f0;
 
   .edit-dialog__header {
     border-style: solid;
@@ -28,7 +28,7 @@ import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
+    background-color: white;
 
     svg {
       margin-left: 12px;
@@ -40,6 +40,9 @@ import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 
   .edit-dialog__main {
     flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .edit-dialog__controls {
@@ -95,16 +98,28 @@ export class EditModal {
   @wired('canvas')
   canvas?: HTMLCanvasElement
 
+  @wired('.edit-dialog__main')
+  main?: HTMLDivElement
+
   artwork?: Artwork
 
   @on('open-edit-modal')
   open({ detail: artwork }: { detail: Artwork }) {
+    const maxWidth = document.body.offsetWidth
+    const maxHeight = this.main!.offsetHeight
+
+    const size = Math.min(maxWidth, maxHeight) * 0.9
+    const canvasSize = size * window.devicePixelRatio
+
     const canvas = this.canvas!
-    const { width, height } = canvas
+    canvas.width = canvasSize
+    canvas.height = canvasSize
+    canvas.style.width = `${size}px`
+    canvas.style.height = `${size}px`
     const ctx = canvas.getContext('2d')!
     this.artwork = artwork
 
-    drawArtwork(ctx, artwork, width, height)
+    drawArtwork(ctx, artwork, canvasSize, canvasSize)
     this.el!.classList.add('show')
   }
 
