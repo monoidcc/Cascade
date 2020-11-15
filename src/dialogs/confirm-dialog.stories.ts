@@ -8,7 +8,7 @@ export default {
 }
 
 @component('confirm-dialog-opener')
-class ConfirmDialogOpener {
+export class ConfirmDialogOpener {
   el?: HTMLElement
   @on.click
   @pub(Event.OPEN_CONFIRM_DIALOG)

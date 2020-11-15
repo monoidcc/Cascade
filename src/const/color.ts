@@ -1,4 +1,5 @@
 export const GRAYISH_BLUE_ALPHA80 = 'hsla(220, 20%, 80%, 0.8)'
+export const LIGHT_GRAYISH_BLUE = '#ced4de';
 export const LIGHT_GRAYISH_LIME_GREEN = '#DFF2DC'
 export const LIGHT_GRAYISH_CYAN = '#DCF2F2'
 export const MOSTLY_BLACK = '#282828'

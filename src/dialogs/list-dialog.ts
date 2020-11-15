@@ -11,38 +11,63 @@ import {
 import { css } from 'emotion'
 import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
+import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 import * as Event from '../const/event'
+
+const GAP = 4
 
 @component('list-dialog')
 @sub('artwork-save', Event.LIST_MODAL_OPEN, Event.LIST_DIALOG_REFRESH)
 @innerHTML(`
-  <div class="list-area"></div>
-  <div class="list-controls">
-    <button class="close-button">CLOSE</button>
-  </div>
+  <header class="list-dialog__header">
+    <svg class="done-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+    </svg>
+  </header>
+  <main class="list-dialog__list-area"></main>
 `)
 @is(css`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: flex-start;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: white;
   overflow: scroll;
 
-  .list-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .list-dialog__header {
+    flex-shrink: 0;
+    border-style: solid;
+    border-width: 0 0 1px;
+    border-bottom-color: ${GRAYISH_BLUE_ALPHA80};
+    height: 62px;
+    width: 100%;
 
-    .close-button {
-      width: 150px;
-      height: 36px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: white;
+
+    svg {
+      margin-left: 12px;
+      width: 21px;
+      height: 21px;
+      cursor: pointer;
     }
+  }
+
+  .list-dialog__list-area {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: ${GAP}px;
+    overflow-y: scroll;
+
+    padding-top: ${GAP}px;
   }
 `)
 export class ListModal {
   el?: HTMLDivElement
 
-  @wired('.list-area')
+  @wired('.list-dialog__list-area')
   listArea?: HTMLDivElement
 
   @on('artwork-save')
@@ -69,6 +94,8 @@ export class ListModal {
     this.listArea!.innerHTML = ''
     const artworks = await new ArtworkRepository().get()
 
+    const size = (Math.min(window.innerHeight, window.innerWidth) - GAP * 2) / 3
+
     artworks.artworks
       .map((artwork: Artwork): [Artwork, HTMLDivElement] => [
         artwork,
@@ -76,7 +103,7 @@ export class ListModal {
           document.createElement('div')
       ])
       .forEach(([artwork, div]: [Artwork, HTMLDivElement]) => {
-        make<ListItem>('list-item', div).update(artwork)
+        make<ListItem>('list-item', div).update(artwork, size)
         this.listArea!.appendChild(div)
       })
   }
@@ -84,14 +111,8 @@ export class ListModal {
 
 @component('list-item')
 @is(css`
-  display: inline-box;
-  position: relative;
-  width: min(25vw, 25vh);
-  height: min(25vw, 25vh);
-
   canvas {
-    width: 100%;
-    height: 100%;
+    border-radius: ${GAP / 2}px;
   }
 `)
 @innerHTML(`<canvas></canvas>`)
@@ -99,18 +120,18 @@ export class ListItem {
   el?: HTMLDivElement
 
   artwork?: Artwork
+  size?: number
 
   @wired('canvas')
   canvas?: HTMLCanvasElement
 
-  __mount__(): void {
-    this.canvas!.width = 150
-    this.canvas!.height = 150
-  }
-
-  update(artwork: Artwork): void {
+  update(artwork: Artwork, size: number): void {
     this.el!.dataset.key = artwork.id
     this.artwork = artwork
+    this.el!.style.width = `${size}px`
+    this.el!.style.height = `${size}px`
+    this.canvas!.width = size
+    this.canvas!.height = size
     this.draw()
   }
 
