@@ -1,6 +1,7 @@
 import '../src/index.ts'
 import { css } from 'emotion'
 import { prep } from 'capsid'
+import '../src/util/mn.css'
 
 const globalStyle = css`
 .fixed-fill-content {

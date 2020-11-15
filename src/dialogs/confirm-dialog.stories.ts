@@ -8,12 +8,18 @@ export default {
 }
 
 @component('confirm-dialog-opener')
-export class ConfirmDialogOpener {
+class ConfirmDialogOpener {
   el?: HTMLElement
   @on.click
   @pub(Event.OPEN_CONFIRM_DIALOG)
-  onClick() {
-    return { message: this.el!.dataset.message, onConfirm: () => {} }
+  onClick(): Event.OpenConfirmDialogMessage {
+    const d = this.el!.dataset
+    return {
+      message: d.message!,
+      confirmLabel: d.confirmLabel,
+      confirmVariant: d.confirmVariant,
+      onConfirm: () => {}
+    }
   }
 }
 
@@ -24,6 +30,36 @@ export const normal = () =>
     <button
       class="${button} confirm-dialog-opener"
       data-message="Confirm dialog message lorem ipsum"
+    >
+      open ConfirmDialog
+    </button>
+  </div>
+`)
+
+export const post = () =>
+  create(`
+  <div style="padding: 30px;">
+    <div class="confirm-dialog-provider fixed-fill-content fade-in-opacity"></div>
+    <button
+      class="${button} confirm-dialog-opener"
+      data-message="Confirm dialog message lorem ipsum"
+      data-confirm-variant="success"
+      data-confirm-label="Post"
+    >
+      open ConfirmDialog
+    </button>
+  </div>
+`)
+
+export const Delete = () =>
+  create(`
+  <div style="padding: 30px;">
+    <div class="confirm-dialog-provider fixed-fill-content fade-in-opacity"></div>
+    <button
+      class="${button} confirm-dialog-opener"
+      data-message="Confirm dialog message lorem ipsum"
+      data-confirm-variant="danger"
+      data-confirm-label="Delete"
     >
       open ConfirmDialog
     </button>

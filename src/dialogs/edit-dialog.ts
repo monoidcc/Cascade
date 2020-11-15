@@ -132,9 +132,11 @@ export class EditModal {
 
   @on.click.at('.delete-btn')
   @pub(Event.OPEN_CONFIRM_DIALOG)
-  delete() {
+  delete(): Event.OpenConfirmDialogMessage {
     return {
       message: 'Are you sure to delete this image?',
+      confirmLabel: 'Delete',
+      confirmVariant: 'danger',
       onConfirm: () => {
         this.onDelete()
       }

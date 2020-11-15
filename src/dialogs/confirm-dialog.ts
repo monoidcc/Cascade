@@ -1,7 +1,8 @@
 import { component, on, pub, sub, is, innerHTML, wired } from 'capsid'
 import { css } from 'emotion'
-import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 import * as Event from '../const/event'
+import { GRAYISH_BLUE_ALPHA80, LIGHT_GRAYISH_LIME_GREEN, VERY_DARK_GRAY_ALPHA80, VERY_SOFT_RED } from '../const/color'
+
 
 @component('confirm-dialog-provider')
 @sub(Event.OPEN_CONFIRM_DIALOG)
@@ -69,8 +70,15 @@ export class ConfirmDialogProvider {
     }
 
     button.is-danger {
-      border-color: transparent;
-      background-color: #dfb0b0;
+      border-width: 0;
+      background-color: ${VERY_SOFT_RED};
+      color: ${VERY_DARK_GRAY_ALPHA80};
+    }
+
+    button.is-success {
+      border-width: 0;
+      background-color: ${LIGHT_GRAYISH_LIME_GREEN};
+      color: ${VERY_DARK_GRAY_ALPHA80};
     }
   }
 `)
