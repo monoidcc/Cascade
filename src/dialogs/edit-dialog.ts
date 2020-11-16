@@ -4,7 +4,6 @@ import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 import { sendMessage } from 'lepont/browser'
 import { PermissionsAndroid } from '@lepont/permissions-android'
-import { getOS } from '@lepont/platform'
 import { share } from '@lepont/share'
 import button from '../button'
 import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
@@ -150,11 +149,30 @@ export class EditModal {
     this.hide()
   }
 
+  @pub(Event.TOAST)
+  toastDanger(message: string): Event.ToastMessage {
+    return {
+      message,
+      variant: 'danger',
+    }
+  }
+  @pub(Event.TOAST)
+  toastSuccess(message: string): Event.ToastMessage {
+    return {
+      message,
+      variant: 'success',
+    }
+  }
+
   @on.click.at('.share-btn')
   async share() {
     const base64Content = this.canvas!.toDataURL()
+    const os = process.env.PLATFORM;
+    if (os) {
+      this.toastDanger('Share is not supported on web')
+      return;
+    }
     try {
-      const os = await getOS()
       if (os === 'android') {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -169,7 +187,7 @@ export class EditModal {
           }
         )
         if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
-          alert('permission denied')
+          this.toastDanger('Permission Denied')
           return
         }
       }
@@ -178,17 +196,19 @@ export class EditModal {
         urls: [base64Content]
       })
     } catch (e) {
-      alert(e)
-      alert(e.stack)
+      this.toastDanger(e)
     }
   }
 
   @on.click.at('.download-btn')
-  @emits('hide-edit-modal')
   async download() {
     const base64Content = this.canvas!.toDataURL().substr(22)
+    const os = process.env.PLATFORM;
+    if (os) {
+      this.toastDanger('Download is not supported on web')
+      return;
+    }
     try {
-      const os = await getOS()
       if (os === 'android') {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -203,7 +223,7 @@ export class EditModal {
           }
         )
         if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
-          alert('permission denied')
+          this.toastDanger('Permission denied')
           return
         }
       }
@@ -219,10 +239,9 @@ export class EditModal {
         type: 'cameraroll:save',
         payload: { tag: savedPath, type: 'photo', album: 'Tententen' }
       })
-      alert('Saved the picture to the album')
+      this.toastSuccess('Saved the picture to the album')
     } catch (e) {
-      alert(e)
-      alert(e.stack)
+      this.toastDanger(e)
     }
   }
 }

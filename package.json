@@ -11,7 +11,7 @@
     "type": "tsc -p ./tsconfig.web.json --noEmit --incremental false",
     "build": "parcel build --public-url . --out-dir docs src/index.html",
     "bundle": "npm run clean && npm run build && cp docs/* html/Web.bundle/",
-    "web": "parcel src/index.html",
+    "web": "PLATFORM=web parcel src/index.html",
     "web:full": "SPLASH_SCREEN=1 parcel src/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts",

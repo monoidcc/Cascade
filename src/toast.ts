@@ -14,6 +14,9 @@ export class ToastProvider {
 
   @on(Event.TOAST)
   onToast(e: Event.ToastEvent) {
+    // First remove existing toasts
+    this.removeChildren();
+
     const toast = document.createElement('div')
     toast.classList.add('toast')
     toast.textContent = e.detail.message
@@ -24,6 +27,12 @@ export class ToastProvider {
     }
     this.el!.appendChild(toast)
     prep('toast', this.el)
+  }
+
+  removeChildren() {
+    this.el!.querySelectorAll<HTMLDivElement>('.toast').forEach((node) => {
+      node.click()
+    })
   }
 }
 
@@ -37,16 +46,18 @@ export class ToastProvider {
   bottom: 134px; /* 52 + 82 */
   height: 52px;
   opacity: 0;
-  transition-property: opacity;
+  transition-property: opacity transform;
   transition-duration: 500ms;
   text-align: center;
   background-color: ${MOSTLY_BLACK};
   color: rgba(0, 0, 0, 0.7);
   padding: 8px;
   pointer-events: auto;
+  transform: translateY(10px);
 
   &.show {
     opacity: 0.9;
+    transform: translateY(0);
   }
 
   &.is-success {
