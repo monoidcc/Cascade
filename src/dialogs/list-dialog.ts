@@ -94,7 +94,15 @@ export class ListModal {
     this.listArea!.innerHTML = ''
     const artworks = await new ArtworkRepository().get()
 
-    const size = (Math.min(window.innerHeight, window.innerWidth) - GAP * 2) / 3
+    let numPartition = 3
+    if (window.innerHeight < window.innerWidth) {
+      // If the width is bigger than height
+      // increase the horizontal partition number
+      const x = window.innerHeight / 3
+      numPartition = Math.ceil(window.innerWidth / x)
+    }
+
+    const size = (window.innerWidth - GAP * (numPartition - 1)) / numPartition
 
     artworks.artworks
       .map((artwork: Artwork): [Artwork, HTMLDivElement] => [
