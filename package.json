@@ -4,20 +4,21 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist/* html/Web.bundle/*",
+    "clean-docs": "rimraf docs",
     "android": "PLATFORM=android npm run bundle && react-native run-android",
     "ios": "PLATFORM=ios npm run bundle && react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "type": "tsc -p ./tsconfig.web.json --noEmit --incremental false",
-    "build": "parcel build --public-url . --out-dir docs src/index.html",
-    "bundle": "npm run clean && npm run build && cp docs/* html/Web.bundle/",
+    "build": "parcel build --public-url . --out-dir dist src/index.html",
+    "bundle": "npm run clean && npm run build && cp dist/* html/Web.bundle/",
     "web": "PLATFORM=web parcel src/index.html",
     "web:full": "SPLASH_SCREEN=1 parcel src/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts",
     "storybook": "start-storybook -p 6008",
     "build-storybook": "build-storybook -o docs/storybook",
-    "docs": "npm run clean && npm run build && npm run build-storybook"
+    "docs": "npm run clean && npm run clean-docs && npm run build && mkdir -p docs/ && cp dist/* docs/ && npm run build-storybook"
   },
   "dependencies": {
     "@lepont/async-storage": "^0.4.2",
