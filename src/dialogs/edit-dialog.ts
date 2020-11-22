@@ -168,7 +168,7 @@ export class EditModal {
   async share() {
     const base64Content = this.canvas!.toDataURL()
     const os = process.env.PLATFORM;
-    if (os) {
+    if (os === 'web') {
       this.toastDanger('Share is not supported on web')
       return;
     }
@@ -204,7 +204,7 @@ export class EditModal {
   async download() {
     const base64Content = this.canvas!.toDataURL().substr(22)
     const os = process.env.PLATFORM;
-    if (os) {
+    if (os === 'web') {
       this.toastDanger('Download is not supported on web')
       return;
     }

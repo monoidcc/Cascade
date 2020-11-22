@@ -17,7 +17,7 @@ class ConfirmDialogOpener {
     return {
       message: d.message!,
       confirmLabel: d.confirmLabel,
-      confirmVariant: d.confirmVariant,
+      confirmVariant: d.confirmVariant as any,
       onConfirm: () => {}
     }
   }

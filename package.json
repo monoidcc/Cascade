@@ -11,7 +11,7 @@
     "test": "jest",
     "type": "tsc -p ./tsconfig.web.json --noEmit --incremental false",
     "build": "parcel build --public-url . --out-dir dist src/index.html",
-    "bundle": "npm run clean && npm run build && cp dist/* html/Web.bundle/",
+    "bundle": "npm run clean && SPLASH_SCREEN=1 npm run build && cp dist/* html/Web.bundle/",
     "web": "PLATFORM=web parcel src/index.html",
     "web:full": "SPLASH_SCREEN=1 parcel src/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
