@@ -69,3 +69,6 @@ dist
 
 # dist
 /html/Web.bundle
+
+# parcel web cache
+/web-cache

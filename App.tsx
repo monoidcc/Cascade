@@ -68,7 +68,7 @@ const App = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <WebView
         source={{ uri }}
         originWhitelist={['*']}
