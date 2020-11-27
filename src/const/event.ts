@@ -4,6 +4,7 @@ export const LIST_DIALOG_REFRESH = 'refresh-list-dialog'
 export const TOAST = 'toast'
 export const OPEN_CONFIRM_DIALOG = 'open-confirm-dialog'
 export const CLOSE_CONFIRM_DIALOG = 'close-confirm-dialog'
+export const OPEN_MANUAL_DIALOG = 'open-manual-dialog'
 
 export type MessageVariant = 'success' | 'danger' | 'default'
 

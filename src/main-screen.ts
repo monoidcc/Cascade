@@ -347,10 +347,13 @@ export class MainMiddleControls {
   font() {}
 }
 
+/**
+ * The controls in the footer.
+ */
 @component('main__footer-controls')
 @innerHTML(`
   <button class="list-btn">LIST</button>
-  <button class="help-btn">?</button>
+  <button class="help-btn">(?)</button>
   <button class="save-btn">SAVE</button>
 `)
 @is(css`
@@ -376,6 +379,7 @@ export class MainMiddleControls {
     color: ${VERY_DARK_GRAYISH_BLUE};
     color: #868686;
     background-color: transparent;
+    cursor: pointer;
   }
 `)
 @sub(Event.INIT_CANVAS_CONTROLS)
@@ -384,6 +388,11 @@ export class MainFooterControls {
   @pub('save')
   save() {
     this.toast()
+  }
+
+  @on.click.at('.help-btn')
+  @pub(Event.OPEN_MANUAL_DIALOG)
+  openManulDialog() {
   }
 
   @pub(Event.TOAST)
