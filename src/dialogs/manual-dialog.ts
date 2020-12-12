@@ -7,6 +7,7 @@ import sample2Png from '../img/doc/sample2.png'
 import sample3Png from '../img/doc/sample3.png'
 import textboxPng from '../img/doc/textbox.png'
 import editDialogPng from '../img/doc/edit-dialog.png'
+import monoSvg from '../img/mono.svg'
 
 @component('manual-dialog__provider')
 @sub(Event.OPEN_MANUAL_DIALOG)
@@ -35,7 +36,8 @@ import editDialogPng from '../img/doc/edit-dialog.png'
     <p class="manual-dialog__sample-images">
       <img class="half-image" src="${editDialogPng}" />
     </p>
-    <p>Be creative and have fun!</p>
+    <p class="center">Be creative and have fun!</p>
+    <p class="center"><img src="${monoSvg}" width="40"></p>
   </div>
 `)
 @is(css`
@@ -62,6 +64,10 @@ import editDialogPng from '../img/doc/edit-dialog.png'
 
     p {
       line-height: 1.6;
+    }
+
+    .center {
+      text-align: center;
     }
 
     hr {
