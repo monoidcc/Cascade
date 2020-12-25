@@ -13,6 +13,7 @@ import { Artwork, ArtworkRepository } from '../domain/models'
 import { drawArtwork } from '../adapters/canvas'
 import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 import * as Event from '../const/event'
+import monoSvg from '../img/mono.svg'
 
 const GAP = 4
 
@@ -62,6 +63,30 @@ const GAP = 4
     overflow-y: scroll;
 
     padding-top: ${GAP}px;
+
+    .no-items {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+
+      width: 100%;
+      height: 300px;
+
+      img {
+        width: 57px;
+      }
+
+      p {
+        color: #888;
+
+        .close-button {
+          font-weight: bold;
+          cursor: pointer;
+        }
+      }
+    }
   }
 `)
 export class ListModal {
@@ -103,6 +128,15 @@ export class ListModal {
     }
 
     const size = (window.innerWidth - GAP * (numPartition - 1)) / numPartition
+
+    if (artworks.length === 0) {
+      this.listArea!.innerHTML = `
+        <div class="no-items">
+          <img class="mono" src="${monoSvg}" />
+          <p>No items. Let's create one in the <span class="close-button" href="">main canvas</span>!</p>
+        </div>
+      `
+    }
 
     artworks.artworks
       .map((artwork: Artwork): [Artwork, HTMLDivElement] => [

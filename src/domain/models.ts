@@ -250,6 +250,10 @@ export class ArtworkCollection {
 
     this.artworks.splice(i, 1)
   }
+
+  get length(): number {
+    return this.artworks.length
+  }
 }
 
 const KEY_ARTWORK_COLLECTION = 'Tententen/artwork-collection'
