@@ -5,6 +5,9 @@ export const TOAST = 'toast'
 export const OPEN_CONFIRM_DIALOG = 'open-confirm-dialog'
 export const CLOSE_CONFIRM_DIALOG = 'close-confirm-dialog'
 export const OPEN_MANUAL_DIALOG = 'open-manual-dialog'
+export const CHANGE_FONT_COLOR = 'change-font-color'
+export const RESET = 'reset'
+export const IS_FONT_SIZE_MAX = 'is-font-size-max'
 
 export type MessageVariant = 'success' | 'danger' | 'default'
 

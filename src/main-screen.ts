@@ -23,6 +23,7 @@ import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
 import { defer } from './util/async'
 import Color from 'color'
 import button from './button'
+import { KEY_TEXT, KEY_TEXT_FONT, KEY_TEXT_FONT_SIZE } from './const/ls-key'
 
 /** The main area */
 @component('main-screen')
@@ -72,7 +73,7 @@ export class Main {
  * The main canvas where the user edit the contents of the artworks.
  */
 @component('main__canvas')
-@sub('a', 'b', 'down', 'up', 'font', 'text', 'save', 'list')
+@sub(Event.CHANGE_FONT_COLOR, Event.RESET, 'down', 'up', 'font', 'text', 'save', 'list')
 export class MainCanvas {
   width = 0
   height = 0
@@ -87,9 +88,10 @@ export class MainCanvas {
   text: TextLabel
 
   constructor() {
+    const fontSize = localStorage[KEY_TEXT_FONT_SIZE]
     this.wave = new Wave()
     this.result = new Result()
-    this.text = new TextLabel('', 'Avenir Next', 1 / 6, '#fff', '#fff')
+    this.text = new TextLabel('', localStorage[KEY_TEXT_FONT], fontSize ? +fontSize : 1 / 6, '#fff', '#fff')
     this.resetColors()
     this.loop = gameloop(this.main, 60)
   }
@@ -213,24 +215,31 @@ export class MainCanvas {
   @on('font')
   font(): void {
     this.text.rotateFonts()
+    localStorage[KEY_TEXT_FONT] = this.text.fontFamily
   }
 
   @on('up')
-  up(): void {
+  @pub(Event.IS_FONT_SIZE_MAX)
+  up(): boolean {
     this.text.sizeUp()
+    localStorage[KEY_TEXT_FONT_SIZE] = this.text.size
+    return this.text.isMaxSize()
   }
 
   @on('down')
-  down(): void {
+  @pub(Event.IS_FONT_SIZE_MAX)
+  down(): boolean {
     this.text.sizeDown()
+    localStorage[KEY_TEXT_FONT_SIZE] = this.text.size
+    return this.text.isMaxSize()
   }
 
-  @on('a')
+  @on(Event.CHANGE_FONT_COLOR)
   a(): void {
     this.rotateTextColors()
   }
 
-  @on('b')
+  @on(Event.RESET)
   async b(): Promise<void> {
     this.wave.eject()
     this.result.clear()
@@ -246,10 +255,8 @@ export class MainCanvas {
   }
 }
 
-const KEY_TEXT = 'tententen-current-text'
-
 @component('main__header-controls')
-@sub(Event.INIT_CANVAS_CONTROLS)
+@sub(Event.INIT_CANVAS_CONTROLS, Event.IS_FONT_SIZE_MAX)
 @is(css`
   display: flex;
   flex-direction: row;
@@ -272,6 +279,15 @@ const KEY_TEXT = 'tententen-current-text'
     border: solid 1px ${GRAYISH_BLUE_ALPHA80};
     color: ${VERY_DARK_GRAYISH_BLUE};
   }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    opacity: 50%;
+    cursor: default;
+  }
 `)
 @innerHTML(`
   <button class="${button} down-btn">
@@ -290,10 +306,22 @@ export class MainHeaderControls {
   @wired('.text-input')
   textInput?: HTMLInputElement
 
+  @wired('.up-btn')
+  upBtn?: HTMLButtonElement
+
   @on(Event.INIT_CANVAS_CONTROLS)
   init() {
     this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
     this.text()
+  }
+
+  @on(Event.IS_FONT_SIZE_MAX)
+  isFontSizeMax({ detail: isMax }: CustomEvent<boolean>): void {
+    if (isMax) {
+      this.upBtn!.disabled = true
+    } else {
+      this.upBtn!.disabled = false
+    }
   }
 
   @on('input', { at: '.text-input' })
@@ -330,17 +358,17 @@ export class MainHeaderControls {
 `)
 @innerHTML(`
   <button class="${button} font-btn">♻ FONT</button>
-  <button class="${button} a-btn">♻ COLOR</button>
-  <button class="${button} b-btn">♻ RESET</button>
+  <button class="${button} change-font-color-btn">♻ COLOR</button>
+  <button class="${button} reset-btn">♻ RESET</button>
 `)
 export class MainMiddleControls {
-  @on.click.at('.a-btn')
-  @pub('a')
-  a() {}
+  @on.click.at('.change-font-color-btn')
+  @pub(Event.CHANGE_FONT_COLOR)
+  changeFontColor() {}
 
-  @on.click.at('.b-btn')
-  @pub('b')
-  b() {}
+  @on.click.at('.reset-btn')
+  @pub(Event.RESET)
+  reset() {}
 
   @on.click.at('.font-btn')
   @pub('font')

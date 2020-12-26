@@ -6,6 +6,7 @@ import { sendMessage } from 'lepont/browser'
 import { PermissionsAndroid } from '@lepont/permissions-android'
 import { share } from '@lepont/share'
 import button from '../button'
+import { PLATFORM } from '../const'
 import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
 import * as Event from '../const/event'
 
@@ -167,13 +168,12 @@ export class EditModal {
   @on.click.at('.share-btn')
   async share() {
     const base64Content = this.canvas!.toDataURL()
-    const os = process.env.PLATFORM;
-    if (os === 'web') {
+    if (PLATFORM === 'web') {
       this.toastDanger('Share is not supported on web')
       return;
     }
     try {
-      if (os === 'android') {
+      if (PLATFORM === 'android') {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
@@ -203,13 +203,12 @@ export class EditModal {
   @on.click.at('.download-btn')
   async download() {
     const base64Content = this.canvas!.toDataURL().substr(22)
-    const os = process.env.PLATFORM;
-    if (os === 'web') {
+    if (PLATFORM === 'web') {
       this.toastDanger('Download is not supported on web')
       return;
     }
     try {
-      if (os === 'android') {
+      if (PLATFORM === 'android') {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {

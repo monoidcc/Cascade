@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-community/async-storage'
 import CameraRoll from '@react-native-community/cameraroll'
 import RNFS from 'react-native-fs'
 import { PermissionsAndroidBridge } from '@lepont/permissions-android/bridge'
-import { PlatformBridge } from '@lepont/platform/bridge'
 import ReactNativeShare from 'react-native-share'
 import { ShareBridge } from '@lepont/share/bridge'
 
@@ -62,7 +61,6 @@ const App = () => {
       ),
     AsyncStorageBridge(AsyncStorage as any),
     PermissionsAndroidBridge(PermissionsAndroid as any),
-    PlatformBridge(Platform),
     ShareBridge(ReactNativeShare as any)
   )
 

@@ -1,5 +1,6 @@
 import * as uuid from 'uuid'
 import { getStorage } from '../util/storage'
+import { PLATFORM } from '../const'
 
 export class Rect {
   constructor(
@@ -165,19 +166,32 @@ const fontsForAndroid = [
 export class TextLabel {
   sizeInverse: number
 
-  fonts = process.env.PLATFORM === 'android' ? fontsForAndroid : fontsForIos
+  fonts = PLATFORM === 'android' ? fontsForAndroid : fontsForIos
+
+  public fontFamily: string
 
   constructor(
     public body: string,
-    public fontFamily: string,
+    fontFamily: string,
     public size: number,
     public color: string,
     public shadowColor: string
   ) {
     this.sizeInverse = 1 / size
+    this.fontFamily = this.fonts[0]
+    if (this.fonts.includes(fontFamily)) {
+      this.rotateUntil(fontFamily)
+    }
+  }
+
+  isMaxSize(): boolean {
+    return this.sizeInverse - 1 <= 0.01
   }
 
   sizeUp(): void {
+    if (this.isMaxSize()) {
+      return
+    }
     this.sizeInverse -= 1
     this.size = 1 / this.sizeInverse
   }
@@ -190,6 +204,15 @@ export class TextLabel {
   rotateFonts(): void {
     this.fonts.push(this.fonts.shift()!)
     this.fontFamily = this.fonts[0]
+  }
+
+  rotateUntil(fontFamily: string): void {
+    for (const _ of Array(this.fonts.length)) {
+      this.rotateFonts()
+      if (this.fontFamily === fontFamily) {
+        break
+      }
+    }
   }
 
   font(height: number): string {
