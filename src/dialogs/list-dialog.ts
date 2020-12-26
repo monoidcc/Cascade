@@ -152,11 +152,6 @@ export class ListModal {
 }
 
 @component('list-item')
-@is(css`
-  canvas {
-    border-radius: ${GAP / 2}px;
-  }
-`)
 @innerHTML(`<canvas></canvas>`)
 export class ListItem {
   el?: HTMLDivElement
