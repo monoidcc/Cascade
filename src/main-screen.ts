@@ -2,7 +2,7 @@ import { css } from 'emotion'
 import bezier from 'bezier-easing'
 import gameloop from 'gameloopjs'
 
-import { devicePixelRatio } from './const'
+import { devicePixelRatio, MAX_WAVE_COUNT } from './const'
 import {
   Rect,
   Motion,
@@ -25,6 +25,8 @@ import Color from 'color'
 import button from './button'
 import { KEY_TEXT, KEY_TEXT_FONT, KEY_TEXT_FONT_SIZE } from './const/ls-key'
 
+const DECREMENT_WAVE_COUNT = 'tententen-main-decrement-wave-count'
+
 /** The main area */
 @component('main-screen')
 @sub('start-main')
@@ -39,6 +41,7 @@ import { KEY_TEXT, KEY_TEXT_FONT, KEY_TEXT_FONT_SIZE } from './const/ls-key'
     flex-grow: 1;
     width: 100%;
 
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,11 +64,46 @@ export class Main {
       <div class="main__header-controls"></div>
       <div class="main__canvas-wrapper">
         <canvas class="main__canvas" width="1" height="1"></canvas>
+        <div class="main__wave-counter"></div>
       </div>
       <div class="main__middle-controls"></div>
       <div class="main__footer-controls"></div>
     `
     prep()
+  }
+}
+
+@component('main__wave-counter')
+@sub(DECREMENT_WAVE_COUNT)
+@innerHTML(`<span class="main__wave-counter__counter"></span>`)
+@is(css(`
+  position: absolute;
+  right: 5;
+  top: 5;
+  height: 50;
+  width: 100%;
+  text-align: right;
+  text-shadow: 0 0 2px white;
+`))
+export class WaveCounter {
+  @wired('.main__wave-counter__counter')
+  counter: HTMLSpanElement
+  remaining = MAX_WAVE_COUNT
+
+  @on(Event.RESET)
+  __mount__() {
+    this.remaining = MAX_WAVE_COUNT
+    this.setRemaining()
+  }
+
+  setRemaining() {
+    this.counter!.innerHTML = `remaining ${this.remaining}`
+  }
+
+  @on(DECREMENT_WAVE_COUNT)
+  decrement() {
+    this.remaining--;
+    this.setRemaining()
   }
 }
 
@@ -86,6 +124,7 @@ export class MainCanvas {
   textColors: Color[] = []
   colors: Color[] = []
   text: TextLabel
+  remaining = MAX_WAVE_COUNT
 
   constructor() {
     const fontSize = localStorage[KEY_TEXT_FONT_SIZE]
@@ -161,7 +200,13 @@ export class MainCanvas {
   /** Creates a new wave (set of 4 boxes coming into the canvas)
    * based on the given client position
    */
+  @on('mouseup')
   newWave(e: MouseEvent): void {
+    if (this.remaining <= 0) {
+      // quota exceeded
+      return
+    }
+    this.decrementRemaining()
     this.rotateColors()
 
     const canvasY = (e.clientY - this.el!.offsetTop) * devicePixelRatio
@@ -202,14 +247,14 @@ export class MainCanvas {
     this.wave.add(new WaveRect(r3, m3))
   }
 
+  @pub(DECREMENT_WAVE_COUNT)
+  decrementRemaining() {
+    this.remaining--
+  }
+
   @on('text')
   onText({ detail }: { detail: string }): void {
     this.text.body = detail
-  }
-
-  @on('mouseup')
-  mouseup(e: MouseEvent): void {
-    this.newWave(e)
   }
 
   @on('font')
@@ -241,6 +286,7 @@ export class MainCanvas {
 
   @on(Event.RESET)
   async b(): Promise<void> {
+    this.remaining = MAX_WAVE_COUNT
     this.wave.eject()
     this.result.clear()
     this.resetColors()
