@@ -30,7 +30,7 @@
     "react": "^16.14.0",
     "react-native": "0.61.5",
     "react-native-fs": "^2.16.6",
-    "react-native-webview": "^8.1.2"
+    "react-native-webview": "^11.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
