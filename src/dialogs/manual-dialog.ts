@@ -8,6 +8,7 @@ import sample3Png from '../img/doc/sample3.png'
 import textboxPng from '../img/doc/textbox.png'
 import editDialogPng from '../img/doc/edit-dialog.png'
 import monoSvg from '../img/mono.svg'
+import { Artwork } from '../domain/models'
 
 @component('manual-dialog__provider')
 @sub(Event.OPEN_MANUAL_DIALOG)
@@ -32,7 +33,7 @@ import monoSvg from '../img/mono.svg'
     </p>
     <p>Hint: The higher position you tap, the more opaque boxes appear. The lower position you tap, the more transparent boxes appear.</p>
     <hr/>
-    <p>You can save the created image by pressing Save button. You can also download them to the Album or share them via other Apps.</p>
+    <p>You can save the artworks by pressing Save button. You can save up to ${Artwork.MAX_ITEMS} items. You can also download them to the Album or share them via other Apps.</p>
     <p class="manual-dialog__sample-images">
       <img class="half-image" src="${editDialogPng}" />
     </p>

@@ -225,6 +225,7 @@ export class TextLabel {
 }
 
 export class Artwork {
+  static MAX_ITEMS = 70
   constructor(
     public id: string,
     public boxes: Rect[],

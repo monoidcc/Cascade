@@ -24,6 +24,8 @@ const GAP = 4
     <svg class="done-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
     </svg>
+    <span class="list-dialog__header__title"></span>
+    <span style="width: 21px; mrgin-right: 12px;">&nbsp;</span>
   </header>
   <main class="list-dialog__list-area"></main>
 `)
@@ -43,7 +45,7 @@ const GAP = 4
     width: 100%;
 
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     background-color: white;
 
@@ -52,6 +54,10 @@ const GAP = 4
       width: 21px;
       height: 21px;
       cursor: pointer;
+    }
+
+    .list-dialog__header__title {
+      font-weight: bold;
     }
   }
 
@@ -91,6 +97,9 @@ const GAP = 4
 `)
 export class ListModal {
   el?: HTMLDivElement
+
+  @wired('.list-dialog__header__title')
+  headerTitle?: HTMLDivElement
 
   @wired('.list-dialog__list-area')
   listArea?: HTMLDivElement
@@ -137,6 +146,8 @@ export class ListModal {
         </div>
       `
     }
+
+    this.headerTitle!.innerHTML = `Artworks (${artworks.length}/${Artwork.MAX_ITEMS})`;
 
     artworks.artworks
       .map((artwork: Artwork): [Artwork, HTMLDivElement] => [

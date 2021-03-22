@@ -87,7 +87,7 @@ export class Main {
 `))
 export class WaveCounter {
   @wired('.main__wave-counter__counter')
-  counter: HTMLSpanElement
+  counter?: HTMLSpanElement
   remaining = MAX_WAVE_COUNT
 
   @on(Event.RESET)
