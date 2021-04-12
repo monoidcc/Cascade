@@ -80,8 +80,8 @@ export class Main {
   position: absolute;
   right: 5;
   top: 5;
-  height: 50;
-  width: 100%;
+  height: auto;
+  width: auto;
   text-align: right;
   text-shadow: 0 0 2px white;
 `))
