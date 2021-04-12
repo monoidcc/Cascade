@@ -26,7 +26,7 @@ import { Artwork } from '../domain/models'
       <img class="full-image" src="${textboxPng}" />
     </p>
     <hr />
-    <p>Tap in the Canvas and 4 boxes apear from the 4 sides. They has some rules and some randomness. Tap in the canvas in various ways and guess what the rules are!</p>
+    <p>Tap in the Canvas and 4 boxes apear from the 4 sides. They have some rules and some randomness. Tap in the canvas in various ways and guess what the rules are!</p>
     <p class="manual-dialog__sample-images">
       <img class="half-image" src="${sample2Png}" />
       <img class="half-image" src="${sample3Png}" />
