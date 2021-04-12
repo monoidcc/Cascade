@@ -293,11 +293,32 @@ export class MainCanvas {
   }
 
   @on('save')
+  async save() {
+    if (await new ArtworkRepository().isFull()) {
+      this.toast({
+        message: 'Maximum number (70) of items are saved. You need to delete some artworks to save new one.',
+        variant: 'danger'
+      })
+      return
+    }
+    this.saveSucess();
+  }
+
   @pub('open-edit-modal')
-  async save(): Promise<Artwork> {
+  @pub(Event.ARTWORK_PERSISTED)
+  async saveSucess(): Promise<Artwork> {
     const artwork = createArtwork(this.result, this.text)
     await new ArtworkRepository().save(artwork)
+    this.toast({
+      message: 'Successfully saved the image!',
+      variant: 'success'
+    })
     return artwork
+  }
+
+  @pub(Event.TOAST)
+  toast(e: Event.ToastMessage): Event.ToastMessage {
+    return e
   }
 }
 
@@ -428,7 +449,11 @@ export class MainMiddleControls {
 @innerHTML(`
   <button class="list-btn">LIST</button>
   <button class="help-btn">(?)</button>
-  <button class="save-btn">SAVE</button>
+  <button class="save-btn">
+    <span class="save-label">SAVE</span>
+    <br>
+    <span class="item-counter"></span>
+  </button>
 `)
 @is(css`
   height: 52px;
@@ -455,36 +480,63 @@ export class MainMiddleControls {
     background-color: transparent;
     cursor: pointer;
   }
+
+  .list-btn {
+    border-right-width: 1px;
+    border-right-color: ${GRAYISH_BLUE_ALPHA80};
+    border-right-style: solid;
+  }
+
+  .save-btn {
+    border-left-width: 1px;
+    border-left-color: ${GRAYISH_BLUE_ALPHA80};
+    border-left-style: solid;
+
+    .item-counter {
+      font-size: 12px;
+    }
+
+    &.disabled {
+      background-color: ${GRAYISH_BLUE_ALPHA80};
+      cursor: not-allowed;
+
+      .save-label {
+        text-decoration: line-through;
+      }
+    }
+  }
 `)
-@sub(Event.INIT_CANVAS_CONTROLS)
+@sub(Event.INIT_CANVAS_CONTROLS, Event.ARTWORK_PERSISTED)
 export class MainFooterControls {
+  @wired('.save-btn')
+  saveBtn?: HTMLButtonElement
+
+  @wired('.item-counter')
+  itemCounter?: HTMLSpanElement
+
+  __mount__() {
+    this.update()
+  }
+
+  @on(Event.ARTWORK_PERSISTED)
+  async update() {
+    const items = await new ArtworkRepository().get()
+    const disabled = items.length >= Artwork.MAX_ITEMS
+    this.saveBtn!.classList.toggle('disabled', disabled)
+    this.saveBtn!.disabled = disabled
+    this.itemCounter!.textContent = `${items.length}/${Artwork.MAX_ITEMS}`
+  }
+
   @on.click.at('.save-btn')
   @pub('save')
   save() {
-    this.toast()
   }
 
   @on.click.at('.help-btn')
   @pub(Event.OPEN_MANUAL_DIALOG)
-  openManulDialog() {
-  }
-
-  @pub(Event.TOAST)
-  toast(): Event.ToastMessage {
-    return {
-      message: 'Successfully saved the image!',
-      variant: 'success'
-    }
-  }
+  openManulDialog() {}
 
   @on.click.at('.list-btn')
   @pub(Event.LIST_MODAL_OPEN)
-  list(): Event.OpenConfirmDialogMessage {
-    return {
-      message: 'Are you sure to delete this image?',
-      confirmLabel: 'DELETE',
-      confirmVariant: 'danger',
-      onConfirm: () => alert('deleting'),
-    }
-  }
+  list() {}
 }

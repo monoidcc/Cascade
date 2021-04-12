@@ -335,6 +335,10 @@ export class ArtworkRepository {
     await this.saveAll(artworks)
   }
 
+  async isFull(): Promise<boolean> {
+    return (await this.get()).length >= Artwork.MAX_ITEMS
+  }
+
   static dtoToArtwork(dto: ArtworkDto): Artwork {
     return new Artwork(
       dto.id,

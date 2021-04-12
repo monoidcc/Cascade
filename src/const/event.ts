@@ -8,6 +8,7 @@ export const OPEN_MANUAL_DIALOG = 'open-manual-dialog'
 export const CHANGE_FONT_COLOR = 'change-font-color'
 export const RESET = 'reset'
 export const IS_FONT_SIZE_MAX = 'is-font-size-max'
+export const ARTWORK_PERSISTED = 'artwork-persisted'
 
 export type MessageVariant = 'success' | 'danger' | 'default'
 

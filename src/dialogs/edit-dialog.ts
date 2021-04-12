@@ -144,6 +144,7 @@ export class EditModal {
   }
 
   @pub(Event.LIST_DIALOG_REFRESH)
+  @pub(Event.ARTWORK_PERSISTED)
   async onDelete() {
     const repository = new ArtworkRepository()
     await repository.remove(this.artwork!)
