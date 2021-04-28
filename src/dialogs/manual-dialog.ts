@@ -14,19 +14,19 @@ import { Artwork } from '../domain/models'
 @sub(Event.OPEN_MANUAL_DIALOG)
 @innerHTML(/* html */`
   <div class="manual-dialog">
-    <h2>Tententen User's Manual</h2>
-    <p>Tententen is a generative art app. You can create images like the below very easily.</p>
+    <h2>Cascade User Guide</h2>
+    <p>Cascade is a generative art app. You can create images like the below with this app. Let's start!</p>
     <p class="manual-dialog__sample-images">
       <img class="half-image" src="${sample0Png}" />
       <img class="half-image" src="${sample1Png}" />
     </p>
     <hr />
-    <p>You can input in the text box at the top to modify the text in the center of the Canvas. You can change the size of the text with the up and down arrows.</p>
+    <p>You can change the text at the center of the Canvas by changing it in the text box at the top of the screen. You can also change the size of the text with the up (larger) and down (smaller) arrows.</p>
     <p class="manual-dialog__sample-images">
       <img class="full-image" src="${textboxPng}" />
     </p>
     <hr />
-    <p>Tap in the Canvas and 4 boxes apear from the 4 sides. They have some rules and some randomness. Tap in the canvas in various ways and guess what the rules are!</p>
+    <p>Tap in the Canvas and 4 boxes apear from the 4 sides. They have some rules and some randomness. Tap in the canvas in various ways and guess what the rules are.</p>
     <p class="manual-dialog__sample-images">
       <img class="half-image" src="${sample2Png}" />
       <img class="half-image" src="${sample3Png}" />
@@ -37,7 +37,7 @@ import { Artwork } from '../domain/models'
     <p class="manual-dialog__sample-images">
       <img class="half-image" src="${editDialogPng}" />
     </p>
-    <p class="center">Be creative and have fun!</p>
+    <p class="center">Have fun!</p>
     <p class="center"><img src="${monoSvg}" width="40"></p>
   </div>
 `)
