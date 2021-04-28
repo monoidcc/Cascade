@@ -18,7 +18,8 @@
     "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts",
     "storybook": "start-storybook -p 6008",
     "build-storybook": "build-storybook -o docs/storybook",
-    "docs": "npm run clean && npm run clean-docs && npm run build && mkdir -p docs/ && cp dist/* docs/ && npm run build-storybook"
+    "docs": "npm run clean && npm run clean-docs && npm run build && mkdir -p docs/ && cp dist/* docs/ && npm run build-storybook",
+    "release-android": "git cherry-pick -n c9a6eea792710b6e61000d95ed96017a672e6d7f && cd android && ./gradlew bundleRelease"
   },
   "dependencies": {
     "@lepont/async-storage": "^0.4.2",
