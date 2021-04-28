@@ -74,7 +74,7 @@ export class Main {
 }
 
 @component('main__wave-counter')
-@sub(DECREMENT_WAVE_COUNT)
+@sub(DECREMENT_WAVE_COUNT, Event.RESET)
 @innerHTML(`<span class="main__wave-counter__counter"></span>`)
 @is(css(`
   position: absolute;
