@@ -19,7 +19,8 @@
     "storybook": "start-storybook -p 6008",
     "build-storybook": "build-storybook -o docs/storybook",
     "docs": "npm run clean && npm run clean-docs && npm run build && mkdir -p docs/ && cp dist/* docs/ && npm run build-storybook",
-    "release-android": "npm run clean && PLATFORM=android npm run bundle && git cherry-pick -n c9a6eea792710b6e61000d95ed96017a672e6d7f && cd android && ./gradlew bundleRelease"
+    "release-android": "npm run clean && PLATFORM=android npm run bundle && git cherry-pick -n c9a6eea792710b6e61000d95ed96017a672e6d7f && cd android && ./gradlew bundleRelease",
+    "test-release-android": "PLATFORM=android npm run bundle && react-native run-android --variant=release"
   },
   "dependencies": {
     "@lepont/async-storage": "^0.4.2",
