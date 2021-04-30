@@ -9,6 +9,7 @@ import RNFS from 'react-native-fs'
 import { PermissionsAndroidBridge } from '@lepont/permissions-android/bridge'
 import ReactNativeShare from 'react-native-share'
 import { ShareBridge } from '@lepont/share/bridge'
+import changeNavigationBarColor from 'react-native-navigation-bar-color'
 
 // const isDev = process.env.NODE_ENV === 'development'
 
@@ -23,8 +24,10 @@ const uri = webBundleUrl
 const App = () => {
   useEffect(() => {
     if (Platform.OS === 'android') {
-      StatusBar.setBackgroundColor('#ffffff')
+      StatusBar.setBackgroundColor("#000000")
+      changeNavigationBarColor("#000000", true, true)
     }
+    StatusBar.setBarStyle('light-content')
   }, [])
   const [ref, onMessage] = useBridge(
     registry =>
@@ -57,6 +60,17 @@ const App = () => {
           const path = RNFS.DocumentDirectoryPath + '/' + filename
           await RNFS.writeFile(path, content, encode)
           return path
+        }
+      ),
+    registry =>
+      registry.register(
+        'set-status-bar-style',
+        ({ color, style }: { color: string, style: 'light-content' | 'dark-content' }) => {
+          if (Platform.OS === 'android') {
+            StatusBar.setBackgroundColor(color);
+            changeNavigationBarColor(color, style === 'dark-content', true)
+          }
+          StatusBar.setBarStyle(style);
         }
       ),
     AsyncStorageBridge(AsyncStorage as any),

@@ -3,6 +3,8 @@ import { css } from 'emotion'
 import { defer } from './util/async'
 import { onLoadImage } from './util/dom'
 import monoidSvg from './img/monoid-white.svg'
+import { sendMessage } from 'lepont/browser'
+import { PLATFORM } from './const'
 
 @component('splash-screen')
 @is(css`
@@ -81,6 +83,15 @@ export class SplashScreen {
     await defer(1000)
     this.logo!.classList.add('out')
     await this.showLogoHtml(`<span class="logo in is-tententen">Tententen</span>`)
+    if (PLATFORM === 'android') {
+      await sendMessage({
+        type: 'set-status-bar-style',
+        payload: {
+          style: 'dark-content',
+          color: '#ffffff'
+        }
+      });
+    }
   }
 
   async showLogoHtml(html: string) {

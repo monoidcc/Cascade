@@ -464,31 +464,31 @@ export class MainMiddleControls {
   justify-content: space-between;
   width: 100%;
 
-  border-top-width: 1px;
+  border-top-width: 0.5px;
   border-top-color: ${GRAYISH_BLUE_ALPHA80};
   border-top-style: solid;
-  background-color: #fcfcfc;
+  border-bottom-width: 1px;
+  border-bottom-color: ${GRAYISH_BLUE_ALPHA80};
+  border-bottom-style: solid;
 
   button {
     width: 100px;
     height: 52px;
-    background-color: white;
     border-width: 0;
     font-weight: bold;
     color: ${VERY_DARK_GRAYISH_BLUE};
-    color: #868686;
     background-color: transparent;
     cursor: pointer;
   }
 
   .list-btn {
-    border-right-width: 1px;
+    border-right-width: 0.5px;
     border-right-color: ${GRAYISH_BLUE_ALPHA80};
     border-right-style: solid;
   }
 
   .save-btn {
-    border-left-width: 1px;
+    border-left-width: 0.5px;
     border-left-color: ${GRAYISH_BLUE_ALPHA80};
     border-left-style: solid;
 
