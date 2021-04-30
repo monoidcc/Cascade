@@ -378,7 +378,7 @@ export class MainHeaderControls {
 
   @on(Event.INIT_CANVAS_CONTROLS)
   init() {
-    this.textInput!.value = localStorage[KEY_TEXT] || 'Tententen'
+    this.textInput!.value = localStorage[KEY_TEXT] || 'Tap here'
     this.text()
   }
 
