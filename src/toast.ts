@@ -1,42 +1,46 @@
-import { component, is, on, prep, sub } from 'capsid'
-import { css } from 'emotion'
-import { LIGHT_GRAYISH_LIME_GREEN, MOSTLY_BLACK, VERY_SOFT_RED } from './const/color'
-import * as Event from './const/event'
-import { defer } from './util/async'
+import { component, is, on, prep, sub } from "capsid";
+import { css } from "emotion";
+import {
+  LIGHT_GRAYISH_LIME_GREEN,
+  MOSTLY_BLACK,
+  VERY_SOFT_RED,
+} from "./const/color";
+import * as Event from "./const/event";
+import { defer } from "./util/async";
 
-@component('toast-provider')
+@component("toast-provider")
 @sub(Event.TOAST)
 @is(css`
   pointer-events: none;
 `)
 export class ToastProvider {
-  el?: HTMLElement
+  el?: HTMLElement;
 
   @on(Event.TOAST)
   onToast(e: Event.ToastEvent) {
     // First remove existing toasts
     this.removeChildren();
 
-    const toast = document.createElement('div')
-    toast.classList.add('toast')
-    toast.textContent = e.detail.message
-    if (e.detail.variant === 'success') {
-      toast.classList.add('is-success')
-    } else if (e.detail.variant === 'danger') {
-      toast.classList.add('is-danger')
+    const toast = document.createElement("div");
+    toast.classList.add("toast");
+    toast.textContent = e.detail.message;
+    if (e.detail.variant === "success") {
+      toast.classList.add("is-success");
+    } else if (e.detail.variant === "danger") {
+      toast.classList.add("is-danger");
     }
-    this.el!.appendChild(toast)
-    prep('toast', this.el)
+    this.el!.appendChild(toast);
+    prep("toast", this.el);
   }
 
   removeChildren() {
-    this.el!.querySelectorAll<HTMLDivElement>('.toast').forEach((node) => {
-      node.click()
-    })
+    this.el!.querySelectorAll<HTMLDivElement>(".toast").forEach((node) => {
+      node.click();
+    });
   }
 }
 
-@component('toast')
+@component("toast")
 @is(css`
   position: fixed;
   display: flex;
@@ -69,18 +73,18 @@ export class ToastProvider {
   }
 `)
 export class Toast {
-  el?: HTMLElement
+  el?: HTMLElement;
   async __mount__() {
-    await defer(100)
-    this.el!.classList.add('show')
-    await defer(5000)
-    await this.remove()
+    await defer(100);
+    this.el!.classList.add("show");
+    await defer(5000);
+    await this.remove();
   }
 
   @on.click
   async remove() {
-    this.el?.classList.remove('show')
-    await defer(600)
-    this.el?.parentElement?.removeChild(this.el)
+    this.el?.classList.remove("show");
+    await defer(600);
+    this.el?.parentElement?.removeChild(this.el);
   }
 }

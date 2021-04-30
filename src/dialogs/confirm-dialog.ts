@@ -1,10 +1,14 @@
-import { component, on, pub, sub, is, innerHTML, wired } from 'capsid'
-import { css } from 'emotion'
-import * as Event from '../const/event'
-import { GRAYISH_BLUE_ALPHA80, LIGHT_GRAYISH_LIME_GREEN, VERY_DARK_GRAY_ALPHA80, VERY_SOFT_RED } from '../const/color'
+import { component, innerHTML, is, on, pub, sub, wired } from "capsid";
+import { css } from "emotion";
+import * as Event from "../const/event";
+import {
+  GRAYISH_BLUE_ALPHA80,
+  LIGHT_GRAYISH_LIME_GREEN,
+  VERY_DARK_GRAY_ALPHA80,
+  VERY_SOFT_RED,
+} from "../const/color";
 
-
-@component('confirm-dialog-provider')
+@component("confirm-dialog-provider")
 @sub(Event.OPEN_CONFIRM_DIALOG)
 @sub(Event.CLOSE_CONFIRM_DIALOG)
 @is(css`
@@ -16,23 +20,23 @@ import { GRAYISH_BLUE_ALPHA80, LIGHT_GRAYISH_LIME_GREEN, VERY_DARK_GRAY_ALPHA80,
 `)
 @innerHTML(`<div class="confirm-dialog"></div>`)
 export class ConfirmDialogProvider {
-  el?: HTMLElement
+  el?: HTMLElement;
 
   __mount__() {}
 
   @on(Event.OPEN_CONFIRM_DIALOG)
   open() {
-    this.el!.classList.add('show')
+    this.el!.classList.add("show");
   }
 
   @on.click
   @on(Event.CLOSE_CONFIRM_DIALOG)
   close() {
-    this.el!.classList.remove('show')
+    this.el!.classList.remove("show");
   }
 }
 
-@component('confirm-dialog')
+@component("confirm-dialog")
 @sub(Event.OPEN_CONFIRM_DIALOG)
 @is(css`
   display: flex;
@@ -90,43 +94,43 @@ export class ConfirmDialogProvider {
   </div>
 `)
 export class ConfirmDialog {
-  el?: HTMLElement
-  onConfirm?: () => void
+  el?: HTMLElement;
+  onConfirm?: () => void;
 
-  @wired('.confirm-dialog__content')
-  content?: HTMLDivElement
+  @wired(".confirm-dialog__content")
+  content?: HTMLDivElement;
 
-  @wired('.confirm-dialog__actions')
-  actions?: HTMLDivElement
+  @wired(".confirm-dialog__actions")
+  actions?: HTMLDivElement;
 
-  @wired('.confirm-dialog__confirm')
-  confirmButton?: HTMLButtonElement
+  @wired(".confirm-dialog__confirm")
+  confirmButton?: HTMLButtonElement;
 
   @on.click
   onClick(e: Event) {
-    e.stopPropagation()
+    e.stopPropagation();
   }
 
   @on(Event.OPEN_CONFIRM_DIALOG)
   onOpen(e: Event.OpenConfrimDialogEvent) {
-    const msg = e.detail
-    this.content!.textContent = msg.message
-    this.confirmButton!.textContent = msg.confirmLabel || 'OK'
-    if (msg.confirmVariant === 'danger') {
-      this.confirmButton!.classList.add('is-danger')
-    } else if (msg.confirmVariant === 'success') {
-      this.confirmButton!.classList.add('is-success')
+    const msg = e.detail;
+    this.content!.textContent = msg.message;
+    this.confirmButton!.textContent = msg.confirmLabel || "OK";
+    if (msg.confirmVariant === "danger") {
+      this.confirmButton!.classList.add("is-danger");
+    } else if (msg.confirmVariant === "success") {
+      this.confirmButton!.classList.add("is-success");
     }
-    this.onConfirm = e.detail.onConfirm
+    this.onConfirm = e.detail.onConfirm;
   }
 
-  @on.click.at('.confirm-dialog__confirm')
+  @on.click.at(".confirm-dialog__confirm")
   @pub(Event.CLOSE_CONFIRM_DIALOG)
   async onOk() {
-    await this.onConfirm?.()
+    await this.onConfirm?.();
   }
 
-  @on.click.at('.confirm-dialog__cancel')
+  @on.click.at(".confirm-dialog__cancel")
   @pub(Event.CLOSE_CONFIRM_DIALOG)
   onCancel() {}
 }

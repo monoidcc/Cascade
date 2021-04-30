@@ -1,5 +1,12 @@
-import { css } from 'emotion'
-import { GRAYISH_BLUE_ALPHA80, LIGHT_GRAYISH_CYAN, LIGHT_GRAYISH_LIME_GREEN, VERY_DARK_GRAY_ALPHA80, VERY_DARK_GRAYISH_BLUE, VERY_SOFT_RED } from './const/color'
+import { css } from "emotion";
+import {
+  GRAYISH_BLUE_ALPHA80,
+  LIGHT_GRAYISH_CYAN,
+  LIGHT_GRAYISH_LIME_GREEN,
+  VERY_DARK_GRAY_ALPHA80,
+  VERY_DARK_GRAYISH_BLUE,
+  VERY_SOFT_RED,
+} from "./const/color";
 
 export default css`
   height: 40px;
@@ -41,4 +48,4 @@ export default css`
     height: 21px;
     width: 21px;
   }
-`
+`;

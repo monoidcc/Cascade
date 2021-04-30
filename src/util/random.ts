@@ -1,1 +1,1 @@
-export const dice = (n: number): number => Math.random() * n
+export const dice = (n: number): number => Math.random() * n;

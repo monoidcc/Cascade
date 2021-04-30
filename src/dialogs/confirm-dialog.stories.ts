@@ -1,25 +1,25 @@
-import * as Event from '../const/event'
-import { create } from '../util/dom'
-import button from '../button'
-import { component, on, pub } from 'capsid'
+import * as Event from "../const/event";
+import { create } from "../util/dom";
+import button from "../button";
+import { component, on, pub } from "capsid";
 
 export default {
-  title: 'confirm-dialog'
-}
+  title: "confirm-dialog",
+};
 
-@component('confirm-dialog-opener')
+@component("confirm-dialog-opener")
 class ConfirmDialogOpener {
-  el?: HTMLElement
+  el?: HTMLElement;
   @on.click
   @pub(Event.OPEN_CONFIRM_DIALOG)
   onClick(): Event.OpenConfirmDialogMessage {
-    const d = this.el!.dataset
+    const d = this.el!.dataset;
     return {
       message: d.message!,
       confirmLabel: d.confirmLabel,
       confirmVariant: d.confirmVariant as any,
-      onConfirm: () => {}
-    }
+      onConfirm: () => {},
+    };
   }
 }
 
@@ -34,7 +34,7 @@ export const normal = () =>
       open ConfirmDialog
     </button>
   </div>
-`)
+`);
 
 export const post = () =>
   create(`
@@ -49,7 +49,7 @@ export const post = () =>
       open ConfirmDialog
     </button>
   </div>
-`)
+`);
 
 export const Delete = () =>
   create(`
@@ -64,4 +64,4 @@ export const Delete = () =>
       open ConfirmDialog
     </button>
   </div>
-`)
+`);

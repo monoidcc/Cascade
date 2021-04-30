@@ -1,35 +1,35 @@
-import { css } from 'emotion'
-import bezier from 'bezier-easing'
-import gameloop from 'gameloopjs'
+import { css } from "emotion";
+import bezier from "bezier-easing";
+import gameloop from "gameloopjs";
 
-import { devicePixelRatio, MAX_WAVE_COUNT } from './const'
+import { devicePixelRatio, MAX_WAVE_COUNT } from "./const";
 import {
-  Rect,
-  Motion,
-  Wave,
   Artwork,
-  WaveRect,
+  ArtworkRepository,
+  createArtwork,
+  Motion,
+  Rect,
   Result,
   TextLabel,
-  createArtwork,
-  ArtworkRepository
-} from './domain/models'
-import * as Event from './const/event'
-import { dice } from './util/random'
-import { Ctx } from './util/dom'
-import { wired, component, on, pub, sub, is, innerHTML, prep } from 'capsid'
-import { drawText, drawRects } from './adapters/canvas'
-import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from './const/color'
-import { defer } from './util/async'
-import Color from 'color'
-import button from './button'
-import { KEY_TEXT, KEY_TEXT_FONT, KEY_TEXT_FONT_SIZE } from './const/ls-key'
+  Wave,
+  WaveRect,
+} from "./domain/models";
+import * as Event from "./const/event";
+import { dice } from "./util/random";
+import { Ctx } from "./util/dom";
+import { component, innerHTML, is, on, prep, pub, sub, wired } from "capsid";
+import { drawRects, drawText } from "./adapters/canvas";
+import { GRAYISH_BLUE_ALPHA80, VERY_DARK_GRAYISH_BLUE } from "./const/color";
+import { defer } from "./util/async";
+import Color from "color";
+import button from "./button";
+import { KEY_TEXT, KEY_TEXT_FONT, KEY_TEXT_FONT_SIZE } from "./const/ls-key";
 
-const DECREMENT_WAVE_COUNT = 'tententen-main-decrement-wave-count'
+const DECREMENT_WAVE_COUNT = "tententen-main-decrement-wave-count";
 
 /** The main area */
-@component('main-screen')
-@sub('start-main')
+@component("main-screen")
+@sub("start-main")
 @is(css`
   display: flex;
   flex-direction: column;
@@ -54,12 +54,12 @@ const DECREMENT_WAVE_COUNT = 'tententen-main-decrement-wave-count'
   }
 `)
 export class Main {
-  el?: HTMLElement
-  @on('start-main')
+  el?: HTMLElement;
+  @on("start-main")
   @pub(Event.INIT_CANVAS_CONTROLS)
   start() {
-    const el = this.el!
-    el.classList.remove('hidden')
+    const el = this.el!;
+    el.classList.remove("hidden");
     el.innerHTML = `
       <div class="main__header-controls"></div>
       <div class="main__canvas-wrapper">
@@ -68,12 +68,12 @@ export class Main {
       </div>
       <div class="main__middle-controls"></div>
       <div class="main__footer-controls"></div>
-    `
-    prep()
+    `;
+    prep();
   }
 }
 
-@component('main__wave-counter')
+@component("main__wave-counter")
 @sub(DECREMENT_WAVE_COUNT, Event.RESET)
 @innerHTML(`<span class="main__wave-counter__counter"></span>`)
 @is(css(`
@@ -86,61 +86,76 @@ export class Main {
   text-shadow: 0 0 2px white;
 `))
 export class WaveCounter {
-  @wired('.main__wave-counter__counter')
-  counter?: HTMLSpanElement
-  remaining = MAX_WAVE_COUNT
+  @wired(".main__wave-counter__counter")
+  counter?: HTMLSpanElement;
+  remaining = MAX_WAVE_COUNT;
 
   @on(Event.RESET)
   __mount__() {
-    this.remaining = MAX_WAVE_COUNT
-    this.setRemaining()
+    this.remaining = MAX_WAVE_COUNT;
+    this.setRemaining();
   }
 
   setRemaining() {
-    this.counter!.innerHTML = `remaining ${this.remaining}`
+    this.counter!.innerHTML = `remaining ${this.remaining}`;
   }
 
   @on(DECREMENT_WAVE_COUNT)
   decrement() {
     this.remaining--;
-    this.setRemaining()
+    this.setRemaining();
   }
 }
 
 /**
  * The main canvas where the user edit the contents of the artworks.
  */
-@component('main__canvas')
-@sub(Event.CHANGE_FONT_COLOR, Event.RESET, 'down', 'up', 'font', 'text', 'save', 'list')
+@component("main__canvas")
+@sub(
+  Event.CHANGE_FONT_COLOR,
+  Event.RESET,
+  "down",
+  "up",
+  "font",
+  "text",
+  "save",
+  "list",
+)
 export class MainCanvas {
-  width = 0
-  height = 0
-  ctx?: Ctx
-  wave: Wave
-  result: Result
-  loop: any
-  el?: HTMLCanvasElement
-  easing0 = bezier(0.42, 0, 0.58, 1)
-  textColors: Color[] = []
-  colors: Color[] = []
-  text: TextLabel
-  remaining = MAX_WAVE_COUNT
+  width = 0;
+  height = 0;
+  ctx?: Ctx;
+  wave: Wave;
+  result: Result;
+  loop: any;
+  el?: HTMLCanvasElement;
+  easing0 = bezier(0.42, 0, 0.58, 1);
+  textColors: Color[] = [];
+  colors: Color[] = [];
+  text: TextLabel;
+  remaining = MAX_WAVE_COUNT;
 
   constructor() {
-    const fontSize = localStorage[KEY_TEXT_FONT_SIZE]
-    this.wave = new Wave()
-    this.result = new Result()
-    this.text = new TextLabel('', localStorage[KEY_TEXT_FONT], fontSize ? +fontSize : 1 / 6, '#fff', '#fff')
-    this.resetColors()
-    this.loop = gameloop(this.main, 60)
+    const fontSize = localStorage[KEY_TEXT_FONT_SIZE];
+    this.wave = new Wave();
+    this.result = new Result();
+    this.text = new TextLabel(
+      "",
+      localStorage[KEY_TEXT_FONT],
+      fontSize ? +fontSize : 1 / 6,
+      "#fff",
+      "#fff",
+    );
+    this.resetColors();
+    this.loop = gameloop(this.main, 60);
   }
 
   resetColors() {
-    const baseColors = this.baseColors()
-    this.colors = [...baseColors]
-    this.textColors = baseColors.map(c => c.alpha(1))
-    this.text.color = this.colors[0].alpha(1).toString()
-    this.text.shadowColor = this.colors[1].alpha(1).toString()
+    const baseColors = this.baseColors();
+    this.colors = [...baseColors];
+    this.textColors = baseColors.map((c) => c.alpha(1));
+    this.text.color = this.colors[0].alpha(1).toString();
+    this.text.shadowColor = this.colors[1].alpha(1).toString();
   }
 
   randomColor(): Color {
@@ -148,7 +163,7 @@ export class MainCanvas {
       .hue(dice(360))
       .saturationl(dice(100))
       .lightness(dice(100))
-      .alpha(0.35)
+      .alpha(0.35);
   }
 
   baseColors(): Color[] {
@@ -157,172 +172,173 @@ export class MainCanvas {
       this.randomColor(),
       this.randomColor(),
       this.randomColor(),
-    ]
+    ];
   }
 
   async __mount__() {
-    const el = this.el!
-    const wrapper = el.parentElement!
-    this.ctx = el.getContext('2d')!
-    await defer(0)
-    const canvasSize = Math.min(wrapper.clientWidth, wrapper.clientHeight)
-    el.width = this.width = canvasSize * devicePixelRatio
-    el.height = this.height = canvasSize * devicePixelRatio
-    el.style.width = `${canvasSize}px`
-    el.style.height = `${canvasSize}px`
-    this.loop.run()
+    const el = this.el!;
+    const wrapper = el.parentElement!;
+    this.ctx = el.getContext("2d")!;
+    await defer(0);
+    const canvasSize = Math.min(wrapper.clientWidth, wrapper.clientHeight);
+    el.width = this.width = canvasSize * devicePixelRatio;
+    el.height = this.height = canvasSize * devicePixelRatio;
+    el.style.width = `${canvasSize}px`;
+    el.style.height = `${canvasSize}px`;
+    this.loop.run();
   }
 
   /** The step function of the main loop */
   main = () => {
-    const finished = this.wave.step()
+    const finished = this.wave.step();
     if (finished) {
-      this.result.add(...finished.map(wr => wr.rect))
+      this.result.add(...finished.map((wr) => wr.rect));
     }
-    const ctx = this.ctx!
-    const { width, height } = this.el!
-    ctx.clearRect(0, 0, width, height)
-    drawRects(ctx, this.result.rects, width, height)
-    drawRects(ctx, this.wave.toArray(), width, height)
-    drawText(ctx, this.text, width, height)
-  }
+    const ctx = this.ctx!;
+    const { width, height } = this.el!;
+    ctx.clearRect(0, 0, width, height);
+    drawRects(ctx, this.result.rects, width, height);
+    drawRects(ctx, this.wave.toArray(), width, height);
+    drawText(ctx, this.text, width, height);
+  };
 
   rotateColors(): void {
-    this.colors.push(this.colors.shift()!)
+    this.colors.push(this.colors.shift()!);
   }
 
   rotateTextColors(): void {
-    this.textColors.push(this.textColors.shift()!)
-    this.text.color = this.textColors[0].string()
-    this.text.shadowColor = this.textColors[1].string()
+    this.textColors.push(this.textColors.shift()!);
+    this.text.color = this.textColors[0].string();
+    this.text.shadowColor = this.textColors[1].string();
   }
 
   /** Creates a new wave (set of 4 boxes coming into the canvas)
    * based on the given client position
    */
-  @on('mouseup')
+  @on("mouseup")
   newWave(e: MouseEvent): void {
     if (this.remaining <= 0) {
       // quota exceeded
-      return
+      return;
     }
-    this.decrementRemaining()
-    this.rotateColors()
+    this.decrementRemaining();
+    this.rotateColors();
 
-    const canvasY = (e.clientY - this.el!.offsetTop) * devicePixelRatio
-    const canvasX = (e.clientX - this.el!.offsetLeft) * devicePixelRatio
+    const canvasY = (e.clientY - this.el!.offsetTop) * devicePixelRatio;
+    const canvasX = (e.clientX - this.el!.offsetLeft) * devicePixelRatio;
 
-    const ratioX = canvasX / this.width
-    const ratioY = (this.height - canvasY) / this.height
+    const ratioX = canvasX / this.width;
+    const ratioY = (this.height - canvasY) / this.height;
 
-    const ratioA = ratioY
-    const ratioW = dice(1)
+    const ratioA = ratioY;
+    const ratioW = dice(1);
 
-    const min = 1
-    const w = (min / 3) * ratioW + min / 6
-    const hw = w / 2
-    const dw = ratioX
-    const dh = ratioX
-    const alpha = ratioA
-    const c0 = this.colors[0].alpha(alpha).toString()
-    const c1 = this.colors[1].alpha(alpha).toString()
-    const c2 = this.colors[2].alpha(alpha).toString()
-    const c3 = this.colors[3].alpha(alpha).toString()
-    const r0 = new Rect(0 - hw, dh, w, w, c0)
-    const r1 = new Rect(1 - dw, -hw, w, w, c1)
-    const r2 = new Rect(1 + hw, 1 - dh, w, w, c2)
-    const r3 = new Rect(dw, 1 + hw, w, w, c3)
-    const frames = 60
-    const m0 = new Motion(frames, this.easing0, w, 0)
-    const m1 = new Motion(frames, this.easing0, 0, w)
-    const m2 = new Motion(frames, this.easing0, -w, 0)
-    const m3 = new Motion(frames, this.easing0, 0, -w)
-    m0.init(r0.x, r0.y)
-    m1.init(r1.x, r1.y)
-    m2.init(r2.x, r2.y)
-    m3.init(r3.x, r3.y)
-    this.wave.add(new WaveRect(r0, m0))
-    this.wave.add(new WaveRect(r1, m1))
-    this.wave.add(new WaveRect(r2, m2))
-    this.wave.add(new WaveRect(r3, m3))
+    const min = 1;
+    const w = (min / 3) * ratioW + min / 6;
+    const hw = w / 2;
+    const dw = ratioX;
+    const dh = ratioX;
+    const alpha = ratioA;
+    const c0 = this.colors[0].alpha(alpha).toString();
+    const c1 = this.colors[1].alpha(alpha).toString();
+    const c2 = this.colors[2].alpha(alpha).toString();
+    const c3 = this.colors[3].alpha(alpha).toString();
+    const r0 = new Rect(0 - hw, dh, w, w, c0);
+    const r1 = new Rect(1 - dw, -hw, w, w, c1);
+    const r2 = new Rect(1 + hw, 1 - dh, w, w, c2);
+    const r3 = new Rect(dw, 1 + hw, w, w, c3);
+    const frames = 60;
+    const m0 = new Motion(frames, this.easing0, w, 0);
+    const m1 = new Motion(frames, this.easing0, 0, w);
+    const m2 = new Motion(frames, this.easing0, -w, 0);
+    const m3 = new Motion(frames, this.easing0, 0, -w);
+    m0.init(r0.x, r0.y);
+    m1.init(r1.x, r1.y);
+    m2.init(r2.x, r2.y);
+    m3.init(r3.x, r3.y);
+    this.wave.add(new WaveRect(r0, m0));
+    this.wave.add(new WaveRect(r1, m1));
+    this.wave.add(new WaveRect(r2, m2));
+    this.wave.add(new WaveRect(r3, m3));
   }
 
   @pub(DECREMENT_WAVE_COUNT)
   decrementRemaining() {
-    this.remaining--
+    this.remaining--;
   }
 
-  @on('text')
+  @on("text")
   onText({ detail }: { detail: string }): void {
-    this.text.body = detail
+    this.text.body = detail;
   }
 
-  @on('font')
+  @on("font")
   font(): void {
-    this.text.rotateFonts()
-    localStorage[KEY_TEXT_FONT] = this.text.fontFamily
+    this.text.rotateFonts();
+    localStorage[KEY_TEXT_FONT] = this.text.fontFamily;
   }
 
-  @on('up')
+  @on("up")
   @pub(Event.IS_FONT_SIZE_MAX)
   up(): boolean {
-    this.text.sizeUp()
-    localStorage[KEY_TEXT_FONT_SIZE] = this.text.size
-    return this.text.isMaxSize()
+    this.text.sizeUp();
+    localStorage[KEY_TEXT_FONT_SIZE] = this.text.size;
+    return this.text.isMaxSize();
   }
 
-  @on('down')
+  @on("down")
   @pub(Event.IS_FONT_SIZE_MAX)
   down(): boolean {
-    this.text.sizeDown()
-    localStorage[KEY_TEXT_FONT_SIZE] = this.text.size
-    return this.text.isMaxSize()
+    this.text.sizeDown();
+    localStorage[KEY_TEXT_FONT_SIZE] = this.text.size;
+    return this.text.isMaxSize();
   }
 
   @on(Event.CHANGE_FONT_COLOR)
   a(): void {
-    this.rotateTextColors()
+    this.rotateTextColors();
   }
 
   @on(Event.RESET)
   async b(): Promise<void> {
-    this.remaining = MAX_WAVE_COUNT
-    this.wave.eject()
-    this.result.clear()
-    this.resetColors()
+    this.remaining = MAX_WAVE_COUNT;
+    this.wave.eject();
+    this.result.clear();
+    this.resetColors();
   }
 
-  @on('save')
+  @on("save")
   async save() {
     if (await new ArtworkRepository().isFull()) {
       this.toast({
-        message: 'Maximum number (70) of items are saved. You need to delete some artworks to save new one.',
-        variant: 'danger'
-      })
-      return
+        message:
+          "Maximum number (70) of items are saved. You need to delete some artworks to save new one.",
+        variant: "danger",
+      });
+      return;
     }
     this.saveSucess();
   }
 
-  @pub('open-edit-modal')
+  @pub("open-edit-modal")
   @pub(Event.ARTWORK_PERSISTED)
   async saveSucess(): Promise<Artwork> {
-    const artwork = createArtwork(this.result, this.text)
-    await new ArtworkRepository().save(artwork)
+    const artwork = createArtwork(this.result, this.text);
+    await new ArtworkRepository().save(artwork);
     this.toast({
-      message: 'Successfully saved the image!',
-      variant: 'success'
-    })
-    return artwork
+      message: "Successfully saved the image!",
+      variant: "success",
+    });
+    return artwork;
   }
 
   @pub(Event.TOAST)
   toast(e: Event.ToastMessage): Event.ToastMessage {
-    return e
+    return e;
   }
 }
 
-@component('main__header-controls')
+@component("main__header-controls")
 @sub(Event.INIT_CANVAS_CONTROLS, Event.IS_FONT_SIZE_MAX)
 @is(css`
   display: flex;
@@ -370,43 +386,43 @@ export class MainCanvas {
   </button>
 `)
 export class MainHeaderControls {
-  @wired('.text-input')
-  textInput?: HTMLInputElement
+  @wired(".text-input")
+  textInput?: HTMLInputElement;
 
-  @wired('.up-btn')
-  upBtn?: HTMLButtonElement
+  @wired(".up-btn")
+  upBtn?: HTMLButtonElement;
 
   @on(Event.INIT_CANVAS_CONTROLS)
   init() {
-    this.textInput!.value = localStorage[KEY_TEXT] || 'Tap here'
-    this.text()
+    this.textInput!.value = localStorage[KEY_TEXT] || "Tap here";
+    this.text();
   }
 
   @on(Event.IS_FONT_SIZE_MAX)
   isFontSizeMax({ detail: isMax }: CustomEvent<boolean>): void {
     if (isMax) {
-      this.upBtn!.disabled = true
+      this.upBtn!.disabled = true;
     } else {
-      this.upBtn!.disabled = false
+      this.upBtn!.disabled = false;
     }
   }
 
-  @on('input', { at: '.text-input' })
-  @pub('text')
+  @on("input", { at: ".text-input" })
+  @pub("text")
   text() {
-    return (localStorage[KEY_TEXT] = this.textInput!.value)
+    return (localStorage[KEY_TEXT] = this.textInput!.value);
   }
 
-  @on.click.at('.down-btn')
-  @pub('down')
+  @on.click.at(".down-btn")
+  @pub("down")
   down() {}
 
-  @on.click.at('.up-btn')
-  @pub('up')
+  @on.click.at(".up-btn")
+  @pub("up")
   up() {}
 }
 
-@component('main__middle-controls')
+@component("main__middle-controls")
 @sub(Event.INIT_CANVAS_CONTROLS)
 @is(css`
   display: flex;
@@ -429,23 +445,23 @@ export class MainHeaderControls {
   <button class="${button} reset-btn">♻ RESET</button>
 `)
 export class MainMiddleControls {
-  @on.click.at('.change-font-color-btn')
+  @on.click.at(".change-font-color-btn")
   @pub(Event.CHANGE_FONT_COLOR)
   changeFontColor() {}
 
-  @on.click.at('.reset-btn')
+  @on.click.at(".reset-btn")
   @pub(Event.RESET)
   reset() {}
 
-  @on.click.at('.font-btn')
-  @pub('font')
+  @on.click.at(".font-btn")
+  @pub("font")
   font() {}
 }
 
 /**
  * The controls in the footer.
  */
-@component('main__footer-controls')
+@component("main__footer-controls")
 @innerHTML(`
   <button class="list-btn">LIST</button>
   <button class="help-btn">(?)</button>
@@ -508,35 +524,35 @@ export class MainMiddleControls {
 `)
 @sub(Event.INIT_CANVAS_CONTROLS, Event.ARTWORK_PERSISTED)
 export class MainFooterControls {
-  @wired('.save-btn')
-  saveBtn?: HTMLButtonElement
+  @wired(".save-btn")
+  saveBtn?: HTMLButtonElement;
 
-  @wired('.item-counter')
-  itemCounter?: HTMLSpanElement
+  @wired(".item-counter")
+  itemCounter?: HTMLSpanElement;
 
   __mount__() {
-    this.update()
+    this.update();
   }
 
   @on(Event.ARTWORK_PERSISTED)
   async update() {
-    const items = await new ArtworkRepository().get()
-    const disabled = items.length >= Artwork.MAX_ITEMS
-    this.saveBtn!.classList.toggle('disabled', disabled)
-    this.saveBtn!.disabled = disabled
-    this.itemCounter!.textContent = `${items.length}/${Artwork.MAX_ITEMS}`
+    const items = await new ArtworkRepository().get();
+    const disabled = items.length >= Artwork.MAX_ITEMS;
+    this.saveBtn!.classList.toggle("disabled", disabled);
+    this.saveBtn!.disabled = disabled;
+    this.itemCounter!.textContent = `${items.length}/${Artwork.MAX_ITEMS}`;
   }
 
-  @on.click.at('.save-btn')
-  @pub('save')
+  @on.click.at(".save-btn")
+  @pub("save")
   save() {
   }
 
-  @on.click.at('.help-btn')
+  @on.click.at(".help-btn")
   @pub(Event.OPEN_MANUAL_DIALOG)
   openManulDialog() {}
 
-  @on.click.at('.list-btn')
+  @on.click.at(".list-btn")
   @pub(Event.LIST_MODAL_OPEN)
   list() {}
 }

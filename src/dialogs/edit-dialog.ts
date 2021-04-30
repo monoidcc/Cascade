@@ -1,17 +1,17 @@
-import { component, innerHTML, on, sub, is, wired, emits, pub } from 'capsid'
-import { css } from 'emotion'
-import { Artwork, ArtworkRepository } from '../domain/models'
-import { drawArtwork } from '../adapters/canvas'
-import { sendMessage } from 'lepont/browser'
-import { PermissionsAndroid } from '@lepont/permissions-android'
-import { share } from '@lepont/share'
-import button from '../button'
-import { PLATFORM } from '../const'
-import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
-import * as Event from '../const/event'
+import { component, emits, innerHTML, is, on, pub, sub, wired } from "capsid";
+import { css } from "emotion";
+import { Artwork, ArtworkRepository } from "../domain/models";
+import { drawArtwork } from "../adapters/canvas";
+import { sendMessage } from "lepont/browser";
+import { PermissionsAndroid } from "@lepont/permissions-android";
+import { share } from "@lepont/share";
+import button from "../button";
+import { PLATFORM } from "../const";
+import { GRAYISH_BLUE_ALPHA80 } from "../const/color";
+import * as Event from "../const/event";
 
-@component('edit-dialog')
-@sub('open-edit-modal')
+@component("edit-dialog")
+@sub("open-edit-modal")
 @is(css`
   display: flex;
   flex-direction: column;
@@ -73,7 +73,7 @@ import * as Event from '../const/event'
   .edit-dialog__controls > div:first-child {
   }
 `)
-@innerHTML(/* html */`
+@innerHTML(/* html */ `
   <header class="edit-dialog__header">
     <svg class="done-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
       <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -94,154 +94,152 @@ import * as Event from '../const/event'
   </div>
 `)
 export class EditModal {
-  el?: Element
+  el?: Element;
 
-  @wired('canvas')
-  canvas?: HTMLCanvasElement
+  @wired("canvas")
+  canvas?: HTMLCanvasElement;
 
-  @wired('.edit-dialog__main')
-  main?: HTMLDivElement
+  @wired(".edit-dialog__main")
+  main?: HTMLDivElement;
 
-  artwork?: Artwork
+  artwork?: Artwork;
 
-  @on('open-edit-modal')
+  @on("open-edit-modal")
   open({ detail: artwork }: { detail: Artwork }) {
-    const maxWidth = document.body.offsetWidth
-    const maxHeight = this.main!.offsetHeight
+    const maxWidth = document.body.offsetWidth;
+    const maxHeight = this.main!.offsetHeight;
 
-    const size = Math.min(maxWidth, maxHeight) * 0.9
-    const canvasSize = size * window.devicePixelRatio
+    const size = Math.min(maxWidth, maxHeight) * 0.9;
+    const canvasSize = size * window.devicePixelRatio;
 
-    const canvas = this.canvas!
-    canvas.width = canvasSize
-    canvas.height = canvasSize
-    canvas.style.width = `${size}px`
-    canvas.style.height = `${size}px`
-    const ctx = canvas.getContext('2d')!
-    this.artwork = artwork
+    const canvas = this.canvas!;
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+    const ctx = canvas.getContext("2d")!;
+    this.artwork = artwork;
 
-    drawArtwork(ctx, artwork, canvasSize, canvasSize)
-    this.el!.classList.add('show')
+    drawArtwork(ctx, artwork, canvasSize, canvasSize);
+    this.el!.classList.add("show");
   }
 
-  @on.click.at('.done-btn')
-  @on('hide-edit-modal')
+  @on.click.at(".done-btn")
+  @on("hide-edit-modal")
   hide() {
-    this.el!.classList.remove('show')
+    this.el!.classList.remove("show");
   }
 
-  @on.click.at('.delete-btn')
+  @on.click.at(".delete-btn")
   @pub(Event.OPEN_CONFIRM_DIALOG)
   delete(): Event.OpenConfirmDialogMessage {
     return {
-      message: 'Are you sure to delete this image?',
-      confirmLabel: 'Delete',
-      confirmVariant: 'danger',
+      message: "Are you sure to delete this image?",
+      confirmLabel: "Delete",
+      confirmVariant: "danger",
       onConfirm: () => {
-        this.onDelete()
-      }
-    }
+        this.onDelete();
+      },
+    };
   }
 
   @pub(Event.LIST_DIALOG_REFRESH)
   @pub(Event.ARTWORK_PERSISTED)
   async onDelete() {
-    const repository = new ArtworkRepository()
-    await repository.remove(this.artwork!)
-    this.hide()
+    const repository = new ArtworkRepository();
+    await repository.remove(this.artwork!);
+    this.hide();
   }
 
   @pub(Event.TOAST)
   toastDanger(message: string): Event.ToastMessage {
     return {
       message,
-      variant: 'danger',
-    }
+      variant: "danger",
+    };
   }
   @pub(Event.TOAST)
   toastSuccess(message: string): Event.ToastMessage {
     return {
       message,
-      variant: 'success',
-    }
+      variant: "success",
+    };
   }
 
-  @on.click.at('.share-btn')
+  @on.click.at(".share-btn")
   async share() {
-    const base64Content = this.canvas!.toDataURL()
-    if (PLATFORM === 'web') {
-      this.toastDanger('Share is not supported on web')
+    const base64Content = this.canvas!.toDataURL();
+    if (PLATFORM === "web") {
+      this.toastDanger("Share is not supported on web");
       return;
     }
     try {
-      if (PLATFORM === 'android') {
+      if (PLATFORM === "android") {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: 'Tententen Storage Permission',
-            message:
-              'Tententen needs access to your storage ' +
-              'so you can save awesome pictures.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK'
-          }
-        )
+            title: "Tententen Storage Permission",
+            message: "Tententen needs access to your storage " +
+              "so you can save awesome pictures.",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          },
+        );
         if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
-          this.toastDanger('Permission Denied')
-          return
+          this.toastDanger("Permission Denied");
+          return;
         }
       }
       share({
         message: `${this.artwork?.text.body} #tententenapp`,
-        urls: [base64Content]
-      })
+        urls: [base64Content],
+      });
     } catch (e) {
-      this.toastDanger(e)
+      this.toastDanger(e);
     }
   }
 
-  @on.click.at('.download-btn')
+  @on.click.at(".download-btn")
   async download() {
-    const base64Content = this.canvas!.toDataURL().substr(22)
-    if (PLATFORM === 'web') {
-      this.toastDanger('Download is not supported on web')
+    const base64Content = this.canvas!.toDataURL().substr(22);
+    if (PLATFORM === "web") {
+      this.toastDanger("Download is not supported on web");
       return;
     }
     try {
-      if (PLATFORM === 'android') {
+      if (PLATFORM === "android") {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: 'Tententen Storage Permission',
-            message:
-              'Tententen needs access to your storage ' +
-              'so you can save awesome pictures.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK'
-          }
-        )
+            title: "Tententen Storage Permission",
+            message: "Tententen needs access to your storage " +
+              "so you can save awesome pictures.",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK",
+          },
+        );
         if (permission !== PermissionsAndroid.RESULTS.GRANTED) {
-          this.toastDanger('Permission denied')
-          return
+          this.toastDanger("Permission denied");
+          return;
         }
       }
       const savedPath = await sendMessage({
-        type: 'write-tmp-image',
+        type: "write-tmp-image",
         payload: {
           content: base64Content,
-          filename: 'tmp.png',
-          encode: 'base64'
-        }
-      })
+          filename: "tmp.png",
+          encode: "base64",
+        },
+      });
       await sendMessage({
-        type: 'cameraroll:save',
-        payload: { tag: savedPath, type: 'photo', album: 'Tententen' }
-      })
-      this.toastSuccess('Saved the picture to the album')
+        type: "cameraroll:save",
+        payload: { tag: savedPath, type: "photo", album: "Tententen" },
+      });
+      this.toastSuccess("Saved the picture to the album");
     } catch (e) {
-      this.toastDanger(e)
+      this.toastDanger(e);
     }
   }
 }

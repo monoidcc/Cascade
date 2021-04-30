@@ -1,24 +1,15 @@
-import {
-  wired,
-  is,
-  component,
-  on,
-  sub,
-  innerHTML,
-  make,
-  pub
-} from 'capsid'
-import { css } from 'emotion'
-import { Artwork, ArtworkRepository } from '../domain/models'
-import { drawArtwork } from '../adapters/canvas'
-import { GRAYISH_BLUE_ALPHA80 } from '../const/color'
-import * as Event from '../const/event'
-import monoSvg from '../img/mono.svg'
+import { component, innerHTML, is, make, on, pub, sub, wired } from "capsid";
+import { css } from "emotion";
+import { Artwork, ArtworkRepository } from "../domain/models";
+import { drawArtwork } from "../adapters/canvas";
+import { GRAYISH_BLUE_ALPHA80 } from "../const/color";
+import * as Event from "../const/event";
+import monoSvg from "../img/mono.svg";
 
-const GAP = 4
+const GAP = 4;
 
-@component('list-dialog')
-@sub('artwork-save', Event.LIST_MODAL_OPEN, Event.LIST_DIALOG_REFRESH)
+@component("list-dialog")
+@sub("artwork-save", Event.LIST_MODAL_OPEN, Event.LIST_DIALOG_REFRESH)
 @innerHTML(`
   <header class="list-dialog__header">
     <svg class="done-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -96,47 +87,47 @@ const GAP = 4
   }
 `)
 export class ListModal {
-  el?: HTMLDivElement
+  el?: HTMLDivElement;
 
-  @wired('.list-dialog__header__title')
-  headerTitle?: HTMLDivElement
+  @wired(".list-dialog__header__title")
+  headerTitle?: HTMLDivElement;
 
-  @wired('.list-dialog__list-area')
-  listArea?: HTMLDivElement
+  @wired(".list-dialog__list-area")
+  listArea?: HTMLDivElement;
 
-  @on('artwork-save')
+  @on("artwork-save")
   async artworkSave({ detail: artwork }: { detail: Artwork }) {
-    await new ArtworkRepository().save(artwork)
-    this.open()
+    await new ArtworkRepository().save(artwork);
+    this.open();
   }
 
   @on(Event.LIST_MODAL_OPEN)
   async open() {
-    await this.refresh()
+    await this.refresh();
 
-    this.el!.classList.add('show')
+    this.el!.classList.add("show");
   }
 
   @on.click
-  @on.click.at('.close-button')
+  @on.click.at(".close-button")
   close() {
-    this.el!.classList.remove('show')
+    this.el!.classList.remove("show");
   }
 
   @on(Event.LIST_DIALOG_REFRESH)
   async refresh() {
-    this.listArea!.innerHTML = ''
-    const artworks = await new ArtworkRepository().get()
+    this.listArea!.innerHTML = "";
+    const artworks = await new ArtworkRepository().get();
 
-    let numPartition = 3
+    let numPartition = 3;
     if (window.innerHeight < window.innerWidth) {
       // If the width is bigger than height
       // increase the horizontal partition number
-      const x = window.innerHeight / 3
-      numPartition = Math.ceil(window.innerWidth / x)
+      const x = window.innerHeight / 3;
+      numPartition = Math.ceil(window.innerWidth / x);
     }
 
-    const size = (window.innerWidth - GAP * (numPartition - 1)) / numPartition
+    const size = (window.innerWidth - GAP * (numPartition - 1)) / numPartition;
 
     if (artworks.length === 0) {
       this.listArea!.innerHTML = `
@@ -144,58 +135,59 @@ export class ListModal {
           <img class="mono" src="${monoSvg}" />
           <p>No items. Let's create one in the <span class="close-button" href="">main canvas</span>!</p>
         </div>
-      `
+      `;
     }
 
-    this.headerTitle!.innerHTML = `Artworks (${artworks.length}/${Artwork.MAX_ITEMS})`;
+    this.headerTitle!.innerHTML =
+      `Artworks (${artworks.length}/${Artwork.MAX_ITEMS})`;
 
     artworks.artworks
       .map((artwork: Artwork): [Artwork, HTMLDivElement] => [
         artwork,
         this.el!.querySelector(`[dataset-key="${artwork.id}"]`) ||
-          document.createElement('div')
+        document.createElement("div"),
       ])
       .forEach(([artwork, div]: [Artwork, HTMLDivElement]) => {
-        make<ListItem>('list-item', div).update(artwork, size)
-        this.listArea!.appendChild(div)
-      })
+        make<ListItem>("list-item", div).update(artwork, size);
+        this.listArea!.appendChild(div);
+      });
   }
 }
 
-@component('list-item')
+@component("list-item")
 @innerHTML(`<canvas></canvas>`)
 export class ListItem {
-  el?: HTMLDivElement
+  el?: HTMLDivElement;
 
-  artwork?: Artwork
-  size?: number
+  artwork?: Artwork;
+  size?: number;
 
-  @wired('canvas')
-  canvas?: HTMLCanvasElement
+  @wired("canvas")
+  canvas?: HTMLCanvasElement;
 
   update(artwork: Artwork, size: number): void {
-    this.el!.dataset.key = artwork.id
-    this.artwork = artwork
-    this.el!.style.width = `${size}px`
-    this.el!.style.height = `${size}px`
-    this.canvas!.width = size
-    this.canvas!.height = size
-    this.draw()
+    this.el!.dataset.key = artwork.id;
+    this.artwork = artwork;
+    this.el!.style.width = `${size}px`;
+    this.el!.style.height = `${size}px`;
+    this.canvas!.width = size;
+    this.canvas!.height = size;
+    this.draw();
   }
 
   draw(): void {
     drawArtwork(
-      this.canvas!.getContext('2d')!,
+      this.canvas!.getContext("2d")!,
       this.artwork!,
       this.canvas!.width,
-      this.canvas!.height
-    )
+      this.canvas!.height,
+    );
   }
 
   @on.click
-  @pub('open-edit-modal')
+  @pub("open-edit-modal")
   onClick(e: Event): Artwork {
-    e.stopPropagation()
-    return this.artwork!
+    e.stopPropagation();
+    return this.artwork!;
   }
 }

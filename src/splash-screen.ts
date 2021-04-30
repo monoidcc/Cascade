@@ -1,12 +1,12 @@
-import { component, is, wired, pub } from 'capsid'
-import { css } from 'emotion'
-import { defer } from './util/async'
-import { onLoadImage } from './util/dom'
-import monoidSvg from './img/monoid-white.svg'
-import { sendMessage } from 'lepont/browser'
-import { PLATFORM } from './const'
+import { component, is, pub, wired } from "capsid";
+import { css } from "emotion";
+import { defer } from "./util/async";
+import { onLoadImage } from "./util/dom";
+import monoidSvg from "./img/monoid-white.svg";
+import { sendMessage } from "lepont/browser";
+import { PLATFORM } from "./const";
 
-@component('splash-screen')
+@component("splash-screen")
 @is(css`
   top: 0;
   left: 0;
@@ -51,58 +51,60 @@ import { PLATFORM } from './const'
   }
 `)
 export class SplashScreen {
-  el?: HTMLElement
-  @wired('.logo')
-  logo?: HTMLElement
+  el?: HTMLElement;
+  @wired(".logo")
+  logo?: HTMLElement;
 
   async __mount__() {
-    await this.sequence()
-    this.startMain()
-    await this.fadeOut()
+    await this.sequence();
+    this.startMain();
+    await this.fadeOut();
   }
 
   async fadeOut() {
-    const el = this.el!
-    el.classList.add('hidden')
-    await defer(500)
-    el.parentElement?.removeChild(el)
+    const el = this.el!;
+    el.classList.add("hidden");
+    await defer(500);
+    el.parentElement?.removeChild(el);
   }
 
   async sequence() {
     if (!process.env.SPLASH_SCREEN) {
-      return defer(100)
+      return defer(100);
     }
-    const el = this.el!
-    await defer(50)
-    el.classList.add('ready')
-    const img = await onLoadImage(monoidSvg)
-    img.classList.add('logo', 'in', 'is-monoid')
-    el.appendChild(img)
-    await defer(50)
-    this.logo!.classList.remove('in')
-    await defer(1000)
-    this.logo!.classList.add('out')
-    await this.showLogoHtml(`<span class="logo in is-tententen">Tententen</span>`)
-    if (PLATFORM === 'android') {
+    const el = this.el!;
+    await defer(50);
+    el.classList.add("ready");
+    const img = await onLoadImage(monoidSvg);
+    img.classList.add("logo", "in", "is-monoid");
+    el.appendChild(img);
+    await defer(50);
+    this.logo!.classList.remove("in");
+    await defer(1000);
+    this.logo!.classList.add("out");
+    await this.showLogoHtml(
+      `<span class="logo in is-tententen">Tententen</span>`,
+    );
+    if (PLATFORM === "android") {
       await sendMessage({
-        type: 'set-status-bar-style',
+        type: "set-status-bar-style",
         payload: {
-          style: 'dark-content',
-          color: '#ffffff'
-        }
+          style: "dark-content",
+          color: "#ffffff",
+        },
       });
     }
   }
 
   async showLogoHtml(html: string) {
-    await defer(500)
-    this.el!.innerHTML = html
-    await defer(50)
-    this.logo!.classList.remove('in')
-    await defer(1000)
-    this.logo!.classList.add('out')
+    await defer(500);
+    this.el!.innerHTML = html;
+    await defer(50);
+    this.logo!.classList.remove("in");
+    await defer(1000);
+    this.logo!.classList.add("out");
   }
 
-  @pub('start-main')
+  @pub("start-main")
   startMain() {}
 }

@@ -15,7 +15,7 @@
     "web": "PLATFORM=web parcel --out-dir web-cache src/index.html",
     "web:full": "SPLASH_SCREEN=1 parcel --out-dir web-cache src/index.html",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "fmt": "prettier --write *.{js,tsx,json} src/**/*.ts",
+    "fmt": "deno fmt src *.js *.tsx README.md",
     "storybook": "start-storybook -p 6008",
     "build-storybook": "build-storybook -o docs/storybook",
     "docs": "npm run clean && npm run clean-docs && npm run build && mkdir -p docs/ && cp dist/* docs/ && npm run build-storybook",

@@ -1,18 +1,18 @@
-import { component, innerHTML, on, sub, is } from 'capsid'
-import { css } from 'emotion'
-import * as Event from '../const/event'
-import sample0Png from '../img/doc/sample0.png'
-import sample1Png from '../img/doc/sample1.png'
-import sample2Png from '../img/doc/sample2.png'
-import sample3Png from '../img/doc/sample3.png'
-import textboxPng from '../img/doc/textbox.png'
-import editDialogPng from '../img/doc/edit-dialog.png'
-import monoSvg from '../img/mono.svg'
-import { Artwork } from '../domain/models'
+import { component, innerHTML, is, on, sub } from "capsid";
+import { css } from "emotion";
+import * as Event from "../const/event";
+import sample0Png from "../img/doc/sample0.png";
+import sample1Png from "../img/doc/sample1.png";
+import sample2Png from "../img/doc/sample2.png";
+import sample3Png from "../img/doc/sample3.png";
+import textboxPng from "../img/doc/textbox.png";
+import editDialogPng from "../img/doc/edit-dialog.png";
+import monoSvg from "../img/mono.svg";
+import { Artwork } from "../domain/models";
 
-@component('manual-dialog__provider')
+@component("manual-dialog__provider")
 @sub(Event.OPEN_MANUAL_DIALOG)
-@innerHTML(/* html */`
+@innerHTML(/* html */ `
   <div class="manual-dialog">
     <h2>Cascade User Guide</h2>
     <p>Cascade is a generative art app. You can create images like the below with this app. Let's start!</p>
@@ -98,15 +98,15 @@ import { Artwork } from '../domain/models'
   }
 `)
 export class ManualDialogProvider {
-  el?: HTMLElement
+  el?: HTMLElement;
 
   @on(Event.OPEN_MANUAL_DIALOG)
   onOpen() {
-    this.el?.classList.add('show')
+    this.el?.classList.add("show");
   }
 
   @on.click
   onClick() {
-    this.el?.classList.remove('show')
+    this.el?.classList.remove("show");
   }
 }
