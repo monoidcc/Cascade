@@ -57,7 +57,7 @@ export class SplashScreen {
 
   async __mount__() {
     await this.sequence();
-    this.startMain();
+    await this.startMain();
     await this.fadeOut();
   }
 
