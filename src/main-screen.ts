@@ -25,7 +25,7 @@ import Color from "color";
 import button from "./button";
 import { KEY_TEXT, KEY_TEXT_FONT, KEY_TEXT_FONT_SIZE } from "./const/ls-key";
 
-const DECREMENT_WAVE_COUNT = "tententen-main-decrement-wave-count";
+const DECREMENT_WAVE_COUNT = "cascade-main-decrement-wave-count";
 
 /** The main area */
 @component("main-screen")

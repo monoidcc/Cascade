@@ -85,15 +85,6 @@ export class SplashScreen {
     await this.showLogoHtml(
       `<span class="logo in is-cascade">Cascade</span>`,
     );
-    if (PLATFORM === "android") {
-      await sendMessage({
-        type: "set-status-bar-style",
-        payload: {
-          style: "dark-content",
-          color: "#ffffff",
-        },
-      });
-    }
   }
 
   async showLogoHtml(html: string) {
@@ -106,5 +97,15 @@ export class SplashScreen {
   }
 
   @pub("start-main")
-  startMain() {}
+  async startMain() {
+    if (PLATFORM === "android") {
+      await sendMessage({
+        type: "set-status-bar-style",
+        payload: {
+          style: "dark-content",
+          color: "#ffffff",
+        },
+      });
+    }
+  }
 }
