@@ -178,8 +178,8 @@ export class EditModal {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Tententen Storage Permission",
-            message: "Tententen needs access to your storage " +
+            title: "Cascade Storage Permission",
+            message: "Cascade needs access to your storage " +
               "so you can save awesome pictures.",
             buttonNeutral: "Ask Me Later",
             buttonNegative: "Cancel",
@@ -192,7 +192,7 @@ export class EditModal {
         }
       }
       share({
-        message: `${this.artwork?.text.body} #tententenapp`,
+        message: `${this.artwork?.text.body} #cascadeapp`,
         urls: [base64Content],
       });
     } catch (e) {
@@ -212,8 +212,8 @@ export class EditModal {
         const permission = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Tententen Storage Permission",
-            message: "Tententen needs access to your storage " +
+            title: "Cascade Storage Permission",
+            message: "Cascade needs access to your storage " +
               "so you can save awesome pictures.",
             buttonNeutral: "Ask Me Later",
             buttonNegative: "Cancel",
@@ -235,7 +235,7 @@ export class EditModal {
       });
       await sendMessage({
         type: "cameraroll:save",
-        payload: { tag: savedPath, type: "photo", album: "Tententen" },
+        payload: { tag: savedPath, type: "photo", album: "Cascade" },
       });
       this.toastSuccess("Saved the picture to the album");
     } catch (e) {

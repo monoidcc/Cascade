@@ -36,7 +36,7 @@ import { PLATFORM } from "./const";
     max-width: 40%;
     filter: drop-shadow(0 0 20px white);
   }
-  .logo.is-tententen {
+  .logo.is-cascade {
     font-size: 60px;
     font-family: serif;
     font-weight: bold;
@@ -83,7 +83,7 @@ export class SplashScreen {
     await defer(1000);
     this.logo!.classList.add("out");
     await this.showLogoHtml(
-      `<span class="logo in is-tententen">Tententen</span>`,
+      `<span class="logo in is-cascade">Cascade</span>`,
     );
     if (PLATFORM === "android") {
       await sendMessage({

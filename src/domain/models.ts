@@ -280,7 +280,7 @@ export class ArtworkCollection {
   }
 }
 
-const KEY_ARTWORK_COLLECTION = "Tententen/artwork-collection";
+const KEY_ARTWORK_COLLECTION = "Cascade/artwork-collection";
 
 type TextLabelDto = {
   body: string;

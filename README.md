@@ -1,12 +1,12 @@
-# Tententen WIP
+# Cascade
 
-> A simple generative picture app for mobile
+> A generative art app for mobile
 
 # Architecture
 
 ## Tools/Frameworks
 
-Tententen uses the following tools and frameworks.
+Cascade uses the following tools and frameworks.
 
 - react-native
 - react-native-webview
@@ -20,7 +20,7 @@ Tententen uses the following tools and frameworks.
 
 ## Data format
 
-Tententen has the following data types.
+Cascade has the following data types.
 
 ```ts
 type Box = {
