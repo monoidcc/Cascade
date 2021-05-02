@@ -37,15 +37,18 @@ type TextLabel = {
   fontFamily: string; // text font family
   color: string; // text color
   shadowColor: string; // color of text shadow
-  shadowBlur: number; // blur width of text shadow
 };
 
-type Work = {
-  backgroundColor: string; // the color of the canvas. Default is 'white'.
+type Artwork = {
+  id: string;
   boxes: Box[];
   text: TextLabel;
+  backgroundColor: string;
+  createdAt: number;
 };
 ```
+
+See https://github.com/monoidcc/Cascade/blob/main/src/domain/models.ts for more details.
 
 # License
 
