@@ -1,4 +1,4 @@
-package com.tententen;
+package cc.monoid.cascade;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.tententen;
+package cc.monoid.cascade;
 
 import com.facebook.react.ReactActivity;
 
