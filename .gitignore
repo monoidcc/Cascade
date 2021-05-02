@@ -1,6 +1,9 @@
 # OSX
-#
 .DS_Store
+
+# android release build
+app.aab
+
 
 # Xcode
 #
