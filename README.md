@@ -2,6 +2,8 @@
 
 > A generative art app for mobile
 
+Google Play: https://play.google.com/store/apps/details?id=cc.monoid.cascade
+
 # Architecture
 
 ## Tools/Frameworks
