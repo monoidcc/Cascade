@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { PermissionsAndroid, Platform, StatusBar } from "react-native";
+import { PermissionsAndroid, Platform, StatusBar, SafeAreaView, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 import { useBridge } from "lepont";
 import { AsyncStorageBridge } from "@lepont/async-storage/bridge";
@@ -11,14 +11,11 @@ import ReactNativeShare from "react-native-share";
 import { ShareBridge } from "@lepont/share/bridge";
 import changeNavigationBarColor from "react-native-navigation-bar-color";
 
-// const isDev = process.env.NODE_ENV === 'development'
-
 const webBundleUrl = Platform.select({
   android: "file:///android_asset/Web.bundle/index.html",
   ios: "Web.bundle/index.html",
 })!;
 
-//const uri = isDev ? 'http//localhost:1234' : webBundleUrl
 const uri = webBundleUrl;
 
 const App = () => {
@@ -84,7 +81,7 @@ const App = () => {
   );
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
       <WebView
         source={{ uri }}
@@ -94,8 +91,14 @@ const App = () => {
         ref={ref}
         onMessage={onMessage}
       />
-    </>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default App;
