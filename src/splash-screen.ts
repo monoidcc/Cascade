@@ -2,9 +2,7 @@ import { component, is, pub, wired } from "capsid";
 import { css } from "emotion";
 import { defer } from "./util/async";
 import { onLoadImage } from "./util/dom";
-import monoidSvg from "./img/monoid-white.svg";
-import { sendMessage } from "lepont/browser";
-import { PLATFORM } from "./const";
+import monoidSvg from "./img/monoid-black.svg";
 
 @component("splash-screen")
 @is(css`
@@ -13,8 +11,8 @@ import { PLATFORM } from "./const";
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,7 +32,7 @@ import { PLATFORM } from "./const";
   }
   .logo.is-monoid {
     max-width: 40%;
-    filter: drop-shadow(0 0 20px white);
+    filter: drop-shadow(0 0 20px black);
   }
   .logo.is-cascade {
     font-size: 60px;
@@ -98,14 +96,5 @@ export class SplashScreen {
 
   @pub("start-main")
   async startMain() {
-    if (PLATFORM === "android") {
-      await sendMessage({
-        type: "set-status-bar-style",
-        payload: {
-          style: "dark-content",
-          color: "#ffffff",
-        },
-      });
-    }
   }
 }

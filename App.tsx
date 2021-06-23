@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { PermissionsAndroid, Platform, StatusBar, SafeAreaView, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 import { useBridge } from "lepont";
@@ -18,13 +18,15 @@ const webBundleUrl = Platform.select({
 
 const uri = webBundleUrl;
 
+const initialStatusBarColor = "#ffffff"
+const initialStatusBarStyle = "dark-content" as const
+
 const App = () => {
   useEffect(() => {
     if (Platform.OS === "android") {
-      StatusBar.setBackgroundColor("#000000");
-      changeNavigationBarColor("#000000", true, true);
+      StatusBar.setBackgroundColor(initialStatusBarColor);
+      changeNavigationBarColor(initialStatusBarColor, true, true);
     }
-    StatusBar.setBarStyle("light-content");
   }, []);
   const [ref, onMessage] = useBridge(
     (registry) =>
@@ -59,45 +61,32 @@ const App = () => {
           return path;
         },
       ),
-    (registry) =>
-      registry.register(
-        "set-status-bar-style",
-        (
-          { color, style }: {
-            color: string;
-            style: "light-content" | "dark-content";
-          },
-        ) => {
-          if (Platform.OS === "android") {
-            StatusBar.setBackgroundColor(color);
-            changeNavigationBarColor(color, style === "dark-content", true);
-          }
-          StatusBar.setBarStyle(style);
-        },
-      ),
     AsyncStorageBridge(AsyncStorage as any),
     PermissionsAndroidBridge(PermissionsAndroid as any),
     ShareBridge(ReactNativeShare as any),
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
-      <WebView
-        source={{ uri }}
-        originWhitelist={["*"]}
-        javaScriptEnabled
-        domStorageEnabled
-        ref={ref}
-        onMessage={onMessage}
-      />
-    </SafeAreaView>
+    <>
+      <StatusBar barStyle={initialStatusBarStyle} />
+      <SafeAreaView style={styles.container}>
+        <WebView
+          source={{ uri }}
+          originWhitelist={["*"]}
+          javaScriptEnabled
+          domStorageEnabled
+          ref={ref}
+          onMessage={onMessage}
+        />
+      </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: initialStatusBarColor,
   },
 });
 
