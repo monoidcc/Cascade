@@ -7,6 +7,7 @@
     "clean-docs": "rimraf docs",
     "android": "PLATFORM=android npm run bundle && react-native run-android",
     "ios": "PLATFORM=ios npm run bundle && react-native run-ios",
+    "ios-release": "PLATFORM=ios npm run bundle && react-native run-ios --configuration Release",
     "start": "react-native start",
     "test": "jest",
     "type": "tsc -p ./tsconfig.web.json --noEmit --incremental false",
