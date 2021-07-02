@@ -83,13 +83,16 @@ import { Artwork } from "../domain/models";
   .manual-dialog__sample-images {
     display: flex;
     justify-content: space-around;
+    align-items: center;
 
     .half-image {
       width: 45%;
+      height: auto;
     }
 
     .full-image {
       width: 90%;
+      height: auto;
     }
   }
 
