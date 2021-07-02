@@ -346,7 +346,6 @@ export class MainCanvas {
   width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 8px;
 
   height: 62px;
   flex-shrink: 0;
@@ -361,6 +360,8 @@ export class MainCanvas {
     border-radius: 8px;
     border: solid 1px ${GRAYISH_BLUE_ALPHA80};
     color: ${VERY_DARK_GRAYISH_BLUE};
+    margin-left: 8px;
+    margin-right: 8px;
   }
 
   button {
@@ -429,7 +430,6 @@ export class MainHeaderControls {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 12px;
 
   height: 82px;
   width: 100%;
@@ -438,6 +438,11 @@ export class MainHeaderControls {
   border-top-width: 1px;
   border-top-color: ${GRAYISH_BLUE_ALPHA80};
   border-top-style: solid;
+
+  .change-font-color-btn {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
 `)
 @innerHTML(`
   <button class="${button} font-btn">♻ FONT</button>
@@ -464,7 +469,7 @@ export class MainMiddleControls {
 @component("main__footer-controls")
 @innerHTML(`
   <button class="list-btn">LIST</button>
-  <button class="help-btn">(?)</button>
+  <button class="help-btn">?</button>
   <button class="save-btn">
     <span class="save-label">SAVE</span>
     <br>

@@ -1,4 +1,4 @@
-import { component, innerHTML, is, on, sub } from "capsid";
+import { component, innerHTML, is, on, sub, pub } from "capsid";
 import { css } from "emotion";
 import * as Event from "../const/event";
 import sample0Png from "../img/doc/sample0.png";
@@ -38,7 +38,7 @@ import { Artwork } from "../domain/models";
       <img class="half-image" src="${editDialogPng}" />
     </p>
     <p class="center">Have fun!</p>
-    <p class="center"><img src="${monoSvg}" width="40"></p>
+    <p class="center"><img class="mono" src="${monoSvg}" width="40"></p>
   </div>
 `)
 @is(css`
@@ -106,6 +106,16 @@ export class ManualDialogProvider {
   @on(Event.OPEN_MANUAL_DIALOG)
   onOpen() {
     this.el?.classList.add("show");
+  }
+
+  @on.click.at(".mono")
+  @pub(Event.TOAST)
+  mono(e: Event): Event.ToastMessage {
+    e.stopImmediatePropagation();
+    return {
+      message: "Hi, I'm Mono.",
+      variant: "success",
+    }
   }
 
   @on.click

@@ -64,10 +64,13 @@ import * as Event from "../const/event";
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px;
     width: 100%;
     height: 40px;
 
+    button {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
   }
 
   .edit-dialog__controls > div:first-child {

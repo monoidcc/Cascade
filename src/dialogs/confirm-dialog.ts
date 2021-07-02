@@ -57,7 +57,6 @@ export class ConfirmDialogProvider {
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    gap: 16px;
     padding: 16px;
 
     button {
@@ -71,6 +70,8 @@ export class ConfirmDialogProvider {
       padding-right: 12px;
       box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.01) inset;
       font-weight: 900;
+      margin-right: 8px;
+      margin-left: 8px;
     }
 
     button.is-danger {

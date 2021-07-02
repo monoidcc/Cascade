@@ -56,15 +56,32 @@ const GAP = 4;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: ${GAP}px;
     overflow-y: scroll;
+    overflow-x: hidden;
 
     padding-top: ${GAP}px;
+    padding-bottom: ${GAP}px;
+    margin-left: -${GAP/2}px;
+    margin-right: -${GAP/2}px;
+
+    .list-item {
+      margin: ${GAP/2}px;
+    }
+
+    .last-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .mono {
+        width: 57px;
+        height: 57px;
+      }
+    }
 
     .no-items {
       display: flex;
       flex-direction: column;
-      gap: 12px;
       justify-content: center;
       align-items: center;
 
@@ -77,6 +94,7 @@ const GAP = 4;
 
       p {
         color: #888;
+        margin-top: 20px;
 
         .close-button {
           font-weight: bold;
@@ -108,6 +126,16 @@ export class ListModal {
     this.el!.classList.add("show");
   }
 
+  @on.click.at(".mono")
+  @pub(Event.TOAST)
+  mono(e: Event): Event.ToastMessage {
+    e.stopImmediatePropagation();
+    return {
+      message: "Hi, I'm Mono.",
+      variant: "success",
+    }
+  }
+
   @on.click
   @on.click.at(".close-button")
   close() {
@@ -129,6 +157,9 @@ export class ListModal {
 
     const size = (window.innerWidth - GAP * (numPartition - 1)) / numPartition;
 
+    this.headerTitle!.innerHTML =
+      `Artworks (${artworks.length}/${Artwork.MAX_ITEMS})`;
+
     if (artworks.length === 0) {
       this.listArea!.innerHTML = `
         <div class="no-items">
@@ -136,10 +167,8 @@ export class ListModal {
           <p>No items. Let's create one in the <span class="close-button" href="">main canvas</span>!</p>
         </div>
       `;
+      return;
     }
-
-    this.headerTitle!.innerHTML =
-      `Artworks (${artworks.length}/${Artwork.MAX_ITEMS})`;
 
     artworks.artworks
       .map((artwork: Artwork): [Artwork, HTMLDivElement] => [
@@ -151,6 +180,13 @@ export class ListModal {
         make<ListItem>("list-item", div).update(artwork, size);
         this.listArea!.appendChild(div);
       });
+
+    const div = document.createElement("div");
+    div.classList.add("last-item");
+    div.style.width = `${size}px`
+    div.style.height = `${size}px`
+    div.innerHTML = `<img class="mono" src="${monoSvg}" />`;
+    this.listArea!.appendChild(div);
   }
 }
 
